@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GrupalSemana2</string>
+    <string name="pick_date">Fecha</string>
 </resources>

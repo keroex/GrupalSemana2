@@ -10,5 +10,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_actividad_de_campo);
+
     }
 }
