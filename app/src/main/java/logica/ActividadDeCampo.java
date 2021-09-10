@@ -12,6 +12,7 @@ public class ActividadDeCampo {
     private String metodoDeMuestreo;
     private String resumen;
     private String zona;
+    private String region;
     private String localidad;
     private String usuario;
     private String departamento;
@@ -25,7 +26,7 @@ public class ActividadDeCampo {
     }
 
     public ActividadDeCampo(long idactividadDeCampo, String equipamiento, String estacionDeMuestreo, String fecha,
-                            String geopunto, String metodoDeMuestreo, String resumen, String zona, String localidad, String usuario,
+                            String geopunto, String metodoDeMuestreo, String resumen, String zona, String region, String localidad, String usuario,
                             String departamento, String formulario) {
         super();
         this.idactividadDeCampo = idactividadDeCampo;
@@ -36,6 +37,7 @@ public class ActividadDeCampo {
         this.metodoDeMuestreo = metodoDeMuestreo;
         this.resumen = resumen;
         this.zona = zona;
+        this.region = region;
         this.localidad = localidad;
         this.usuario = usuario;
         this.departamento = departamento;
@@ -122,6 +124,14 @@ public class ActividadDeCampo {
 
     public void setZona(String zona) {
         this.zona = zona;
+    }
+
+    public String getRegion() {
+        return this.region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getDepartamento() {
