@@ -1,6 +1,8 @@
 package logica;
 
-public class ActividadDeCampo {
+import java.io.Serializable;
+
+public class ActividadDeCampo implements Serializable {
 
     //Atributos
 

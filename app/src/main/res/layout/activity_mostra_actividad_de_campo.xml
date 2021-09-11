@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:ems="10"
-        android:inputType="date"
+        android:inputType="textPersonName"
         app:layout_constraintBaseline_toBaselineOf="@+id/lblFecha"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
 

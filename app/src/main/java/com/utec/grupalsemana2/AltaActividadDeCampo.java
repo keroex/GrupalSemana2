@@ -13,22 +13,33 @@ import logica.ActividadDeCampo;
 
 public class AltaActividadDeCampo extends AppCompatActivity {
 
-    EditText txtFecha = (EditText) findViewById(R.id.txtFecha);
-    EditText txtResumen = (EditText) findViewById(R.id.txtResumen);
-    EditText txtEquipamiento = (EditText) findViewById(R.id.txtEquipamiento);
-    EditText txtEstacion = (EditText) findViewById(R.id.txtEstacion);
-    EditText txtMetodo = (EditText) findViewById(R.id.txtMetodo);
-    EditText txtUbicacion = (EditText) findViewById(R.id.txtUbicacion);
-    EditText txtZona = (EditText) findViewById(R.id.txtZona);
-    EditText txtRegion = (EditText) findViewById(R.id.txtRegion);
-    EditText txtDepartamento = (EditText) findViewById(R.id.txtDepartamento);
-    EditText txtLocalidad = (EditText) findViewById(R.id.txtLocalidad);
-    EditText txtFormulario = (EditText) findViewById(R.id.txtFormulario);
+    EditText txtFecha;
+    EditText txtResumen;
+    EditText txtEquipamiento;
+    EditText txtEstacion;
+    EditText txtMetodo;
+    EditText txtUbicacion;
+    EditText txtZona;
+    EditText txtRegion;
+    EditText txtDepartamento;
+    EditText txtLocalidad;
+    EditText txtFormulario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_actividad_de_campo);
+        txtFecha = (EditText) findViewById(R.id.txtFecha);
+        txtResumen = (EditText) findViewById(R.id.txtResumen);
+        txtEquipamiento = (EditText) findViewById(R.id.txtEquipamiento);
+        txtEstacion = (EditText) findViewById(R.id.txtEstacion);
+        txtMetodo = (EditText) findViewById(R.id.txtMetodo);
+        txtUbicacion = (EditText) findViewById(R.id.txtUbicacion);
+        txtZona = (EditText) findViewById(R.id.txtZona);
+        txtRegion = (EditText) findViewById(R.id.txtRegion);
+        txtDepartamento = (EditText) findViewById(R.id.txtDepartamento);
+        txtLocalidad = (EditText) findViewById(R.id.txtLocalidad);
+        txtFormulario = (EditText) findViewById(R.id.txtFormulario);
 
     }
 
@@ -50,7 +61,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
         if(validar(act)) {
             Intent intent = new Intent(this, MostraActividadDeCampo.class);
-            intent.putExtra("actividad", (Serializable) act);
+            intent.putExtra("actividad", act);
             startActivity(intent);
         }
 
@@ -62,10 +73,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         boolean retorno = true;
 
         if (actividadDeCampo.getFecha().isEmpty()) {
-                this.txtFecha.setError("No puede quedar vacío");
-                retorno = false;
+            this.txtFecha.setError("No puede quedar vacío");
+            retorno = false;
         }   else {
             this.txtFecha.setError(null);
+
         }
 
         if (actividadDeCampo.getGeopunto().isEmpty()) {

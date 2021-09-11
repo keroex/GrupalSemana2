@@ -10,22 +10,34 @@ import logica.ActividadDeCampo;
 
 public class MostraActividadDeCampo extends AppCompatActivity {
 
-    TextView txtFecha = (TextView) findViewById(R.id.txtFecha);
-    TextView txtResumen = (TextView) findViewById(R.id.txtResumen);
-    TextView txtEquipamiento = (TextView) findViewById(R.id.txtEquipamiento);
-    TextView txtEstacion = (TextView) findViewById(R.id.txtEstacion);
-    TextView txtMetodo = (TextView) findViewById(R.id.txtMetodo);
-    TextView txtUbicacion = (TextView) findViewById(R.id.txtUbicacion);
-    TextView txtZona = (TextView) findViewById(R.id.txtZona);
-    TextView txtRegion = (TextView) findViewById(R.id.txtRegion);
-    TextView txtDepartamento = (TextView) findViewById(R.id.txtDepartamento);
-    TextView txtLocalidad = (TextView) findViewById(R.id.txtLocalidad);
-    TextView txtFormulario = (TextView) findViewById(R.id.txtFormulario);
+    TextView txtFecha;
+    TextView txtResumen;
+    TextView txtEquipamiento;
+    TextView txtEstacion;
+    TextView txtMetodo;
+    TextView txtUbicacion;
+    TextView txtZona;
+    TextView txtRegion;
+    TextView txtDepartamento;
+    TextView txtLocalidad;
+    TextView txtFormulario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostra_actividad_de_campo);
+
+        txtFecha = (TextView) findViewById(R.id.txtFecha);
+        txtResumen = (TextView) findViewById(R.id.txtResumen);
+        txtEquipamiento = (TextView) findViewById(R.id.txtEquipamiento);
+        txtEstacion = (TextView) findViewById(R.id.txtEstacion);
+        txtMetodo = (TextView) findViewById(R.id.txtMetodo);
+        txtUbicacion = (TextView) findViewById(R.id.txtUbicacion);
+        txtZona = (TextView) findViewById(R.id.txtZona);
+        txtRegion = (TextView) findViewById(R.id.txtRegion);
+        txtDepartamento = (TextView) findViewById(R.id.txtDepartamento);
+        txtLocalidad = (TextView) findViewById(R.id.txtLocalidad);
+        txtFormulario = (TextView) findViewById(R.id.txtFormulario);
 
         Intent intent = getIntent();
         ActividadDeCampo act = (ActividadDeCampo) intent.getSerializableExtra("actividad");

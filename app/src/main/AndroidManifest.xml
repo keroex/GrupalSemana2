@@ -12,6 +12,9 @@
         <activity
             android:name=".AltaActividadDeCampo"
             android:exported="true" />
+        <activity
+            android:name=".MostraActividadDeCampo"
+            android:exported="true" />
     </application>
 
 </manifest>
