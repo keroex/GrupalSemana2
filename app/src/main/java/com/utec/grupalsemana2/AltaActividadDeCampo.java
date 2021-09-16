@@ -71,6 +71,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     }
 
+    public void VerActividades(View view) {
+        Intent intentActividades = new Intent(this, ListarActividadesDeCampo.class);
+        startActivity(intentActividades);
+    }
+
 
     public boolean validar(ActividadDeCampo actividadDeCampo) {
 

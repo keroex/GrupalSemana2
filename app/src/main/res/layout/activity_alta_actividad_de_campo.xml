@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -239,9 +239,9 @@
 
     <Button
         android:id="@+id/btnCargar"
-        android:layout_width="210dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="183dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
         android:onClick="CargarActividadDeCampo"
         android:text="Cargar"
@@ -267,5 +267,14 @@
         android:inputType="textPersonName"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+    <Button
+        android:id="@+id/btnVerActividades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="VerActividades"
+        android:text="Ver actividades"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="559dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
