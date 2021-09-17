@@ -84,7 +84,6 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     @Override
     public void onActividadClick(int position) {
-        System.out.println(actividadesDeCampo.getValue().get(position).toString());
         Intent intent = new Intent(this, MostraActividadDeCampo.class);
         intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
         startActivity(intent);
