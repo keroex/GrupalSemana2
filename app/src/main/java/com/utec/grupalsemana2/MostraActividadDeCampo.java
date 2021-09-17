@@ -39,8 +39,19 @@ public class MostraActividadDeCampo extends AppCompatActivity {
         txtLocalidad = (TextView) findViewById(R.id.txtLocalidad);
         txtFormulario = (TextView) findViewById(R.id.txtFormulario);
 
+       /* Intent intent = getIntent();
+
+        if(intent.hasExtra("actividad-seleccionada")) {
+            ActividadDeCampo actividadDeCampo = intent.getParcelableExtra("actividad-seleccionada");
+            cargarActDeCampo(actividadDeCampo);
+            System.out.println("3333333333333333333");
+        } else {
+            System.out.println("22222222222222222222");
+        }*/
+
+        System.out.println("HECTOR PUTO");
         Intent intent = getIntent();
-        ActividadDeCampo act = (ActividadDeCampo) intent.getSerializableExtra("actividad");
+        ActividadDeCampo act = intent.getParcelableExtra("actividad-seleccionada");
         cargarActDeCampo(act);
 
     }

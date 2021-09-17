@@ -1,8 +1,9 @@
 package logica;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class ActividadDeCampo implements Serializable {
+public class ActividadDeCampo implements Parcelable {
 
     //Atributos
 
@@ -47,6 +48,34 @@ public class ActividadDeCampo implements Serializable {
     }
 
     // Metodos
+
+    protected ActividadDeCampo(Parcel in) {
+        idactividadDeCampo = in.readLong();
+        equipamiento = in.readString();
+        estacionDeMuestreo = in.readString();
+        fecha = in.readString();
+        geopunto = in.readString();
+        metodoDeMuestreo = in.readString();
+        resumen = in.readString();
+        zona = in.readString();
+        region = in.readString();
+        localidad = in.readString();
+        usuario = in.readString();
+        departamento = in.readString();
+        formulario = in.readString();
+    }
+
+    public static final Creator<ActividadDeCampo> CREATOR = new Creator<ActividadDeCampo>() {
+        @Override
+        public ActividadDeCampo createFromParcel(Parcel in) {
+            return new ActividadDeCampo(in);
+        }
+
+        @Override
+        public ActividadDeCampo[] newArray(int size) {
+            return new ActividadDeCampo[size];
+        }
+    };
 
     public long getIdactividadDeCampo() {
         return this.idactividadDeCampo;
@@ -157,4 +186,25 @@ public class ActividadDeCampo implements Serializable {
         return resumen;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(idactividadDeCampo);
+        parcel.writeString(equipamiento);
+        parcel.writeString(estacionDeMuestreo);
+        parcel.writeString(fecha);
+        parcel.writeString(geopunto);
+        parcel.writeString(metodoDeMuestreo);
+        parcel.writeString(resumen);
+        parcel.writeString(zona);
+        parcel.writeString(region);
+        parcel.writeString(localidad);
+        parcel.writeString(usuario);
+        parcel.writeString(departamento);
+        parcel.writeString(formulario);
+    }
 }

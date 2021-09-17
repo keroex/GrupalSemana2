@@ -1,6 +1,7 @@
 package com.utec.grupalsemana2;
 
 import android.content.Context;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,14 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
     private List<ActividadDeCampo> actividades;
     private LayoutInflater mInflater;
     private Context contexto;
+    private ActividadClickListener mActividadClickListener;
 
-    public ListActividadAdapter(List<ActividadDeCampo> actividades, Context contexto) {
+
+    public ListActividadAdapter(List<ActividadDeCampo> actividades, Context contexto, ActividadClickListener actividadClickListener) {
         this.mInflater = LayoutInflater.from(contexto);
         this.contexto=contexto;
         this.actividades=actividades;
+        this.mActividadClickListener = actividadClickListener;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
     @Override
     public ListActividadAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
         View view = mInflater.inflate(R.layout.list_actividad,null);
-        return new ListActividadAdapter.ViewHolder(view);
+        return new ListActividadAdapter.ViewHolder(view, mActividadClickListener);
     }
 
     @Override
@@ -45,16 +49,19 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
         this.actividades = actividades;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iconImage;
         TextView usuario, fecha, departamento;
+        ActividadClickListener actividadClickListener;
 
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView, ActividadClickListener actividadClickListener) {
             super(itemView);
             iconImage = itemView.findViewById(R.id.iconImageView);
             usuario = itemView.findViewById(R.id.nombreUsuarioTextView);
             fecha = itemView.findViewById(R.id.fechaTextView);
             departamento = itemView.findViewById(R.id.departamentoTextView);
+            this.actividadClickListener = actividadClickListener;
+            itemView.setOnClickListener(this);
         }
 
         void bindData(final ActividadDeCampo actividad) {
@@ -63,6 +70,14 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
             this.departamento.setText(actividad.getDepartamento());
         }
 
+        @Override
+        public void onClick(View view) {
+            actividadClickListener.onActividadClick(getAdapterPosition());
+        }
+    }
+
+    public interface ActividadClickListener {
+        void onActividadClick(int position);
     }
 
 }

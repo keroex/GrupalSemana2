@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ListarActividadesDeCampo extends AppCompatActivity {
+public class ListarActividadesDeCampo extends AppCompatActivity implements ListActividadAdapter.ActividadClickListener {
 
     private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo = new MutableLiveData<>();
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,12 @@ public class ListarActividadesDeCampo extends AppCompatActivity {
     private void init() {
         getActividadesDeCampo();
         Intent intent = getIntent();
-
     }
 
     private void getActividadesDeCampo() {
+
         actividadesDeCampo.setValue(new ArrayList<>());
-        Retrofit retrofit = new Retrofit.Builder()
+         this.retrofit = new Retrofit.Builder()
                 .baseUrl("http://lezicalandia.ddns.net:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -48,19 +51,17 @@ public class ListarActividadesDeCampo extends AppCompatActivity {
         ActividadDeCampoAPI actividadDeCampoAPI = retrofit.create(ActividadDeCampoAPI.class);
         Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampo();
 
-        System.out.println("1111111111111111");
-
         call.enqueue(new Callback<List<ActividadDeCampo>>() {
             @Override
             public void onResponse(Call<List<ActividadDeCampo>> call, Response<List<ActividadDeCampo>> response) {
 
+                if (response.isSuccessful()) {
                     List<ActividadDeCampo> actividades = response.body();
                     if(actividades!=null) {
                         actividadesDeCampo.setValue(actividades);
                     }
-                    System.out.println("2222222222222222");
-
                     listarActividadesDeCampo(actividadesDeCampo);
+                }
 
             }
 
@@ -72,8 +73,8 @@ public class ListarActividadesDeCampo extends AppCompatActivity {
     }
 
     private void listarActividadesDeCampo(MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo) {
-        List<ActividadDeCampo> actividadesList = actividadesDeCampo.getValue();
-        ListActividadAdapter listActividadAdapter = new ListActividadAdapter(actividadesList, this);
+
+        ListActividadAdapter listActividadAdapter = new ListActividadAdapter(actividadesDeCampo.getValue(), this, this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLista);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -81,4 +82,11 @@ public class ListarActividadesDeCampo extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onActividadClick(int position) {
+        System.out.println(actividadesDeCampo.getValue().get(position).toString());
+        Intent intent = new Intent(this, MostraActividadDeCampo.class);
+        intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
+        startActivity(intent);
+    }
 }
