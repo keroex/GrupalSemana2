@@ -1,4 +1,4 @@
-package com.utec.grupalsemana2;
+package com.utec.grupalsemana2.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +8,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import com.utec.grupalsemana2.R;
+import com.utec.grupalsemana2.logica.ActividadDeCampo;
+import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
+import com.utec.grupalsemana2.servicios.ServicioMostrarLog;
 
-import logica.ActividadDeCampo;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AltaActividadDeCampo extends AppCompatActivity {
 
@@ -25,6 +29,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     EditText txtDepartamento;
     EditText txtLocalidad;
     EditText txtFormulario;
+
+    ActividadDeCampoViewModel actividadDeCampoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,14 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         txtDepartamento = (EditText) findViewById(R.id.txtDepartamento);
         txtLocalidad = (EditText) findViewById(R.id.txtLocalidad);
         txtFormulario = (EditText) findViewById(R.id.txtFormulario);
-
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                startService(new Intent(getBaseContext(), ServicioMostrarLog.class));
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 5000);
     }
 
     public void CargarActividadDeCampo(View view) {
@@ -61,9 +74,16 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         act.setFormulario(this.txtFormulario.getText().toString());
 
         if(validar(act)) {
-            Intent intent = new Intent(this, MostraActividadDeCampo.class);
-            intent.putExtra("actividad", act);
-            startActivity(intent);
+            //Intent intent = new Intent(this, MostraActividadDeCampo.class);
+            //intent.putExtra("actividad", act);
+            actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
+            actividadDeCampoViewModel.insert(act);
+
+
+
+            Toast.makeText(getApplicationContext(),"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Cantidad de registros: " + actividadDeCampoViewModel.count(), Toast.LENGTH_SHORT).show();
+            //startActivity(intent);
         }
         else {
             Toast.makeText(getApplicationContext(),"Complete los datos Obligatorios",Toast.LENGTH_LONG).show();

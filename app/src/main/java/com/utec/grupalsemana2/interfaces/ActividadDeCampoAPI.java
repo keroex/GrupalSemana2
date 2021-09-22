@@ -1,8 +1,8 @@
-package interfaces;
+package com.utec.grupalsemana2.interfaces;
 
 import java.util.List;
 
-import logica.ActividadDeCampo;
+import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import retrofit2.Call;
 import retrofit2.http.GET;
 

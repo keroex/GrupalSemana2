@@ -1,19 +1,18 @@
-package com.utec.grupalsemana2;
+package com.utec.grupalsemana2.presentacion;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import logica.ActividadDeCampo;
+import com.utec.grupalsemana2.R;
+import com.utec.grupalsemana2.logica.ActividadDeCampo;
 
 public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdapter.ViewHolder> {
     private List<ActividadDeCampo> actividades;

@@ -1,4 +1,4 @@
-package com.utec.grupalsemana2;
+package com.utec.grupalsemana2.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -7,14 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.ActividadDeCampoAPI;
-import logica.ActividadDeCampo;
+import com.utec.grupalsemana2.R;
+import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
+import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +43,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
         actividadesDeCampo.setValue(new ArrayList<>());
          this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://lezicalandia.ddns.net:8080/")
+                .baseUrl("http://192.168.10.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -11,7 +11,7 @@
     android:isScrollContainer="true"
     android:longClickable="true"
     android:scrollbars="vertical"
-    tools:context=".AltaActividadDeCampo">
+    tools:context=".presentacion.AltaActividadDeCampo">
 
 
         <!-- Contenido del scroll -->

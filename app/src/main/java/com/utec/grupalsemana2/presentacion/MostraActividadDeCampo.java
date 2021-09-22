@@ -1,4 +1,4 @@
-package com.utec.grupalsemana2;
+package com.utec.grupalsemana2.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import logica.ActividadDeCampo;
+import com.utec.grupalsemana2.R;
+import com.utec.grupalsemana2.logica.ActividadDeCampo;
 
 public class MostraActividadDeCampo extends AppCompatActivity {
 

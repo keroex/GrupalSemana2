@@ -1,24 +1,42 @@
-package logica;
+package com.utec.grupalsemana2.logica;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class ActividadDeCampo implements Parcelable {
 
     //Atributos
-
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(index = true, name = "id")
     private long idactividadDeCampo;
+    @ColumnInfo(name = "equipamiento")
     private String equipamiento;
+    @ColumnInfo(name = "estacionDeMuestreo")
     private String estacionDeMuestreo;
+    @ColumnInfo(name = "fecha")
     private String fecha;
+    @ColumnInfo(name = "geopunto")
     private String geopunto;
+    @ColumnInfo(name = "metodoDeMuestreo")
     private String metodoDeMuestreo;
+    @ColumnInfo(name = "resumen")
     private String resumen;
+    @ColumnInfo(name = "zona")
     private String zona;
+    @ColumnInfo(name = "region")
     private String region;
+    @ColumnInfo(name = "localidad")
     private String localidad;
+    @ColumnInfo(name = "usuario")
     private String usuario;
+    @ColumnInfo(name = "departamento")
     private String departamento;
+    @ColumnInfo(name = "formulario")
     private String formulario;
 
 
@@ -183,7 +201,21 @@ public class ActividadDeCampo implements Parcelable {
 
     @Override
     public String toString() {
-        return resumen;
+        return "ActividadDeCampo{" +
+                "idactividadDeCampo=" + idactividadDeCampo +
+                ", equipamiento='" + equipamiento + '\'' +
+                ", estacionDeMuestreo='" + estacionDeMuestreo + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", geopunto='" + geopunto + '\'' +
+                ", metodoDeMuestreo='" + metodoDeMuestreo + '\'' +
+                ", resumen='" + resumen + '\'' +
+                ", zona='" + zona + '\'' +
+                ", region='" + region + '\'' +
+                ", localidad='" + localidad + '\'' +
+                ", usuario='" + usuario + '\'' +
+                ", departamento='" + departamento + '\'' +
+                ", formulario='" + formulario + '\'' +
+                '}';
     }
 
     @Override
