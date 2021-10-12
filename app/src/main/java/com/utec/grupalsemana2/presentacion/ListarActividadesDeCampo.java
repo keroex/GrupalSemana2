@@ -14,6 +14,9 @@ import java.util.List;
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
+import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
+import com.utec.grupalsemana2.repositories.ActividadDeCampoRepository;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,7 +27,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo = new MutableLiveData<>();
     private Retrofit retrofit;
-
+    ActividadDeCampoViewModel actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,9 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     private void getActividadesDeCampo() {
 
-        actividadesDeCampo.setValue(new ArrayList<>());
+        listarActividadesDeCampo(actividadDeCampoViewModel.getActividadesDeCampoXUsuario());
+
+       /* actividadesDeCampo.setValue(new ArrayList<>());
          this.retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.10.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -68,7 +73,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
             public void onFailure(Call<List<ActividadDeCampo>> call, Throwable t) {
 
             }
-        });
+        }); */
     }
 
     private void listarActividadesDeCampo(MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo) {

@@ -73,7 +73,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         act.setLocalidad(this.txtLocalidad.getText().toString());
         act.setFormulario(this.txtFormulario.getText().toString());
 
-        if(validar(act)) {
+        if(validarCampos(act)) {
             //Intent intent = new Intent(this, MostraActividadDeCampo.class);
             //intent.putExtra("actividad", act);
             actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
@@ -97,7 +97,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
 
-    public boolean validar(ActividadDeCampo actividadDeCampo) {
+    public boolean validarCampos(ActividadDeCampo actividadDeCampo) {
 
         boolean retorno = true;
 

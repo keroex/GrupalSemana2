@@ -3,6 +3,7 @@ package com.utec.grupalsemana2.models;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.repositories.ActividadDeCampoRepository;
@@ -25,6 +26,10 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
 
     public List<ActividadDeCampo> getActividadDeCampos() {
         return actividadDeCampos;
+    }
+
+    public MutableLiveData<List<ActividadDeCampo>> getActividadesDeCampoXUsuario() {
+        return actividadDeCampoRepository.getActividadesDeCampoXUsuario();
     }
 
     public void insert(ActividadDeCampo actividadDeCampo){

@@ -11,9 +11,12 @@
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/drawable/ic_feed_black_24dp.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/drawable/ic_grass_black_24dp.xml" value="0.3828125" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.23560910307898258" />
+        <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout-w936dp/activity_login.xml" value="0.275" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/actividad_de_campo_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/activity_alta_actividad_de_campo.xml" value="0.33" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/activity_listar_actividades_de_campo.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/activity_mostra_actividad_de_campo.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/list_actividad.xml" value="0.33" />
         <entry key="..\:/Users/lazar/StudioProjects/Grupales/GrupalSemana2/app/src/main/res/layout/list_element.xml" value="0.36666666666666664" />
@@ -24,6 +27,11 @@
         <entry key="..\:/Users/marti/AndroidStudioProjects/GrupalSem2/app/src/main/res/layout/activity_mostra_actividad_de_campo.xml" value="0.13020833333333334" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout-w1240dp/activity_login.xml" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout-w936dp/activity_login.xml" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
