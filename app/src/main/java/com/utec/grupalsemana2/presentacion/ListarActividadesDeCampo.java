@@ -1,6 +1,7 @@
 package com.utec.grupalsemana2.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,8 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ListarActividadesDeCampo extends AppCompatActivity implements ListActividadAdapter.ActividadClickListener {
 
     private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo = new MutableLiveData<>();
-    private Retrofit retrofit;
     ActividadDeCampoViewModel actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,40 +44,10 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     }
 
     private void getActividadesDeCampo() {
-
         listarActividadesDeCampo(actividadDeCampoViewModel.getActividadesDeCampoXUsuario());
-
-       /* actividadesDeCampo.setValue(new ArrayList<>());
-         this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.10.2:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ActividadDeCampoAPI actividadDeCampoAPI = retrofit.create(ActividadDeCampoAPI.class);
-        Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampo();
-
-        call.enqueue(new Callback<List<ActividadDeCampo>>() {
-            @Override
-            public void onResponse(Call<List<ActividadDeCampo>> call, Response<List<ActividadDeCampo>> response) {
-
-                if (response.isSuccessful()) {
-                    List<ActividadDeCampo> actividades = response.body();
-                    if(actividades!=null) {
-                        actividadesDeCampo.setValue(actividades);
-                    }
-                    listarActividadesDeCampo(actividadesDeCampo);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<ActividadDeCampo>> call, Throwable t) {
-
-            }
-        }); */
     }
 
-    private void listarActividadesDeCampo(MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo) {
+    private void listarActividadesDeCampo(LiveData<List<ActividadDeCampo>> actividadesDeCampo) {
 
         ListActividadAdapter listActividadAdapter = new ListActividadAdapter(actividadesDeCampo.getValue(), this, this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLista);

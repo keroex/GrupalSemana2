@@ -2,6 +2,7 @@ package com.utec.grupalsemana2.repositories;
 
 import android.app.Application;
 import android.util.Log;
+import android.util.LogPrinter;
 import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +12,7 @@ import com.utec.grupalsemana2.database.AppDataBase;
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.presentacion.ListarActividadesDeCampo;
+import com.utec.grupalsemana2.servicios.RestAppClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,30 +24,40 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActividadDeCampoRepository {
-    private ActividadDeCampoDao actividadDeCampoDao;
-    private static Retrofit retrofit;
 
-    //private LiveData<List<ActividadDeCampo>> actividadDeCampos;
-    private List<ActividadDeCampo> actividadDeCampos;
-    private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampoXUsuario = new MutableLiveData<>();
+    private ActividadDeCampoAPI actividadDeCampoAPI = RestAppClient.getClient().create(ActividadDeCampoAPI.class); // me traigo el cliente retrofit
 
-    public ActividadDeCampoRepository(Application application) {
-        AppDataBase db = AppDataBase.getInstance((application));
-        actividadDeCampoDao = db.actividadDeCampoDao();
-        actividadDeCampos = actividadDeCampoDao.findAll();
+    private ActividadDeCampoDao actividadDeCampoDao; // dao para base de datos local
+
+    private List<ActividadDeCampo> actividadDeCampos; // lista de actividades de base de datos local
+
+    private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampoXUsuario = new MutableLiveData<>(); // lista de actividades del rest
+
+    public MutableLiveData<List<ActividadDeCampo>> getActividadesDeCampoXUsuario() {
+        return actividadesDeCampoXUsuario;
     }
 
-    //public LiveData<List<ActividadDeCampo>> getActividadDeCampos() { return actividadDeCampos;    }
+    // constructor
+    public ActividadDeCampoRepository(Application application) {
+        try {
+            AppDataBase db = AppDataBase.getInstance((application)); // instancio base de datos local
+            actividadDeCampoDao = db.actividadDeCampoDao(); // instancio dao
+            actividadDeCampos = actividadDeCampoDao.findAll(); // traigo la lista de la base de datos local
+            loadActividadesDeCampoXUsuario(); // cargo el repositorio con las actividades de campo del rest
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<ActividadDeCampo> getActividadDeCampos() {
         //si no tiene internet
         return actividadDeCampos;
     }
 
-    public MutableLiveData<List<ActividadDeCampo>> getActividadesDeCampoXUsuario() {
+    public void loadActividadesDeCampoXUsuario() {
         //si tiene internet
         actividadesDeCampoXUsuario.setValue(new ArrayList<>());
-        Call<List<ActividadDeCampo>> call = crearActividadDeCampoApi().getActividadesDeCampo();
+        Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampo();
         call.enqueue(new Callback<List<ActividadDeCampo>>() {
             @Override
             public void onResponse(Call<List<ActividadDeCampo>> call, Response<List<ActividadDeCampo>> response) {
@@ -64,54 +76,32 @@ public class ActividadDeCampoRepository {
 
             }
         });
-        return actividadesDeCampoXUsuario;
     }
 
     public void insert (ActividadDeCampo actividadDeCampo) {
-        actividadDeCampoDao.insert(actividadDeCampo);
+        actividadDeCampoDao.insert(actividadDeCampo);  // inserto a la base de datos local
         //si tiene internet
-        Call<ActividadDeCampo> call = crearActividadDeCampoApi().agregarActividadDeCampo(actividadDeCampo);
-        call.enqueue(new Callback<ActividadDeCampo>() {
+        actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ActividadDeCampo>() {
             @Override
             public void onResponse(Call<ActividadDeCampo> call, Response<ActividadDeCampo> response) {
-                if(response.isSuccessful()) {
-                    System.out.println("Se agregó la actividad de campo");
-                    Log.i("Se agrego", "Se agrego la actividad de campo");
-                }
+                loadActividadesDeCampoXUsuario();
             }
 
             @Override
             public void onFailure(Call<ActividadDeCampo> call, Throwable t) {
-                System.out.println("Falló al agregar la actividad de campo");
+
             }
         });
     }
 
-    public void update(ActividadDeCampo actividadDeCampo) {
+    /*public void update(ActividadDeCampo actividadDeCampo) {
         actividadDeCampoDao.update(actividadDeCampo);
     }
 
     public void delete(ActividadDeCampo actividadDeCampo) {
         actividadDeCampoDao.delete(actividadDeCampo);
     }
-
+*/
     public int count() { return actividadDeCampoDao.count();    }
 
-
-    //instanciando retrofit
-    private static ActividadDeCampoAPI crearActividadDeCampoApi() {
-        try {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.10.2:8080/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            ActividadDeCampoAPI actividadDeCampoAPI = retrofit.create(ActividadDeCampoAPI.class);
-
-            return actividadDeCampoAPI;
-        } catch(Exception e) {
-            System.out.println("Error: " + e);
-            return null;
-        }
-    }
 }

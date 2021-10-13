@@ -47,14 +47,14 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         txtDepartamento = (EditText) findViewById(R.id.txtDepartamento);
         txtLocalidad = (EditText) findViewById(R.id.txtLocalidad);
         txtFormulario = (EditText) findViewById(R.id.txtFormulario);
-        Timer timer = new Timer();
+        /*Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 startService(new Intent(getBaseContext(), ServicioMostrarLog.class));
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 5000);
+        timer.scheduleAtFixedRate(timerTask, 0, 5000);*/
     }
 
     public void CargarActividadDeCampo(View view) {
@@ -74,16 +74,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         act.setFormulario(this.txtFormulario.getText().toString());
 
         if(validarCampos(act)) {
-            //Intent intent = new Intent(this, MostraActividadDeCampo.class);
-            //intent.putExtra("actividad", act);
             actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
             actividadDeCampoViewModel.insert(act);
-
-
-
             Toast.makeText(getApplicationContext(),"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
             Toast.makeText(getApplicationContext(),"Cantidad de registros: " + actividadDeCampoViewModel.count(), Toast.LENGTH_SHORT).show();
-            //startActivity(intent);
         }
         else {
             Toast.makeText(getApplicationContext(),"Complete los datos Obligatorios",Toast.LENGTH_LONG).show();

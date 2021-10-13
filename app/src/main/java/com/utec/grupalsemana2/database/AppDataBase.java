@@ -20,8 +20,6 @@ public abstract class AppDataBase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(), AppDataBase.class, "IAGRO")
                     .allowMainThreadQueries()
                     .build();
-
-
         }
         return instance;
     }

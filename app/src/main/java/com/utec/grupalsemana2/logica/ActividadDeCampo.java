@@ -39,9 +39,7 @@ public class ActividadDeCampo implements Parcelable {
     @ColumnInfo(name = "formulario")
     private String formulario;
 
-
     //Constructores
-
     public ActividadDeCampo() {
         super();
     }
@@ -66,7 +64,6 @@ public class ActividadDeCampo implements Parcelable {
     }
 
     // Metodos
-
     protected ActividadDeCampo(Parcel in) {
         idactividadDeCampo = in.readLong();
         equipamiento = in.readString();

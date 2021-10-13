@@ -13,9 +13,6 @@ import java.util.List;
 @Dao
 public interface ActividadDeCampoDao {
 
-    
-    
-
         @Query("Select * from ActividadDeCampo")
             //LiveData<List<ActividadDeCampo>> findAll();
         List<ActividadDeCampo> findAll();
@@ -35,7 +32,5 @@ public interface ActividadDeCampoDao {
         @Query("Select count(*) from ActividadDeCampo")
         int count();
 
-    
-    
 }
 
