@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,4 +88,10 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
         startActivity(intent);
     }
+
+    private void altaActividadDeCampo(View view) {
+        Intent intentAlta = new Intent(this, AltaActividadDeCampo.class);
+        startActivity(intentAlta);
+    }
+
 }
