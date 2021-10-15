@@ -65,7 +65,7 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
 
         void bindData(final ActividadDeCampo actividad) {
             this.usuario.setText(actividad.getUsuario());
-            this.fecha.setText(actividad.getFecha());
+            this.fecha.setText(actividad.getFecha().toString());
             this.departamento.setText(actividad.getDepartamento());
         }
 

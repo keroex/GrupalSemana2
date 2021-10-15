@@ -1,6 +1,7 @@
 package com.utec.grupalsemana2.servicios;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,10 +20,13 @@ public class RestAppClient {
 
     public static Retrofit getClient() {
         if(retrofit==null) {
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                    .create();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://lezicalandia.ddns.net:8080/")
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create(new Gson())).build();
+                    .baseUrl("http://192.168.1.15:8080/")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
         }
         return retrofit;
     }

@@ -126,17 +126,6 @@
         app:layout_constraintGuide_begin="160dp" />
 
     <EditText
-        android:id="@+id/txtFecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:ems="10"
-        android:importantForAutofill="no"
-        android:inputType="date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/lblFecha"
-        app:layout_constraintStart_toStartOf="@+id/guideline2" />
-
-    <EditText
         android:id="@+id/txtResumen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -278,6 +267,19 @@
         android:text="Ver actividades"
         app:layout_constraintEnd_toStartOf="@+id/btnCargar"
         app:layout_constraintTop_toBottomOf="@id/textView10" />
+
+    <TextView
+        android:id="@+id/txtViewFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="24dp"
+        android:text="Seleccionar fecha"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/lblFecha"
+        app:layout_constraintTop_toTopOf="parent" /><![CDATA[
+
     />
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

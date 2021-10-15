@@ -50,7 +50,7 @@ public class MostraActividadDeCampo extends AppCompatActivity {
 
     public void cargarActDeCampo(ActividadDeCampo act) {
 
-        txtFecha.setText(act.getFecha());
+        txtFecha.setText(act.getFecha().toString());
         txtResumen.setText(act.getResumen());
         txtEquipamiento.setText(act.getEquipamiento());
         txtEstacion.setText(act.getEstacionDeMuestreo());

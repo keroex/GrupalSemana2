@@ -7,6 +7,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity
 public class ActividadDeCampo implements Parcelable {
 
@@ -19,7 +21,7 @@ public class ActividadDeCampo implements Parcelable {
     @ColumnInfo(name = "estacionDeMuestreo")
     private String estacionDeMuestreo;
     @ColumnInfo(name = "fecha")
-    private String fecha;
+    private Date fecha;
     @ColumnInfo(name = "geopunto")
     private String geopunto;
     @ColumnInfo(name = "metodoDeMuestreo")
@@ -32,19 +34,24 @@ public class ActividadDeCampo implements Parcelable {
     private String region;
     @ColumnInfo(name = "localidad")
     private String localidad;
+    private long idlocalidad;
     @ColumnInfo(name = "usuario")
     private String usuario;
+    private long idusuario;
     @ColumnInfo(name = "departamento")
     private String departamento;
+    private long iddepartamento;
     @ColumnInfo(name = "formulario")
     private String formulario;
+    private long idformulario;
+    private String tipoDeMuestreo;
 
     //Constructores
     public ActividadDeCampo() {
         super();
     }
 
-    public ActividadDeCampo(long idactividadDeCampo, String equipamiento, String estacionDeMuestreo, String fecha,
+    public ActividadDeCampo(long idactividadDeCampo, String equipamiento, String estacionDeMuestreo, Date fecha,
                             String geopunto, String metodoDeMuestreo, String resumen, String zona, String region, String localidad, String usuario,
                             String departamento, String formulario) {
         super();
@@ -68,7 +75,7 @@ public class ActividadDeCampo implements Parcelable {
         idactividadDeCampo = in.readLong();
         equipamiento = in.readString();
         estacionDeMuestreo = in.readString();
-        fecha = in.readString();
+        fecha = new Date(in.readLong());
         geopunto = in.readString();
         metodoDeMuestreo = in.readString();
         resumen = in.readString();
@@ -116,11 +123,11 @@ public class ActividadDeCampo implements Parcelable {
         this.estacionDeMuestreo = estacionDeMuestreo;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return this.fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -196,13 +203,53 @@ public class ActividadDeCampo implements Parcelable {
         this.formulario = formulario;
     }
 
+    public long getIdlocalidad() {
+        return idlocalidad;
+    }
+
+    public void setIdlocalidad(long idlocalidad) {
+        this.idlocalidad = idlocalidad;
+    }
+
+    public long getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(long idusuario) {
+        this.idusuario = idusuario;
+    }
+
+    public long getIddepartamento() {
+        return iddepartamento;
+    }
+
+    public void setIddepartamento(long iddepartamento) {
+        this.iddepartamento = iddepartamento;
+    }
+
+    public long getIdformulario() {
+        return idformulario;
+    }
+
+    public void setIdformulario(long idformulario) {
+        this.idformulario = idformulario;
+    }
+
+    public String getTipoDeMuestreo() {
+        return tipoDeMuestreo;
+    }
+
+    public void setTipoDeMuestreo(String tipoDeMuestreo) {
+        this.tipoDeMuestreo = tipoDeMuestreo;
+    }
+
     @Override
     public String toString() {
         return "ActividadDeCampo{" +
                 "idactividadDeCampo=" + idactividadDeCampo +
                 ", equipamiento='" + equipamiento + '\'' +
                 ", estacionDeMuestreo='" + estacionDeMuestreo + '\'' +
-                ", fecha='" + fecha + '\'' +
+                ", fecha='" + fecha.toString() + '\'' +
                 ", geopunto='" + geopunto + '\'' +
                 ", metodoDeMuestreo='" + metodoDeMuestreo + '\'' +
                 ", resumen='" + resumen + '\'' +
@@ -225,7 +272,7 @@ public class ActividadDeCampo implements Parcelable {
         parcel.writeLong(idactividadDeCampo);
         parcel.writeString(equipamiento);
         parcel.writeString(estacionDeMuestreo);
-        parcel.writeString(fecha);
+        parcel.writeLong(fecha.getTime());
         parcel.writeString(geopunto);
         parcel.writeString(metodoDeMuestreo);
         parcel.writeString(resumen);

@@ -12,10 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GrupalSemana2"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ui.login.Login"
-            android:exported="true"
-            android:label="@string/title_activity_login" />
 
         <service
             android:name=".servicios.ServicioMostrarLog"

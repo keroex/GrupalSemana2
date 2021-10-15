@@ -17,6 +17,7 @@ import com.utec.grupalsemana2.servicios.RestAppClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,83 +26,47 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActividadDeCampoRepository {
 
-    private ActividadDeCampoAPI actividadDeCampoAPI = RestAppClient.getClient().create(ActividadDeCampoAPI.class); // me traigo el cliente retrofit
+    private ActividadDeCampoAPI actividadDeCampoAPI = RestAppClient.getClient().create(ActividadDeCampoAPI.class);
+    private ActividadDeCampoDao actividadDeCampoDao;
 
-    private ActividadDeCampoDao actividadDeCampoDao; // dao para base de datos local
-
-    private List<ActividadDeCampo> actividadDeCampos; // lista de actividades de base de datos local
-
-    private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampoXUsuario = new MutableLiveData<>(); // lista de actividades del rest
-
-    public MutableLiveData<List<ActividadDeCampo>> getActividadesDeCampoXUsuario() {
-        return actividadesDeCampoXUsuario;
-    }
-
-    // constructor
+    //private LiveData<List<ActividadDeCampo>> actividadDeCampos;
+    private List<ActividadDeCampo> actividadDeCampos;
     public ActividadDeCampoRepository(Application application) {
-        try {
-            AppDataBase db = AppDataBase.getInstance((application)); // instancio base de datos local
-            actividadDeCampoDao = db.actividadDeCampoDao(); // instancio dao
-            actividadDeCampos = actividadDeCampoDao.findAll(); // traigo la lista de la base de datos local
-            loadActividadesDeCampoXUsuario(); // cargo el repositorio con las actividades de campo del rest
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        AppDataBase db = AppDataBase.getInstance((application));
+        actividadDeCampoDao = db.actividadDeCampoDao();
+        //actividadDeCampos = actividadDeCampoDao.findAll();
     }
 
-    public List<ActividadDeCampo> getActividadDeCampos() {
-        //si no tiene internet
-        return actividadDeCampos;
-    }
+    //public LiveData<List<ActividadDeCampo>> getActividadDeCampos() { return actividadDeCampos;    }
 
-    public void loadActividadesDeCampoXUsuario() {
-        //si tiene internet
-        actividadesDeCampoXUsuario.setValue(new ArrayList<>());
-        Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampo();
-        call.enqueue(new Callback<List<ActividadDeCampo>>() {
+    public List<ActividadDeCampo> getActividadDeCampos() { return actividadDeCampos;   }
+
+    public void insert (ActividadDeCampo actividadDeCampo) {
+        //actividadDeCampoDao.insert(actividadDeCampo);
+        actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ActividadDeCampo>() {
             @Override
-            public void onResponse(Call<List<ActividadDeCampo>> call, Response<List<ActividadDeCampo>> response) {
-                if (response.isSuccessful()) {
-                    List<ActividadDeCampo> actividades = response.body();
-                    if(actividades!=null) {
-                        actividadesDeCampoXUsuario.setValue(actividades);
-                    } else {
-                        System.out.println("*********************************************************************************No hay actividades de campo");
-                    }
+            public void onResponse(Call<ActividadDeCampo> call, Response<ActividadDeCampo> response) {
+                if(response.isSuccessful()) {
+                    System.out.println("SE AGREGO LA ACTIVIDAD DE CAMPO A LA BD");
+                } else {
+                    System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ActividadDeCampo>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void insert (ActividadDeCampo actividadDeCampo) {
-        actividadDeCampoDao.insert(actividadDeCampo);  // inserto a la base de datos local
-        //si tiene internet
-        actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ActividadDeCampo>() {
-            @Override
-            public void onResponse(Call<ActividadDeCampo> call, Response<ActividadDeCampo> response) {
-                loadActividadesDeCampoXUsuario();
-            }
-
-            @Override
             public void onFailure(Call<ActividadDeCampo> call, Throwable t) {
-
+                System.out.println("NO SE AGREGO");
             }
         });
     }
 
-    /*public void update(ActividadDeCampo actividadDeCampo) {
+    public void update(ActividadDeCampo actividadDeCampo) {
         actividadDeCampoDao.update(actividadDeCampo);
     }
 
     public void delete(ActividadDeCampo actividadDeCampo) {
         actividadDeCampoDao.delete(actividadDeCampo);
     }
-*/
-    public int count() { return actividadDeCampoDao.count();    }
 
+    public int count() { return actividadDeCampoDao.count();    }
 }
