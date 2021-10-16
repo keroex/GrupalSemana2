@@ -16,9 +16,11 @@ import java.util.List;
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
+import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.repositories.ActividadDeCampoRepository;
 import com.utec.grupalsemana2.servicios.RestAppClient;
+import com.utec.grupalsemana2.sesion.Sesion;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,18 +39,15 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_actividades_de_campo);
 
-        init();
+        getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
 
     }
 
-    private void init() {
-        getActividadesDeCampo();
-    }
 
-    private void getActividadesDeCampo() {
+    private void getActividadesDeCampo(UsuarioDTO usuarioLogueado) {
 
         actividadesDeCampo.setValue(new ArrayList<>());
-        Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampo();
+        Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampoXUsuario(usuarioLogueado.getIdUsuario());
 
         call.enqueue(new Callback<List<ActividadDeCampo>>() {
             @Override
@@ -91,6 +90,16 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     public void altaActividadDeCampo(View view) {
         Intent intentAlta = new Intent(this, AltaActividadDeCampo.class);
         startActivity(intentAlta);
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
+
+    @Override
+    protected void onResume() {
+        getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+        super.onResume();
     }
 
 }

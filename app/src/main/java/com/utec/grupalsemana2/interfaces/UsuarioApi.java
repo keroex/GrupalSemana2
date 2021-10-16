@@ -11,6 +11,6 @@ import retrofit2.http.POST;
 public interface UsuarioApi {
 
     @POST("PFGrupo05/rest/Usuarios/login")
-    Call<ResponseBody> login(@Body UsuarioDTO usuarioLogueado);
+    Call<UsuarioDTO> login(@Body UsuarioDTO usuarioLogueado);
 
 }

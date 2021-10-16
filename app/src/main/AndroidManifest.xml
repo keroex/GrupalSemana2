@@ -13,6 +13,9 @@
         android:theme="@style/Theme.GrupalSemana2"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".presentacion.login"
+            android:exported="true" />
+        <activity
             android:name=".prueba"
             android:exported="true"
             android:label="@string/title_activity_prueba"

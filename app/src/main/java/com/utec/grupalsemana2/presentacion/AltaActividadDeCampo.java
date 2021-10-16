@@ -29,6 +29,7 @@ import com.utec.grupalsemana2.logica.LocalidadDTO;
 import com.utec.grupalsemana2.logica.RegionDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
+import com.utec.grupalsemana2.sesion.Sesion;
 
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -185,21 +186,23 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         act.setIdformulario(formularioDTO.getIdformulario());
         act.setIddepartamento(departamentoDTO.getIddepartamento());
         act.setIdlocalidad(localidadDTO.getIdlocalidad());
-        act.setIdusuario(1);
+        act.setIdusuario(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario());
         act.setUsuario("admin");
         act.setTipoDeMuestreo(this.txtTipoDeMuestreo.getText().toString());
 
-        if(validarCampos(act)) {
-            actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
-            actividadDeCampoViewModel.insert(act, this);
-                Toast.makeText(getApplicationContext(),"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(),"Complete los datos Obligatorios",Toast.LENGTH_LONG).show();
-        }
 
+        try {
+            if(validarCampos(act)) {
+                actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
+                actividadDeCampoViewModel.insert(act, this);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Complete los datos obligatorios",Toast.LENGTH_LONG).show();
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
-
 
     public boolean validarCampos(ActividadDeCampo actividadDeCampo) {
 
@@ -336,7 +339,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     private void cargarSpinnerFormularios(MutableLiveData<List<FormularioDTO>> formularios) {
         FormularioDTO fDefault = new FormularioDTO();
-        fDefault.setNombre("Seleccione formulario...");
+        fDefault.setNombre("Seleccione formulario...  *");
         fDefault.setIdformulario(0);
         formularios.getValue().add(0,fDefault);
         ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios.getValue());

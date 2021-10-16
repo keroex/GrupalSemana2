@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.util.LogPrinter;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
@@ -16,6 +17,7 @@ import com.utec.grupalsemana2.presentacion.AltaActividadDeCampo;
 import com.utec.grupalsemana2.presentacion.ListarActividadesDeCampo;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,16 +52,17 @@ public class ActividadDeCampoRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     System.out.println("SE AGREGO LA ACTIVIDAD DE CAMPO A LA BD");
-                    Toast.makeText(context,"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Se agregó la actividad de campo",Toast.LENGTH_LONG).show();
                 } else {
                     System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
+                    Toast.makeText(context,"Falló en agregar actividad de campo",Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("NO SE AGREGO" + t.fillInStackTrace().toString());
-
+                Toast.makeText(context,"Error en conexión",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -73,4 +76,6 @@ public class ActividadDeCampoRepository {
     }
 
     public int count() { return actividadDeCampoDao.count();    }
+
+
 }
