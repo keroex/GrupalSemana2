@@ -43,7 +43,6 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     private void init() {
         getActividadesDeCampo();
-        Intent intent = getIntent();
     }
 
     private void getActividadesDeCampo() {
@@ -89,7 +88,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         startActivity(intent);
     }
 
-    private void altaActividadDeCampo(View view) {
+    public void altaActividadDeCampo(View view) {
         Intent intentAlta = new Intent(this, AltaActividadDeCampo.class);
         startActivity(intentAlta);
     }

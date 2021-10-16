@@ -16,6 +16,6 @@ public interface ActividadDeCampoAPI {
    Call<List<ActividadDeCampo>> getActividadesDeCampo();
 
    @POST("PFGrupo05/rest/Actividades/agregarActividadDeCampo")
-   Call<ActividadDeCampo> agregarActividadDeCampo(@Body ActividadDeCampo actividadDeCampo);
+   Call<ResponseBody> agregarActividadDeCampo(@Body ActividadDeCampo actividadDeCampo);
 
 }

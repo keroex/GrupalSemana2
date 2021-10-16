@@ -35,4 +35,19 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewLista"
         app:layout_constraintVertical_bias="0.047" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#8BC34A"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="altaActividadDeCampo"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

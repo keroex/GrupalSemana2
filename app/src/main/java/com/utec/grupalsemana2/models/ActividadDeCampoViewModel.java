@@ -1,6 +1,7 @@
 package com.utec.grupalsemana2.models;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -30,8 +31,8 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
         return actividadDeCampos;
     }
 
-    public void insert(ActividadDeCampo actividadDeCampo){
-        actividadDeCampoRepository.insert(actividadDeCampo);
+    public void insert(ActividadDeCampo actividadDeCampo, Context context){
+        actividadDeCampoRepository.insert(actividadDeCampo, context);
     }
 
     public void update(ActividadDeCampo actividadDeCampo){

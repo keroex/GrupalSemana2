@@ -1,36 +1,59 @@
 package com.utec.grupalsemana2.presentacion;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+import android.content.Context;
+import android.graphics.Region;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.utec.grupalsemana2.R;
+import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
+import com.utec.grupalsemana2.interfaces.DepartamentoApi;
+import com.utec.grupalsemana2.interfaces.FormularioApi;
+import com.utec.grupalsemana2.interfaces.LocalidadApi;
+import com.utec.grupalsemana2.interfaces.RegionApi;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
+import com.utec.grupalsemana2.logica.DepartamentoDTO;
+import com.utec.grupalsemana2.logica.FormularioDTO;
+import com.utec.grupalsemana2.logica.LocalidadDTO;
+import com.utec.grupalsemana2.logica.RegionDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
-import com.utec.grupalsemana2.servicios.ServicioMostrarLog;
+import com.utec.grupalsemana2.servicios.RestAppClient;
 
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AltaActividadDeCampo extends AppCompatActivity {
+
+
+    private DepartamentoApi departamentoApi = RestAppClient.getClient().create(DepartamentoApi.class);
+    private LocalidadApi localidadApi = RestAppClient.getClient().create(LocalidadApi.class);
+    private RegionApi regionApi = RestAppClient.getClient().create(RegionApi.class);
+    private FormularioApi formularioApi = RestAppClient.getClient().create(FormularioApi.class);
+    private MutableLiveData<List<FormularioDTO>> formularios = new MutableLiveData<>();
+    private MutableLiveData<List<RegionDTO>> regiones = new MutableLiveData<>();
+    private MutableLiveData<List<DepartamentoDTO>> departamentos = new MutableLiveData<>();
+    private MutableLiveData<List<LocalidadDTO>> localidades = new MutableLiveData<>();
+
 
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -40,10 +63,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private EditText txtMetodo;
     private EditText txtUbicacion;
     private EditText txtZona;
-    private EditText txtRegion;
-    private EditText txtDepartamento;
-    private EditText txtLocalidad;
-    private EditText txtFormulario;
+    private EditText txtTipoDeMuestreo;
+    private Spinner spRegion;
+    private Spinner spDepartamento;
+    private Spinner spLocalidad;
+    private Spinner spFormulario;
 
     ActividadDeCampoViewModel actividadDeCampoViewModel;
 
@@ -52,7 +76,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_actividad_de_campo);
         mDisplayDate = (TextView) findViewById(R.id.txtViewFecha);
-        //DATEPICKER
+        //DATEPICKER EVENTO
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,10 +105,52 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         txtMetodo = (EditText) findViewById(R.id.txtMetodo);
         txtUbicacion = (EditText) findViewById(R.id.txtUbicacion);
         txtZona = (EditText) findViewById(R.id.txtZona);
-        txtRegion = (EditText) findViewById(R.id.txtRegion);
-        txtDepartamento = (EditText) findViewById(R.id.txtDepartamento);
-        txtLocalidad = (EditText) findViewById(R.id.txtLocalidad);
-        txtFormulario = (EditText) findViewById(R.id.txtFormulario);
+        txtTipoDeMuestreo = (EditText) findViewById(R.id.txtTipoDeMuestreo);
+        spRegion = (Spinner) findViewById(R.id.spRegion);
+        spDepartamento = (Spinner) findViewById(R.id.spDepartamento);
+        spLocalidad= (Spinner) findViewById(R.id.spLocalidad);
+        spFormulario= (Spinner) findViewById(R.id.spFormulario);
+        getFormularios();
+        getRegiones();
+        deshabilitarSpinners();
+        //SPINNER REGION EVENTO
+        spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(spRegion.getSelectedItemPosition()>0) {
+                    RegionDTO regionDTO = (RegionDTO) ( (Spinner) findViewById(R.id.spRegion) ).getSelectedItem();
+                    spDepartamento.setEnabled(true);
+                    getDepartamentos(regionDTO);
+                } else {
+                    deshabilitarSpinners();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+        //SPINNER DEPARTAMENTO EVENTO
+        spDepartamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(spDepartamento.getSelectedItemPosition()>0) {
+                    DepartamentoDTO departamentoDTO = (DepartamentoDTO) ( (Spinner) findViewById(R.id.spDepartamento) ).getSelectedItem();
+                    spLocalidad.setEnabled(true);
+                    getLocalidades(departamentoDTO);
+                } else {
+                    deshabilitarSpinners();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
         /*Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -99,6 +165,12 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
         ActividadDeCampo act = new ActividadDeCampo();
 
+        DepartamentoDTO departamentoDTO = (DepartamentoDTO) ( (Spinner) findViewById(R.id.spDepartamento) ).getSelectedItem();
+        RegionDTO regionDTO = (RegionDTO) ( (Spinner) findViewById(R.id.spRegion) ).getSelectedItem();
+        FormularioDTO formularioDTO = (FormularioDTO) ( (Spinner) findViewById(R.id.spFormulario) ).getSelectedItem();
+        LocalidadDTO localidadDTO = (LocalidadDTO) ( (Spinner) findViewById(R.id.spLocalidad) ).getSelectedItem();
+
+
         act.setFecha(StrToDate(mDisplayDate.getText().toString()));
         act.setResumen(this.txtResumen.getText().toString());
         act.setEquipamiento(this.txtEquipamiento.getText().toString());
@@ -106,32 +178,26 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         act.setMetodoDeMuestreo(this.txtMetodo.getText().toString());
         act.setGeopunto(this.txtUbicacion.getText().toString());
         act.setZona(this.txtZona.getText().toString());
-        act.setRegion(this.txtRegion.getText().toString());
-        act.setDepartamento(this.txtDepartamento.getText().toString());
-        act.setLocalidad(this.txtLocalidad.getText().toString());
-        act.setFormulario(this.txtFormulario.getText().toString());
-        act.setIdformulario(1);
-        act.setIddepartamento(3);
-        act.setIdlocalidad(581);
+        act.setRegion(regionDTO.getNombre());
+        act.setDepartamento(departamentoDTO.getNombre());
+        act.setLocalidad(localidadDTO.getNombre());
+        act.setFormulario(formularioDTO.getNombre());
+        act.setIdformulario(formularioDTO.getIdformulario());
+        act.setIddepartamento(departamentoDTO.getIddepartamento());
+        act.setIdlocalidad(localidadDTO.getIdlocalidad());
         act.setIdusuario(1);
         act.setUsuario("admin");
-        act.setTipoDeMuestreo("hola");
+        act.setTipoDeMuestreo(this.txtTipoDeMuestreo.getText().toString());
 
         if(validarCampos(act)) {
             actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
-            actividadDeCampoViewModel.insert(act);
-            Toast.makeText(getApplicationContext(),"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
-            //Toast.makeText(getApplicationContext(),"Cantidad de registros: " + actividadDeCampoViewModel.count(), Toast.LENGTH_SHORT).show();
+            actividadDeCampoViewModel.insert(act, this);
+                Toast.makeText(getApplicationContext(),"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getApplicationContext(),"Complete los datos Obligatorios",Toast.LENGTH_LONG).show();
         }
 
-    }
-
-    public void VerActividades(View view) {
-        Intent intentActividades = new Intent(this, ListarActividadesDeCampo.class);
-        startActivity(intentActividades);
     }
 
 
@@ -144,7 +210,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             retorno = false;
         }   else {
             this.mDisplayDate.setError(null);
-
         }
 
         if (actividadDeCampo.getGeopunto().isEmpty()) {
@@ -156,15 +221,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         }
 
         if (actividadDeCampo.getFormulario().isEmpty()) {
-            this.txtFormulario.setError("No puede quedar vacío");
+            Toast.makeText(getApplicationContext(),"Debe seleccionar un formulario",Toast.LENGTH_LONG).show();
             retorno = false;
-
-        }   else {
-            this.txtFormulario.setError(null);
         }
-
         return retorno;
-
     }
 
     public static Date StrToDate(String str) {
@@ -177,6 +237,150 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             e.printStackTrace();
         }
         return date;
+    }
+
+    private void getFormularios() {
+        try {
+            formularios.setValue(new ArrayList<>());
+            Call<List<FormularioDTO>> call = formularioApi.getFormularios();
+            call.enqueue(new Callback<List<FormularioDTO>>() {
+                @Override
+                public void onResponse(Call<List<FormularioDTO>> call, Response<List<FormularioDTO>> response) {
+                    if(response.isSuccessful()) {
+                        List<FormularioDTO> misFormularios = response.body();
+                        if(misFormularios!=null) {
+                            formularios.setValue(misFormularios);
+                        }
+                        System.out.println("*********************************************");
+                        for (FormularioDTO formularioDTO: formularios.getValue()) {
+                            System.out.println(formularioDTO.toString());
+                        }
+                        cargarSpinnerFormularios(formularios);
+                    } else {
+                        System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<FormularioDTO>> call, Throwable t) {
+                    System.out.println("NO anda");
+                }
+            });
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getRegiones() {
+        regiones.setValue(new ArrayList<>());
+        Call<List<RegionDTO>> call = regionApi.getRegiones();
+        call.enqueue(new Callback<List<RegionDTO>>() {
+            @Override
+            public void onResponse(Call<List<RegionDTO>> call, Response<List<RegionDTO>> response) {
+                if(response.isSuccessful()) {
+                    List<RegionDTO> misRegiones = response.body();
+                    if(misRegiones!=null) {
+                        regiones.setValue(misRegiones);
+                    }
+                    cargarSpinnerRegiones(regiones);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<RegionDTO>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getDepartamentos(RegionDTO r) {
+        departamentos.setValue(new ArrayList<>());
+        Call<List<DepartamentoDTO>> call = departamentoApi.getDepartamentos(r);
+        call.enqueue(new Callback<List<DepartamentoDTO>>() {
+            @Override
+            public void onResponse(Call<List<DepartamentoDTO>> call, Response<List<DepartamentoDTO>> response) {
+                if(response.isSuccessful()) {
+                    List<DepartamentoDTO> misDepartamentos = response.body();
+                    if(misDepartamentos!=null) {
+                        departamentos.setValue(misDepartamentos);
+                    }
+                    cargarSpinnerDepartamentos(departamentos);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<DepartamentoDTO>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getLocalidades(DepartamentoDTO d) {
+        localidades.setValue(new ArrayList<>());
+        Call<List<LocalidadDTO>> call = localidadApi.getLocalidades(d);
+        call.enqueue(new Callback<List<LocalidadDTO>>() {
+            @Override
+            public void onResponse(Call<List<LocalidadDTO>> call, Response<List<LocalidadDTO>> response) {
+                if(response.isSuccessful()) {
+                    List<LocalidadDTO> misLocalidades = response.body();
+                    if(misLocalidades!=null) {
+                        localidades.setValue(misLocalidades);
+                    }
+                    cargarSpinnerLocalidades(localidades);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<LocalidadDTO>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void cargarSpinnerFormularios(MutableLiveData<List<FormularioDTO>> formularios) {
+        FormularioDTO fDefault = new FormularioDTO();
+        fDefault.setNombre("Seleccione formulario...");
+        fDefault.setIdformulario(0);
+        formularios.getValue().add(0,fDefault);
+        ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios.getValue());
+        spFormulario.setAdapter(adaptador);
+    }
+
+    private void cargarSpinnerRegiones(MutableLiveData<List<RegionDTO>> regiones) {
+        RegionDTO rDefault = new RegionDTO();
+        rDefault.setNombre("Seleccione region...");
+        rDefault.setIdregion(0);
+        regiones.getValue().add(0,rDefault);
+        ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones.getValue());
+        spRegion.setAdapter(adaptador);
+    }
+
+    private void cargarSpinnerDepartamentos(MutableLiveData<List<DepartamentoDTO>> departamentos) {
+        DepartamentoDTO dDefault = new DepartamentoDTO();
+        dDefault.setNombre("Seleccione departamento...");
+        dDefault.setIddepartamento(0);
+        departamentos.getValue().add(0,dDefault);
+        ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos.getValue());
+        spDepartamento.setAdapter(adaptador);
+    }
+
+    private void cargarSpinnerLocalidades(MutableLiveData<List<LocalidadDTO>> localidades) {
+        LocalidadDTO lDefault = new LocalidadDTO();
+        lDefault.setNombre("Seleccione localidad...");
+        lDefault.setIdlocalidad(0);
+        localidades.getValue().add(0,lDefault);
+        ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades.getValue());
+        spLocalidad.setAdapter(adaptador);
+    }
+
+    private void deshabilitarSpinners() {
+        if(spRegion.getSelectedItemPosition()<1) {
+            spDepartamento.setEnabled(false);
+            spLocalidad.setEnabled(false);
+            spDepartamento.setAdapter(null);
+            spLocalidad.setAdapter(null);
+        }
+        if(spDepartamento.getSelectedItemPosition()<1) {
+            spLocalidad.setEnabled(false);
+            spLocalidad.setAdapter(null);
+        }
     }
 
 }

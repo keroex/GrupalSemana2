@@ -1,6 +1,7 @@
 package com.utec.grupalsemana2.repositories;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 import android.util.LogPrinter;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.utec.grupalsemana2.dao.ActividadDeCampoDao;
 import com.utec.grupalsemana2.database.AppDataBase;
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
+import com.utec.grupalsemana2.presentacion.AltaActividadDeCampo;
 import com.utec.grupalsemana2.presentacion.ListarActividadesDeCampo;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 
@@ -41,21 +43,23 @@ public class ActividadDeCampoRepository {
 
     public List<ActividadDeCampo> getActividadDeCampos() { return actividadDeCampos;   }
 
-    public void insert (ActividadDeCampo actividadDeCampo) {
+    public void insert (ActividadDeCampo actividadDeCampo, Context context) {
         //actividadDeCampoDao.insert(actividadDeCampo);
-        actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ActividadDeCampo>() {
+        actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ActividadDeCampo> call, Response<ActividadDeCampo> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     System.out.println("SE AGREGO LA ACTIVIDAD DE CAMPO A LA BD");
+                    Toast.makeText(context,"Actividad de campo agregada", Toast.LENGTH_SHORT).show();
                 } else {
                     System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<ActividadDeCampo> call, Throwable t) {
-                System.out.println("NO SE AGREGO");
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("NO SE AGREGO" + t.fillInStackTrace().toString());
+
             }
         });
     }
