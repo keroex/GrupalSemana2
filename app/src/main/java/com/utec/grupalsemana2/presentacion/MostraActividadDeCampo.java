@@ -64,4 +64,9 @@ public class MostraActividadDeCampo extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+    finish();
+    }
+
 }

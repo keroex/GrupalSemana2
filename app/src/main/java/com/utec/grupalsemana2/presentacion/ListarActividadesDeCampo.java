@@ -39,7 +39,12 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_actividades_de_campo);
 
-        getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+        try {
+            getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -82,9 +87,13 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     @Override
     public void onActividadClick(int position) {
-        Intent intent = new Intent(this, MostraActividadDeCampo.class);
-        intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(this, MostraActividadDeCampo.class);
+            intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
+            startActivity(intent);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void altaActividadDeCampo(View view) {

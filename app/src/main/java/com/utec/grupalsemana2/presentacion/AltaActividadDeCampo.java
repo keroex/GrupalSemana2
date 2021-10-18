@@ -187,7 +187,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         act.setIddepartamento(departamentoDTO.getIddepartamento());
         act.setIdlocalidad(localidadDTO.getIdlocalidad());
         act.setIdusuario(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario());
-        act.setUsuario("admin");
+        act.setUsuario(Sesion.getInstancia().getUsuarioLogueado().getNombreUsuario());
         act.setTipoDeMuestreo(this.txtTipoDeMuestreo.getText().toString());
 
 
@@ -223,7 +223,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             this.txtUbicacion.setError(null);
         }
 
-        if (actividadDeCampo.getFormulario().isEmpty()) {
+        if (spFormulario.getSelectedItemPosition()<1) {
             Toast.makeText(getApplicationContext(),"Debe seleccionar un formulario",Toast.LENGTH_LONG).show();
             retorno = false;
         }

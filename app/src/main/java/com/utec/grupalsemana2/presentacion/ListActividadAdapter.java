@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
 
 import com.utec.grupalsemana2.R;
@@ -64,9 +65,9 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
         }
 
         void bindData(final ActividadDeCampo actividad) {
-            this.usuario.setText(actividad.getUsuario());
+            this.usuario.setText(actividad.getResumen());
             this.fecha.setText(actividad.getFecha().toString());
-            this.departamento.setText(actividad.getDepartamento());
+            this.departamento.setText("Departamento: " + actividad.getDepartamento());
         }
 
         @Override

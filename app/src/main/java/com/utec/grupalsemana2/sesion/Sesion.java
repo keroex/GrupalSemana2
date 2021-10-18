@@ -10,7 +10,6 @@ public class Sesion {
     public static Sesion getInstancia() {
         if(instancia==null) {
             instancia = new Sesion();
-            usuarioLogueado = new UsuarioDTO();
         }
         return instancia;
     }

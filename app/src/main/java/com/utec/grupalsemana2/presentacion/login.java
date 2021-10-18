@@ -37,21 +37,11 @@ public class login extends AppCompatActivity {
 
     public void login(View view) {
         try{
-            long id = 0;
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             usuarioDTO.setNombreUsuario(txtNombreUsuario.getText().toString());
             usuarioDTO.setContrasenia(txtContrasenia.getText().toString());
             if(validarCampos(usuarioDTO)) {
                 iniciarSesion(usuarioDTO);
-                id = (long)Sesion.getInstancia().getUsuarioLogueado().getIdUsuario();
-                if(id==0) {
-                    Toast.makeText(this,"Usuario o contraseña incorrectos",Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this,"Usuario logueado correctamente",Toast.LENGTH_LONG).show();
-                    Intent intentLista = new Intent(this, ListarActividadesDeCampo.class);
-                    startActivity(intentLista);
-                    finish();
-                }
             }
         }catch(Exception e) {
             e.printStackTrace();
@@ -86,15 +76,27 @@ public class login extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Sesion.getInstancia().setUsuarioLogueado(response.body());
                     System.out.println("Se logueo correctamente el usuario " + Sesion.getInstancia().getUsuarioLogueado().getNombreUsuario() + " con id " + String.valueOf(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario()));
+                    Toast.makeText(getApplicationContext(),"Usuario logueado correctamente",Toast.LENGTH_LONG).show();
+                    irAListaActividades();
+                } else if (response.code()==404){
+                    Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrectos",Toast.LENGTH_LONG).show();
                 } else {
-                    System.out.println("no anda");
+                    Toast.makeText(getApplicationContext(),"No se pudo ingresar",Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UsuarioDTO> call, Throwable t) {
                 System.out.println("Fallo la conexion");
+                Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrectos",Toast.LENGTH_LONG).show();
             }
         });
     }
+
+    private void irAListaActividades() {
+        Intent intentLista = new Intent(this, ListarActividadesDeCampo.class);
+        startActivity(intentLista);
+        finish();
+    }
+
 }
