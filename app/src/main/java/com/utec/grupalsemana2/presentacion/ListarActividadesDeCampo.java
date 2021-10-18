@@ -101,9 +101,6 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         startActivity(intentAlta);
     }
 
-    @Override
-    public void onBackPressed() {
-    }
 
     @Override
     protected void onResume() {
