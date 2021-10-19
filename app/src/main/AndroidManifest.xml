@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.utec.grupalsemana2">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -23,6 +24,10 @@
 
         <service
             android:name=".servicios.ServicioMostrarLog"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".servicios.ServicioInternet"
             android:enabled="true"
             android:exported="true" />
 

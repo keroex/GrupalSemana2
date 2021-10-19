@@ -13,6 +13,7 @@ import com.utec.grupalsemana2.interfaces.FormularioApi;
 import com.utec.grupalsemana2.interfaces.UsuarioApi;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.servicios.RestAppClient;
+import com.utec.grupalsemana2.servicios.ServicioInternet;
 import com.utec.grupalsemana2.sesion.Sesion;
 
 import java.util.List;
@@ -33,10 +34,12 @@ public class login extends AppCompatActivity {
             setContentView(R.layout.activity_login);
             txtNombreUsuario = (EditText) findViewById(R.id.txtNombreUsuario);
             txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
+            startService(new Intent(getBaseContext(), ServicioInternet.class));
     }
 
     public void login(View view) {
         try{
+
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             usuarioDTO.setNombreUsuario(txtNombreUsuario.getText().toString());
             usuarioDTO.setContrasenia(txtContrasenia.getText().toString());

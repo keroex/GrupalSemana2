@@ -1,18 +1,32 @@
 package com.utec.grupalsemana2.logica;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class UsuarioDTO {
 
+    @PrimaryKey()
+    @ColumnInfo(index = true, name = "idusuario")
     private long idUsuario;
+    @ColumnInfo(name = "apellido")
     private String apellido;
+    @ColumnInfo(name = "cedula")
     private String cedula;
+    @ColumnInfo(name = "contrasenia")
     private String contrasenia;
+    @ColumnInfo(name = "email")
     private String email;
     private String instituto;
     private String profesion;
+    @ColumnInfo(name = "nombre")
     private String nombre;
+    @ColumnInfo(name = "nombreUsuario")
     private String nombreUsuario;
+    @ColumnInfo(name = "rol")
     private String rol;
-
+    @ColumnInfo(name = "idrol")
     private long idRol;
 
     public long getIdUsuario() {

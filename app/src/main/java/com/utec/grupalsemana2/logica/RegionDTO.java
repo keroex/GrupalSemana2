@@ -1,8 +1,16 @@
 package com.utec.grupalsemana2.logica;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class RegionDTO {
 
+    @PrimaryKey()
+    @ColumnInfo(index = true, name = "idregion")
     private long idregion;
+    @ColumnInfo(name = "nombre")
     private String nombre;
 
     public long getIdregion() {

@@ -34,16 +34,21 @@ public class ActividadDeCampo implements Parcelable {
     private String region;
     @ColumnInfo(name = "localidad")
     private String localidad;
+    @ColumnInfo(name = "idlocalidad")
     private long idlocalidad;
     @ColumnInfo(name = "usuario")
     private String usuario;
+    @ColumnInfo(name = "idusuario")
     private long idusuario;
     @ColumnInfo(name = "departamento")
     private String departamento;
+    @ColumnInfo(name = "iddepartamento")
     private long iddepartamento;
     @ColumnInfo(name = "formulario")
     private String formulario;
+    @ColumnInfo(name = "idformulario")
     private long idformulario;
+    @ColumnInfo(name = "tipoDeMuestreo")
     private String tipoDeMuestreo;
 
     //Constructores

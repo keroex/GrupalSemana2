@@ -1,16 +1,28 @@
 package com.utec.grupalsemana2.logica;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 
+@Entity
 public class FormularioDTO {
 
-
-    private String descripcion;
-    private String nombre;
-    private String usuario;
-    private long idusuario;
-    private Date fechaCreacion;
+    @PrimaryKey()
+    @ColumnInfo(index = true, name = "idformulario")
     private long idformulario;
+    @ColumnInfo(name = "descripcion")
+    private String descripcion;
+    @ColumnInfo(name = "nombre")
+    private String nombre;
+    @ColumnInfo(name = "usuario")
+    private String usuario;
+    @ColumnInfo(name = "idusuario")
+    private long idusuario;
+    @ColumnInfo(name = "fechaCreacion")
+    private Date fechaCreacion;
+
 
     public FormularioDTO() {
     }
