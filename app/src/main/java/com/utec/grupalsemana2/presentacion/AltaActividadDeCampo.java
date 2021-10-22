@@ -1,12 +1,18 @@
 package com.utec.grupalsemana2.presentacion;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Region;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +33,7 @@ import com.utec.grupalsemana2.logica.DepartamentoDTO;
 import com.utec.grupalsemana2.logica.FormularioDTO;
 import com.utec.grupalsemana2.logica.LocalidadDTO;
 import com.utec.grupalsemana2.logica.RegionDTO;
+import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.sesion.Sesion;
@@ -384,6 +391,40 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             spLocalidad.setEnabled(false);
             spLocalidad.setAdapter(null);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.logout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("¿Desea cerrar sesión?");
+            builder.setCancelable(true);
+            builder.setNegativeButton("Sí", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Sesion.getInstancia().setUsuarioLogueado(new UsuarioDTO());
+                    finish();
+                    Intent intentLogin = new Intent(getApplicationContext(),login.class);
+                    startActivity(intentLogin);
+                }
+            });
+            builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        return true;
     }
 
 }

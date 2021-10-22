@@ -1,13 +1,18 @@
 package com.utec.grupalsemana2.presentacion;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -101,11 +106,43 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         startActivity(intentAlta);
     }
 
-
     @Override
     protected void onResume() {
         getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
         super.onResume();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.logout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("¿Desea cerrar sesión?");
+            builder.setCancelable(true);
+            builder.setNegativeButton("Sí", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Sesion.getInstancia().setUsuarioLogueado(new UsuarioDTO());
+                    finish();
+                    Intent intentLogin = new Intent(getApplicationContext(),login.class);
+                    startActivity(intentLogin);
+                }
+            });
+            builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        return true;
+    }
 }

@@ -102,4 +102,15 @@ public class login extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        if(Sesion.getInstancia().getUsuarioLogueado()==null) {
+            super.onResume();
+        } else if(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario()!=0) {
+            super.onResume();
+            irAListaActividades();
+        } else {
+            super.onResume();
+        }
+    }
 }

@@ -49,7 +49,6 @@ public class ServicioInternet extends Service {
             }
         };
         handler.postDelayed(runnable, 0);
-        Toast.makeText(this, "Servicio iniciado", Toast.LENGTH_LONG).show();
         Log.i("SERVICIO", "Servicio iniciado " );
 
         return START_STICKY;
@@ -58,7 +57,6 @@ public class ServicioInternet extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "Servicio destruido", Toast.LENGTH_LONG).show();
         Log.i("SERVICIO", "Servicio destruido " );
     }
 
