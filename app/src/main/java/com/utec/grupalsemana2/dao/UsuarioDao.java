@@ -6,8 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.utec.grupalsemana2.logica.ActividadDeCampo;
-import com.utec.grupalsemana2.logica.LocalidadDTO;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
 
 import java.util.List;
@@ -16,6 +14,9 @@ import java.util.List;
 public interface UsuarioDao {
     @Query("Select * from UsuarioDTO")
     List<UsuarioDTO> findAll();
+
+    @Query("Select idusuario from UsuarioDTO where nombreUsuario = :nombreUsuario and contrasenia = :contrasenia")
+    long login(String nombreUsuario, String contrasenia);
 
     @Insert
     void insert(UsuarioDTO usuarioDTO);
