@@ -137,4 +137,12 @@ public class UsuarioDTO {
         super();
     }
 
+    @Override
+    public String toString() {
+        return "UsuarioDTO{" +
+                "idUsuario=" + idUsuario +
+                ", contrasenia='" + contrasenia + '\'' +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
+                '}';
+    }
 }
