@@ -1,12 +1,16 @@
 package com.utec.grupalsemana2.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import java.util.Timer;
 
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.FormularioApi;
@@ -20,6 +24,7 @@ import com.utec.grupalsemana2.servicios.ServicioInternet;
 import com.utec.grupalsemana2.sesion.Sesion;
 
 import java.util.List;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,6 +156,12 @@ public class login extends AppCompatActivity {
             System.out.println(usuarioLoguear.toString());
             Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrectos",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menulogin,menu);
+        return true;
     }
 
 }

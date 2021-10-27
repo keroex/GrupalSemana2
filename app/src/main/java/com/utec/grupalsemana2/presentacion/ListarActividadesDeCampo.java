@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +39,19 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     private ActividadDeCampoAPI actividadDeCampoAPI = RestAppClient.getClient().create(ActividadDeCampoAPI.class);
     private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo = new MutableLiveData<>();
+    private TextView txtNoHay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_actividades_de_campo);
-
+        txtNoHay = findViewById(R.id.txtNoHay);
+        txtNoHay.setVisibility(View.INVISIBLE);
         try {
             getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+            if(actividadesDeCampo.getValue().size()==0) {
+                txtNoHay.setVisibility(View.VISIBLE);
+            }
 
         } catch(Exception e) {
             e.printStackTrace();

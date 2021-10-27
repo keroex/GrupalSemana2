@@ -16,22 +16,22 @@
         android:id="@+id/txtNombreUsuario"
         android:layout_width="379dp"
         android:layout_height="60dp"
-        android:layout_marginTop="248dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="#000000"
         android:hint="Nombre de usuario"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.687"
+        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         tools:visibility="visible" />
 
     <EditText
         android:id="@+id/txtContrasenia"
         android:layout_width="381dp"
         android:layout_height="59dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:backgroundTint="#000000"
         android:hint="Contraseña"
         android:imeActionLabel="@string/action_sign_in_short"
@@ -39,7 +39,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNombreUsuario" />
 
@@ -49,18 +49,15 @@
         android:layout_width="367dp"
         android:layout_height="73dp"
         android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="72dp"
         android:backgroundTint="@color/purple_200"
         android:enabled="true"
         android:onClick="login"
         android:text="Ingresar"
         app:iconTint="#008000"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtContrasenia"
-        app:layout_constraintVertical_bias="1.0"
         app:rippleColor="#008000" />
 
     <ProgressBar
@@ -76,5 +73,15 @@
         app:layout_constraintStart_toStartOf="@+id/txtContrasenia"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="169dp"
+        android:layout_height="223dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logochiquito" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

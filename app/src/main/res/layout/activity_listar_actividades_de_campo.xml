@@ -30,10 +30,10 @@
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLista"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -45,9 +45,35 @@
         android:clickable="true"
         android:focusable="true"
         android:onClick="altaActividadDeCampo"
-        android:tint="@color/white"
+        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/txtNoHay"
+        android:layout_width="310dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="272dp"
+        android:text="No hay actividades de campo registradas"
+        android:textColor="#757575"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewLista"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="31dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="300dp"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewLista"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewLista"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewLista"
+        app:srcCompat="@drawable/ic_baseline_info_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

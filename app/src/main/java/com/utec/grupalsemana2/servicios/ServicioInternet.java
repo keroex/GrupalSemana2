@@ -10,8 +10,11 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.OnlineApi;
 import com.utec.grupalsemana2.interfaces.UsuarioApi;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
@@ -89,6 +92,8 @@ public class ServicioInternet extends Service {
                 if(response.isSuccessful()) {
                     onlineREST = response.body();
                     Log.i("SERVICIO", "El rest responde" );
+
+
 
                 } else {
                     onlineREST =false;
