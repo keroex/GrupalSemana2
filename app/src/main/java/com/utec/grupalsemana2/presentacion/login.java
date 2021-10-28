@@ -24,6 +24,7 @@ import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.models.UsuarioViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
+import com.utec.grupalsemana2.servicios.ServicioActividadesDeCampo;
 import com.utec.grupalsemana2.servicios.ServicioInternet;
 import com.utec.grupalsemana2.sesion.Sesion;
 
@@ -52,7 +53,8 @@ public class login extends AppCompatActivity {
             txtNombreUsuario = (EditText) findViewById(R.id.txtNombreUsuario);
             txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
             startService(new Intent(getBaseContext(), ServicioInternet.class));
-            usuarioViewModel = new UsuarioViewModel(getApplication());
+        startService(new Intent(getBaseContext(), ServicioActividadesDeCampo.class));
+        usuarioViewModel = new UsuarioViewModel(getApplication());
     }
 
     public void login(View view) {

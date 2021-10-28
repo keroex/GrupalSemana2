@@ -30,6 +30,10 @@
             android:name=".servicios.ServicioInternet"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".servicios.ServicioActividadesDeCampo"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".presentacion.ListarActividadesDeCampo"

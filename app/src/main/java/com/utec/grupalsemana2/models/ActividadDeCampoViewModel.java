@@ -18,8 +18,7 @@ import java.util.List;
 public class ActividadDeCampoViewModel extends AndroidViewModel {
 
     private ActividadDeCampoRepository actividadDeCampoRepository;
-    //private final LiveData<List<ActividadDeCampo>> actividadDeCampos;
-    private final List<ActividadDeCampo> actividadDeCampos;
+    private final LiveData<List<ActividadDeCampo>> actividadDeCampos;
 
     public ActividadDeCampoViewModel(Application application){
         super(application);
@@ -29,17 +28,18 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
 
     //public LiveData<List<ActividadDeCampo>> getActividadDeCampos() {        return actividadDeCampos;    }
 
-    public List<ActividadDeCampo> getActividadDeCampos() {
+    public LiveData<List<ActividadDeCampo>> getActividadDeCampos() {
         return actividadDeCampos;
     }
 
-    public void insert(ActividadDeCampo actividadDeCampo, Context context){
-        actividadDeCampoRepository.insert(actividadDeCampo, context);
+    public void insertRest(ActividadDeCampo actividadDeCampo){
+        actividadDeCampoRepository.insertRest(actividadDeCampo);
     }
 
-    public void insertDao(ActividadDeCampo actividadDeCampo){
-        actividadDeCampoRepository.insertDao(actividadDeCampo);
+    public void insertDao(ActividadDeCampo actividadDeCampo, Context context){
+        actividadDeCampoRepository.insertDao(actividadDeCampo, context);
     }
+
 
     public void update(ActividadDeCampo actividadDeCampo){
         actividadDeCampoRepository.update(actividadDeCampo);

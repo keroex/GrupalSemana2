@@ -27,7 +27,7 @@ public class ServicioMostrarLog extends Service {
         super.onStartCommand(intent, flags, startId);
         //Toast.makeText(this,"Servicio Iniciado",Toast.LENGTH_SHORT).show();
         ActividadDeCampoViewModel actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
-        List<ActividadDeCampo> acts = actividadDeCampoViewModel.getActividadDeCampos();
+        List<ActividadDeCampo> acts = actividadDeCampoViewModel.getActividadDeCampos().getValue();
         Log.i("Init" ,"Se inicia el servicio.");
         for (ActividadDeCampo a : acts) {
             Log.i("Actividad de Campo" + a.getIdactividadDeCampo(), a.toString());

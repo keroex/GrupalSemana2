@@ -1,5 +1,6 @@
 package com.utec.grupalsemana2.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,7 +16,7 @@ public interface ActividadDeCampoDao {
 
         @Query("Select * from ActividadDeCampo")
             //LiveData<List<ActividadDeCampo>> findAll();
-        List<ActividadDeCampo> findAll();
+        LiveData<List<ActividadDeCampo>> findAll();
 
         @Insert
         void insert(ActividadDeCampo actividadDeCampo);

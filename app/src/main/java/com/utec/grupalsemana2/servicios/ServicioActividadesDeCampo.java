@@ -10,14 +10,19 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
+import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.sesion.Sesion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServicioActividadesDeCampo extends Service {
 
     Runnable runnable;
     private Handler handler = new Handler();
     ActividadDeCampoViewModel actividadDeCampoViewModel;
+    List<ActividadDeCampo> actividadesActualizar;
 
     @Nullable
     @Override
@@ -65,17 +70,22 @@ public class ServicioActividadesDeCampo extends Service {
                 Thread.sleep(1000);
             } catch (Exception e) {
                 Log.i("SERVICIO", "sincronizarAsyncTask ERRROR");
+                e.printStackTrace();
             }
             return null;
         }
     }
 
-    private int actualizarActividades() {
-
-
-        return 0;
-
+    private void actualizarActividades() {
+        actividadesActualizar = actividadDeCampoViewModel.getActividadDeCampos().getValue();
+        int contador = 0;
+        for (ActividadDeCampo a:actividadesActualizar) {
+            actividadDeCampoViewModel.insertRest(a);
+            contador++;
+        }
+        System.out.println("Se agregaron " + contador + "actividades de campo a la BD del rest");
     }
+
 }
 
 

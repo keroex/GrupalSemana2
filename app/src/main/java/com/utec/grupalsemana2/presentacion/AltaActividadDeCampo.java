@@ -239,7 +239,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             if(validarCampos(act)) {
                 actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
                 //actividadDeCampoViewModel.insert(act, this);
-                actividadDeCampoViewModel.insertDao(act);
+                actividadDeCampoViewModel.insertDao(act, this);
                 System.out.println("La cantidad de actividades de campo en l BD local es = " + actividadDeCampoViewModel.count());
 
                 //Cambiar por insertDao y probar
