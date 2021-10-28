@@ -57,6 +57,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_actividades_de_campo);
 
+
         try {
             getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
 
@@ -96,23 +97,28 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     private void listarActividadesDeCampo(MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo) {
 
-        ListActividadAdapter listActividadAdapter = new ListActividadAdapter(actividadesDeCampo.getValue(), this, this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLista);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(listActividadAdapter);
-
         txtNoHay = findViewById(R.id.txtNoHay);
         txtNoHay.setVisibility(View.GONE);
         iconoNoHay = findViewById(R.id.imgNoHay);
         iconoNoHay.setVisibility(View.GONE);
+
         if (actividadesDeCampo.getValue().size() == 0) {
             txtNoHay.setVisibility(View.VISIBLE);
             iconoNoHay.setVisibility(View.VISIBLE);
         } else {
-            txtNoHay.setVisibility(View.GONE);
-            iconoNoHay.setVisibility(View.GONE);
+            ListActividadAdapter listActividadAdapter = new ListActividadAdapter(actividadesDeCampo.getValue(), this, this);
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLista);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(listActividadAdapter);
         }
+
+
+
+        //if (actividadesDeCampo.getValue().size() == 0) {
+        //    txtNoHay.setVisibility(View.VISIBLE);
+        //    iconoNoHay.setVisibility(View.VISIBLE);
+        //}
     }
 
     @Override
@@ -151,12 +157,10 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
                     if (actividadesDeCampo.getValue().size() == 0) {
                         getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
                     }
-                    //Toast.makeText(getApplicationContext(),"Hay internet chupapija",Toast.LENGTH_LONG).show();
                 }
                 else {
                     conexion= findViewById(R.id.conexion);
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
-                    //Toast.makeText(getApplicationContext(),"NOOOOOOOOO Hay internet chupapija",Toast.LENGTH_LONG).show();
                 }
 
                 handler.postDelayed(this, PERIODO);
