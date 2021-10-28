@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.Dao;
 
 import com.utec.grupalsemana2.dao.ActividadDeCampoDao;
 import com.utec.grupalsemana2.database.AppDataBase;
@@ -46,7 +47,7 @@ public class ActividadDeCampoRepository {
     public List<ActividadDeCampo> getActividadDeCampos() { return actividadDeCampos;   }
 
     public void insert (ActividadDeCampo actividadDeCampo, Context context) {
-        //actividadDeCampoDao.insert(actividadDeCampo);
+
         actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -65,6 +66,10 @@ public class ActividadDeCampoRepository {
                 Toast.makeText(context,"Error en conexión",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void insertDao(ActividadDeCampo actividadDeCampo) {
+        actividadDeCampoDao.insert(actividadDeCampo);
     }
 
     public void update(ActividadDeCampo actividadDeCampo) {

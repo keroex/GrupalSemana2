@@ -37,6 +37,10 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
         actividadDeCampoRepository.insert(actividadDeCampo, context);
     }
 
+    public void insertDao(ActividadDeCampo actividadDeCampo){
+        actividadDeCampoRepository.insertDao(actividadDeCampo);
+    }
+
     public void update(ActividadDeCampo actividadDeCampo){
         actividadDeCampoRepository.update(actividadDeCampo);
     }

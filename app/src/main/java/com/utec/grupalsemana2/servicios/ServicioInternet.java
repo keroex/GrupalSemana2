@@ -48,6 +48,7 @@ public class ServicioInternet extends Service {
                 Log.i("SERVICIO", "run" );
                 sincronizarAsyncTask sincronizarAsyncTask = new sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
+
                 handler.postDelayed(this, 1000 * 15);
             }
         };
@@ -56,6 +57,8 @@ public class ServicioInternet extends Service {
 
         return START_STICKY;
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -74,6 +77,8 @@ public class ServicioInternet extends Service {
 
                 verificarInternet();
                 verificarOnline();
+
+
 
                 Thread.sleep(1000);
             } catch (Exception e) {

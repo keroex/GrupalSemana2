@@ -3,18 +3,24 @@ package com.utec.grupalsemana2.presentacion;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,20 +46,22 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     private ActividadDeCampoAPI actividadDeCampoAPI = RestAppClient.getClient().create(ActividadDeCampoAPI.class);
     private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo = new MutableLiveData<>();
     private TextView txtNoHay;
+    private ImageView iconoNoHay;
+    public static final long PERIODO = 3000; // 3 segundos (3 * 1000 millisegundos)
+    private Handler handler;
+    private Runnable runnable;
+    private ActionMenuItemView conexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_actividades_de_campo);
-        txtNoHay = findViewById(R.id.txtNoHay);
-        txtNoHay.setVisibility(View.INVISIBLE);
+
         try {
             getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
-            if(actividadesDeCampo.getValue().size()==0) {
-                txtNoHay.setVisibility(View.VISIBLE);
-            }
 
-        } catch(Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -71,7 +79,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
                 if (response.isSuccessful()) {
                     List<ActividadDeCampo> actividades = response.body();
-                    if(actividades!=null) {
+                    if (actividades != null) {
                         actividadesDeCampo.setValue(actividades);
                     }
                     listarActividadesDeCampo(actividadesDeCampo);
@@ -94,15 +102,30 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(listActividadAdapter);
 
+        txtNoHay = findViewById(R.id.txtNoHay);
+        txtNoHay.setVisibility(View.GONE);
+        iconoNoHay = findViewById(R.id.imgNoHay);
+        iconoNoHay.setVisibility(View.GONE);
+        if (actividadesDeCampo.getValue().size() == 0) {
+            txtNoHay.setVisibility(View.VISIBLE);
+            iconoNoHay.setVisibility(View.VISIBLE);
+        } else {
+            txtNoHay.setVisibility(View.GONE);
+            iconoNoHay.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onActividadClick(int position) {
         try {
-            Intent intent = new Intent(this, MostraActividadDeCampo.class);
-            intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
-            startActivity(intent);
-        } catch(Exception e) {
+            if (Sesion.isHayRest() && Sesion.isHayInternet()) {
+                Intent intent = new Intent(this, MostraActividadDeCampo.class);
+                intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(),"No se puede acceder al detalle sin conexion a internet",Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -116,18 +139,49 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     protected void onResume() {
         getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
         super.onResume();
+        handler = new Handler();
+        runnable = new Runnable() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void run() {
+                Sesion s = Sesion.getInstancia();
+                if (s.isHayInternet() && s.isHayRest()) {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
+                    if (actividadesDeCampo.getValue().size() == 0) {
+                        getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+                    }
+                    //Toast.makeText(getApplicationContext(),"Hay internet chupapija",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
+                    //Toast.makeText(getApplicationContext(),"NOOOOOOOOO Hay internet chupapija",Toast.LENGTH_LONG).show();
+                }
+
+                handler.postDelayed(this, PERIODO);
+            }
+        };
+        handler.postDelayed(runnable, PERIODO);
+
+    }
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id==R.id.logout) {
+        if (id == R.id.logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("¿Desea cerrar sesión?");
             builder.setCancelable(true);
@@ -136,7 +190,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Sesion.getInstancia().setUsuarioLogueado(new UsuarioDTO());
                     finish();
-                    Intent intentLogin = new Intent(getApplicationContext(),login.class);
+                    Intent intentLogin = new Intent(getApplicationContext(), login.class);
                     startActivity(intentLogin);
                 }
             });

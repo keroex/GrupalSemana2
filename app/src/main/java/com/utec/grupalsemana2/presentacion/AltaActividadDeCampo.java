@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Region;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.utec.grupalsemana2.R;
@@ -64,7 +67,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
 
     private TextView mDisplayDate;
+    private TextView mDisplayTime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private TimePickerDialog.OnTimeSetListener mTimeSetListener;
     private EditText txtResumen;
     private EditText txtEquipamiento;
     private EditText txtEstacion;
@@ -84,6 +89,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_actividad_de_campo);
         mDisplayDate = (TextView) findViewById(R.id.txtViewFecha);
+        mDisplayTime = (TextView) findViewById(R.id.textViewHora);
         //DATEPICKER EVENTO
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +105,19 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             }
         });
 
+        //HOURPICKER EVENTO
+        mDisplayTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int hora = cal.get(Calendar.HOUR);
+                int minuto = cal.get(Calendar.MINUTE);
+                TimePickerDialog dialog = new TimePickerDialog(
+                        AltaActividadDeCampo.this,mTimeSetListener,hora,minuto, DateFormat.is24HourFormat(getApplicationContext()));
+                dialog.show();
+            }
+        });
+
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int anio, int mes, int dia) {
@@ -107,6 +126,17 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 mDisplayDate.setText(dateMostrar);
             }
         };
+
+        mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
+                //mes = mes +1;
+                String timeMostrar = hora + ":" + minuto;
+                mDisplayTime.setText(timeMostrar);
+            }
+        };
+
+
         txtResumen = (EditText) findViewById(R.id.txtResumen);
         txtEquipamiento = (EditText) findViewById(R.id.txtEquipamiento);
         txtEstacion = (EditText) findViewById(R.id.txtEstacion);
@@ -179,7 +209,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         LocalidadDTO localidadDTO = (LocalidadDTO) ( (Spinner) findViewById(R.id.spLocalidad) ).getSelectedItem();
 
 
-        act.setFecha(StrToDate(mDisplayDate.getText().toString()));
+        act.setFecha(StrToDate(mDisplayDate.getText().toString(),mDisplayTime.getText().toString()));
         act.setResumen(this.txtResumen.getText().toString());
         act.setEquipamiento(this.txtEquipamiento.getText().toString());
         act.setEstacionDeMuestreo(this.txtEstacion.getText().toString());
@@ -202,6 +232,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             if(validarCampos(act)) {
                 actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
                 actividadDeCampoViewModel.insert(act, this);
+                //Cambiar por insertDao y probar
+
             }
             else {
                 Toast.makeText(getApplicationContext(),"Complete los datos obligatorios",Toast.LENGTH_LONG).show();
@@ -217,9 +249,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
         if (actividadDeCampo.getFecha()==null) {
             this.mDisplayDate.setError("No puede quedar vacío");
+            this.mDisplayTime.setError("No puede quedar vacío");
             retorno = false;
         }   else {
             this.mDisplayDate.setError(null);
+            this.mDisplayTime.setError(null);
         }
 
         if (actividadDeCampo.getGeopunto().isEmpty()) {
@@ -237,11 +271,13 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         return retorno;
     }
 
-    public static Date StrToDate(String str) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    public static Date StrToDate(String fecha, String hora) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String fechastr = fecha + " " + hora + ":00";
+        System.out.println("FechaSTR= " + fechastr);
         Date date = null;
         try {
-            date = format.parse(str);
+            date = format.parse(fechastr);
             System.out.println(date.toString());
         } catch (ParseException e) {
             e.printStackTrace();
