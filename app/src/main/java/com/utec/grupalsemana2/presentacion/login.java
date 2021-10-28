@@ -1,11 +1,15 @@
 package com.utec.grupalsemana2.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -36,6 +40,10 @@ public class login extends AppCompatActivity {
     private EditText txtNombreUsuario;
     private EditText txtContrasenia;
     private UsuarioViewModel usuarioViewModel;
+    public static final long PERIODO = 3000; // 3 segundos (3 * 1000 millisegundos)
+    private Handler handler;
+    private Runnable runnable;
+    private ActionMenuItemView conexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +117,36 @@ public class login extends AppCompatActivity {
         } else {
             super.onResume();
         }
+
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void run() {
+                Sesion s = Sesion.getInstancia();
+                if (s.isHayInternet() && s.isHayRest()) {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
+                }
+                else {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
+                }
+
+                handler.postDelayed(this, PERIODO);
+            }
+        };
+        handler.postDelayed(runnable, PERIODO);
     }
+
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
+    }
+
 
 
     private void iniciarSesionOnline(UsuarioDTO usuarioLoguear) {

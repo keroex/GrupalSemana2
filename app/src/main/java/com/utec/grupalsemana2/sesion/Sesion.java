@@ -6,8 +6,9 @@ public class Sesion {
 
     private static Sesion instancia;
     private static UsuarioDTO usuarioLogueado;
-    private static boolean hayInternet;
-    private static boolean hayRest;
+    private static boolean hayInternet=true;
+    private static boolean hayRest=true;
+    private static boolean huboPerdidaDeConexion = false;
 
     public static Sesion getInstancia() {
         if(instancia==null) {
@@ -38,6 +39,14 @@ public class Sesion {
 
     public static void setHayRest(boolean hayRest) {
         Sesion.hayRest = hayRest;
+    }
+
+    public static boolean isHuboPerdidaDeConexion() {
+        return huboPerdidaDeConexion;
+    }
+
+    public static void setHuboPerdidaDeConexion(boolean huboPerdidaDeConexion) {
+        Sesion.huboPerdidaDeConexion = huboPerdidaDeConexion;
     }
 
     private Sesion() {

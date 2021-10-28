@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -154,8 +155,9 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
                 if (s.isHayInternet() && s.isHayRest()) {
                     conexion= findViewById(R.id.conexion);
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
-                    if (actividadesDeCampo.getValue().size() == 0) {
+                    if (Sesion.isHuboPerdidaDeConexion()) {
                         getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+                        Sesion.setHuboPerdidaDeConexion(false);
                     }
                 }
                 else {

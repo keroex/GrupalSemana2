@@ -3,8 +3,10 @@ package com.utec.grupalsemana2.presentacion;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.lifecycle.MutableLiveData;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Region;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +68,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private MutableLiveData<List<DepartamentoDTO>> departamentos = new MutableLiveData<>();
     private MutableLiveData<List<LocalidadDTO>> localidades = new MutableLiveData<>();
 
+    public static final long PERIODO = 3000; // 3 segundos (3 * 1000 millisegundos)
+    private Handler handler;
+    private Runnable runnable;
+    private ActionMenuItemView conexion;
 
     private TextView mDisplayDate;
     private TextView mDisplayTime;
@@ -231,7 +238,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         try {
             if(validarCampos(act)) {
                 actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
-                actividadDeCampoViewModel.insert(act, this);
+                //actividadDeCampoViewModel.insert(act, this);
+                actividadDeCampoViewModel.insertDao(act);
+                System.out.println("La cantidad de actividades de campo en l BD local es = " + actividadDeCampoViewModel.count());
+
                 //Cambiar por insertDao y probar
 
             }
@@ -461,6 +471,38 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             alertDialog.show();
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void run() {
+                Sesion s = Sesion.getInstancia();
+                if (s.isHayInternet() && s.isHayRest()) {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
+                }
+                else {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
+                }
+
+                handler.postDelayed(this, PERIODO);
+            }
+        };
+        handler.postDelayed(runnable, PERIODO);
+    }
+
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
     }
 
 }

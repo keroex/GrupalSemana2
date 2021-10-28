@@ -49,7 +49,7 @@ public class ServicioInternet extends Service {
                 sincronizarAsyncTask sincronizarAsyncTask = new sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
 
-                handler.postDelayed(this, 1000 * 15);
+                handler.postDelayed(this, 1000 * 10);
             }
         };
         handler.postDelayed(runnable, 0);
@@ -71,12 +71,16 @@ public class ServicioInternet extends Service {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            Log.i("SERVICIO", "sincronizarAsyncTask INI" );
-
             try {
 
+                boolean conexionAntes = Sesion.isHayInternet() && Sesion.isHayRest();
                 verificarInternet();
                 verificarOnline();
+                boolean conexionAhora = Sesion.isHayInternet() && Sesion.isHayRest();
+                if ((conexionAntes == true && conexionAhora == false) || (conexionAntes == false && conexionAhora == false)) {
+                    Sesion.setHuboPerdidaDeConexion(true);
+                    Log.i("SERVICIO", "Hubo perdida de conexion" );
+                }
 
 
 
@@ -84,7 +88,6 @@ public class ServicioInternet extends Service {
             } catch (Exception e) {
                 Log.i("SERVICIO", "sincronizarAsyncTask ERRROR");
             }
-            Log.i("SERVICIO", "sincronizarAsyncTask FIN" );
             return null;
         }
     }
@@ -110,7 +113,6 @@ public class ServicioInternet extends Service {
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 Log.i("SERVICIO", "El rest no responde" );
-                System.out.println("Fallo la conexion");
 
                 onlineREST =false;
             }
