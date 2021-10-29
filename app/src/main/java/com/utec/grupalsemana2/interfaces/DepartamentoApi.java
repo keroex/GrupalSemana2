@@ -15,4 +15,7 @@ public interface DepartamentoApi {
     @POST("PFGrupo05/rest/Departamentos/obtenerTodosXRegion")
     Call<List<DepartamentoDTO>> getDepartamentos(@Body RegionDTO regionDTO);
 
+    @GET("PFGrupo05/rest/Departamentos/obtenerTodos")
+    Call<List<DepartamentoDTO>> getDepartamentosTodos();
+
 }

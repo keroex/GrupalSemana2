@@ -42,10 +42,11 @@ public class ServicioInternet extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("SERVICIO_INTERNET", "Servicio iniciado " );
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO", "run" );
+                Log.i("SERVICIO_INTERNET", "run" );
                 sincronizarAsyncTask sincronizarAsyncTask = new sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
 
@@ -53,7 +54,7 @@ public class ServicioInternet extends Service {
             }
         };
         handler.postDelayed(runnable, 0);
-        Log.i("SERVICIO", "Servicio iniciado " );
+
 
         return START_STICKY;
     }
@@ -63,7 +64,7 @@ public class ServicioInternet extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO", "Servicio destruido " );
+        Log.i("SERVICIO_INTERNET", "Servicio destruido " );
     }
 
     private class sincronizarAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -79,14 +80,22 @@ public class ServicioInternet extends Service {
                 boolean conexionAhora = Sesion.isHayInternet() && Sesion.isHayRest();
                 if ((conexionAntes == true && conexionAhora == false) || (conexionAntes == false && conexionAhora == false)) {
                     Sesion.setHuboPerdidaDeConexion(true);
-                    Log.i("SERVICIO", "Hubo perdida de conexion" );
+                    Log.i("SERVICIO_INTERNET", "Hubo perdida de conexion" );
+                }
+
+                if (Sesion.isHuboPerdidaDeConexion() && conexionAhora == true) {
+                    Sesion.setVolvioLaConexionDep(true);
+                    Sesion.setVolvioLaConexionLoc(true);
+                    Sesion.setVolvioLaConexionReg(true);
+                    Sesion.setVolvioLaConexionform(true);
+
                 }
 
 
 
                 Thread.sleep(1000);
             } catch (Exception e) {
-                Log.i("SERVICIO", "sincronizarAsyncTask ERRROR");
+                Log.i("SERVICIO_INTERNET", "sincronizarAsyncTask ERRROR");
             }
             return null;
         }
@@ -99,20 +108,20 @@ public class ServicioInternet extends Service {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
                     onlineREST = response.body();
-                    Log.i("SERVICIO", "El rest responde" );
+                    Log.i("SERVICIO_INTERNET", "El rest responde" );
 
 
 
                 } else {
-                    onlineREST =false;
-                    Log.i("SERVICIO", "El rest no responde" );
+                    onlineREST = false;
+                    Log.i("SERVICIO_INTERNET", "El rest no responde" );
 
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.i("SERVICIO", "El rest no responde" );
+                Log.i("SERVICIO_INTERNET", "El rest no responde" );
 
                 onlineREST =false;
             }
@@ -130,11 +139,11 @@ public class ServicioInternet extends Service {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if (isConnected) {
-            Log.i("SERVICIO", "Conectado a Internet" );
+            Log.i("SERVICIO_INTERNET", "Conectado a Internet" );
             Sesion s = Sesion.getInstancia();
             s.setHayInternet(true);
         } else {
-            Log.i("SERVICIO", "Sin conexion a Internet" );
+            Log.i("SERVICIO_INTERNET", "Sin conexion a Internet" );
             Sesion s = Sesion.getInstancia();
             s.setHayInternet(false);
         }

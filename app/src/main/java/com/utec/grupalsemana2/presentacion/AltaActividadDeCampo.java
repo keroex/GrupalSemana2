@@ -41,6 +41,10 @@ import com.utec.grupalsemana2.logica.LocalidadDTO;
 import com.utec.grupalsemana2.logica.RegionDTO;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
+import com.utec.grupalsemana2.models.DepartamentoViewModel;
+import com.utec.grupalsemana2.models.FormularioViewModel;
+import com.utec.grupalsemana2.models.LocalidadViewModel;
+import com.utec.grupalsemana2.models.RegionViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.sesion.Sesion;
 import com.utec.grupalsemana2.utilidades.FormatoFecha;
@@ -64,10 +68,18 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private LocalidadApi localidadApi = RestAppClient.getClient().create(LocalidadApi.class);
     private RegionApi regionApi = RestAppClient.getClient().create(RegionApi.class);
     private FormularioApi formularioApi = RestAppClient.getClient().create(FormularioApi.class);
-    private MutableLiveData<List<FormularioDTO>> formularios = new MutableLiveData<>();
-    private MutableLiveData<List<RegionDTO>> regiones = new MutableLiveData<>();
-    private MutableLiveData<List<DepartamentoDTO>> departamentos = new MutableLiveData<>();
-    private MutableLiveData<List<LocalidadDTO>> localidades = new MutableLiveData<>();
+    //private MutableLiveData<List<FormularioDTO>> formularios = new MutableLiveData<>();
+    private List<FormularioDTO> formularios = new ArrayList<>();
+    //private MutableLiveData<List<RegionDTO>> regiones = new MutableLiveData<>();
+    private List<RegionDTO> regiones = new ArrayList<>();
+    //private MutableLiveData<List<DepartamentoDTO>> departamentos = new MutableLiveData<>();
+    private List<DepartamentoDTO> departamentos = new ArrayList<>();
+    //private MutableLiveData<List<LocalidadDTO>> localidades = new MutableLiveData<>();
+    private List<LocalidadDTO> localidades = new ArrayList<>();
+    RegionViewModel regionViewModel;
+    DepartamentoViewModel departamentoViewModel;
+    LocalidadViewModel localidadViewModel;
+    FormularioViewModel formularioViewModel;
 
     public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
@@ -297,7 +309,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     private void getFormularios() {
         try {
-            formularios.setValue(new ArrayList<>());
+            /*formularios.setValue(new ArrayList<>());
             Call<List<FormularioDTO>> call = formularioApi.getFormularios();
             call.enqueue(new Callback<List<FormularioDTO>>() {
                 @Override
@@ -321,14 +333,23 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 public void onFailure(Call<List<FormularioDTO>> call, Throwable t) {
                     System.out.println("NO anda");
                 }
-            });
+            });*/
+            formularioViewModel = new FormularioViewModel(getApplication());
+            try {
+                formularios = formularioViewModel.getFormularios();
+                cargarSpinnerFormularios(formularios);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
     private void getRegiones() {
-        regiones.setValue(new ArrayList<>());
+        /*regiones.setValue(new ArrayList<>());
         Call<List<RegionDTO>> call = regionApi.getRegiones();
         call.enqueue(new Callback<List<RegionDTO>>() {
             @Override
@@ -345,11 +366,20 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             public void onFailure(Call<List<RegionDTO>> call, Throwable t) {
 
             }
-        });
+        });*/
+        regionViewModel = new RegionViewModel(getApplication());
+        try {
+            regiones = regionViewModel.getRegions();
+            cargarSpinnerRegiones(regiones);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void getDepartamentos(RegionDTO r) {
-        departamentos.setValue(new ArrayList<>());
+        /*departamentos.setValue(new ArrayList<>());
         Call<List<DepartamentoDTO>> call = departamentoApi.getDepartamentos(r);
         call.enqueue(new Callback<List<DepartamentoDTO>>() {
             @Override
@@ -366,11 +396,19 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             public void onFailure(Call<List<DepartamentoDTO>> call, Throwable t) {
 
             }
-        });
+        });*/
+        departamentoViewModel = new DepartamentoViewModel(getApplication());
+        try {
+            departamentos = departamentoViewModel.getDepartamentosXRegion(r.getIdregion());
+            cargarSpinnerDepartamentos(departamentos);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getLocalidades(DepartamentoDTO d) {
-        localidades.setValue(new ArrayList<>());
+        /*localidades.setValue(new ArrayList<>());
         Call<List<LocalidadDTO>> call = localidadApi.getLocalidades(d);
         call.enqueue(new Callback<List<LocalidadDTO>>() {
             @Override
@@ -387,42 +425,62 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             public void onFailure(Call<List<LocalidadDTO>> call, Throwable t) {
 
             }
-        });
+        });*/
+        localidadViewModel = new LocalidadViewModel(getApplication());
+        try {
+            localidades = localidadViewModel.getLocalidadesXDepartamento(d.getIddepartamento());
+            cargarSpinnerLocalidades(localidades);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void cargarSpinnerFormularios(MutableLiveData<List<FormularioDTO>> formularios) {
+    //private void cargarSpinnerFormularios(MutableLiveData<List<FormularioDTO>> formularios) {
+    private void cargarSpinnerFormularios(List<FormularioDTO> formularios) {
         FormularioDTO fDefault = new FormularioDTO();
         fDefault.setNombre("Seleccione formulario...  *");
         fDefault.setIdformulario(0);
-        formularios.getValue().add(0,fDefault);
-        ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios.getValue());
+        //formularios.getValue().add(0,fDefault);
+        formularios.add(0,fDefault);
+        //ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios.getValue());
+        ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios);
         spFormulario.setAdapter(adaptador);
     }
 
-    private void cargarSpinnerRegiones(MutableLiveData<List<RegionDTO>> regiones) {
+    //private void cargarSpinnerRegiones(MutableLiveData<List<RegionDTO>> regiones) {
+    private void cargarSpinnerRegiones(List<RegionDTO> regiones) {
         RegionDTO rDefault = new RegionDTO();
         rDefault.setNombre("Seleccione region...");
         rDefault.setIdregion(0);
-        regiones.getValue().add(0,rDefault);
-        ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones.getValue());
+        //regiones.getValue().add(0,rDefault);
+        //ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones.getValue());
+        regiones.add(0,rDefault);
+        ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones);
         spRegion.setAdapter(adaptador);
     }
 
-    private void cargarSpinnerDepartamentos(MutableLiveData<List<DepartamentoDTO>> departamentos) {
+    //private void cargarSpinnerDepartamentos(MutableLiveData<List<DepartamentoDTO>> departamentos) {
+    private void cargarSpinnerDepartamentos(List<DepartamentoDTO> departamentos) {
         DepartamentoDTO dDefault = new DepartamentoDTO();
         dDefault.setNombre("Seleccione departamento...");
         dDefault.setIddepartamento(0);
-        departamentos.getValue().add(0,dDefault);
-        ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos.getValue());
+        //departamentos.getValue().add(0,dDefault);
+        //ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos.getValue());
+        departamentos.add(0,dDefault);
+        ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos);
         spDepartamento.setAdapter(adaptador);
     }
 
-    private void cargarSpinnerLocalidades(MutableLiveData<List<LocalidadDTO>> localidades) {
+    //private void cargarSpinnerLocalidades(MutableLiveData<List<LocalidadDTO>> localidades) {
+    private void cargarSpinnerLocalidades(List<LocalidadDTO> localidades) {
         LocalidadDTO lDefault = new LocalidadDTO();
         lDefault.setNombre("Seleccione localidad...");
         lDefault.setIdlocalidad(0);
-        localidades.getValue().add(0,lDefault);
-        ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades.getValue());
+        //localidades.getValue().add(0,lDefault);
+        localidades.add(0,lDefault);
+        //ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades.getValue());
+        ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades);
         spLocalidad.setAdapter(adaptador);
     }
 

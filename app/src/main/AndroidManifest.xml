@@ -16,11 +16,6 @@
         <activity
             android:name=".presentacion.login"
             android:exported="true" />
-        <activity
-            android:name=".prueba"
-            android:exported="true"
-            android:label="@string/title_activity_prueba"
-            android:theme="@style/Theme.GrupalSemana2.NoActionBar" />
 
         <service
             android:name=".servicios.ServicioMostrarLog"
@@ -32,6 +27,24 @@
             android:exported="true" />
         <service
             android:name=".servicios.ServicioActividadesDeCampo"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".servicios.ServicioRegiones"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".servicios.ServicioDepartamentos"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".servicios.ServicioLocalidades"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".servicios.ServicioFormularios"
             android:enabled="true"
             android:exported="true" />
 

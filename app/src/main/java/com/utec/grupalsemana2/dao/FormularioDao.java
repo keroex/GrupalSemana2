@@ -27,7 +27,7 @@ public interface FormularioDao {
     void delete (FormularioDTO formularioDTO);
 
     @Query("Select * from FormularioDTO WHERE idformulario = :id")
-    ActividadDeCampo findById(int id);
+    FormularioDTO findById(int id);
 
     @Query("Select count(*) from FormularioDTO")
     int count();

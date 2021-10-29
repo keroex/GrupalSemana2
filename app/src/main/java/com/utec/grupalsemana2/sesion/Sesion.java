@@ -9,7 +9,12 @@ public class Sesion {
     private static boolean hayInternet=true;
     private static boolean hayRest=true;
     private static boolean huboPerdidaDeConexion = false;
+    private static boolean volvioLaConexionDep = false;
+    private static boolean volvioLaConexionform = false;
+    private static boolean volvioLaConexionReg = false;
+    private static boolean volvioLaConexionLoc = false;
     private static boolean actualizaActividadesOk = false;
+
 
     public static boolean isActualizaActividadesOk() {
         return actualizaActividadesOk;
@@ -18,6 +23,7 @@ public class Sesion {
     public static void setActualizaActividadesOk(boolean actualizaActividadesOk) {
         Sesion.actualizaActividadesOk = actualizaActividadesOk;
     }
+
 
     public static Sesion getInstancia() {
         if(instancia==null) {
@@ -56,6 +62,38 @@ public class Sesion {
 
     public static void setHuboPerdidaDeConexion(boolean huboPerdidaDeConexion) {
         Sesion.huboPerdidaDeConexion = huboPerdidaDeConexion;
+    }
+
+    public static boolean isVolvioLaConexionDep() {
+        return volvioLaConexionDep;
+    }
+
+    public static void setVolvioLaConexionDep(boolean volvioLaConexionDep) {
+        Sesion.volvioLaConexionDep = volvioLaConexionDep;
+    }
+
+    public static boolean isVolvioLaConexionform() {
+        return volvioLaConexionform;
+    }
+
+    public static void setVolvioLaConexionform(boolean volvioLaConexionform) {
+        Sesion.volvioLaConexionform = volvioLaConexionform;
+    }
+
+    public static boolean isVolvioLaConexionReg() {
+        return volvioLaConexionReg;
+    }
+
+    public static void setVolvioLaConexionReg(boolean volvioLaConexionReg) {
+        Sesion.volvioLaConexionReg = volvioLaConexionReg;
+    }
+
+    public static boolean isVolvioLaConexionLoc() {
+        return volvioLaConexionLoc;
+    }
+
+    public static void setVolvioLaConexionLoc(boolean volvioLaConexionLoc) {
+        Sesion.volvioLaConexionLoc = volvioLaConexionLoc;
     }
 
     private Sesion() {

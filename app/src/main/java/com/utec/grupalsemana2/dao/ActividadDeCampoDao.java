@@ -17,6 +17,9 @@ public interface ActividadDeCampoDao {
         @Query("Select * from ActividadDeCampo")
         List<ActividadDeCampo> findAll();
 
+        @Query("Select count(*) from ActividadDeCampo")
+        int count();
+
         @Insert
         void insert(ActividadDeCampo actividadDeCampo);
 
@@ -29,8 +32,7 @@ public interface ActividadDeCampoDao {
         @Query("Select * from ActividadDeCampo WHERE id = :id")
         ActividadDeCampo findById(int id);
 
-        @Query("Select count(*) from ActividadDeCampo")
-        int count();
+
 
         @Query("Select * from ActividadDeCampo WHERE id = (select min(id) from ActividadDeCampo)")
         ActividadDeCampo actividadDeCampoVieja();

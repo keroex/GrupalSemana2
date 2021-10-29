@@ -29,7 +29,11 @@ import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.models.UsuarioViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.servicios.ServicioActividadesDeCampo;
+import com.utec.grupalsemana2.servicios.ServicioDepartamentos;
+import com.utec.grupalsemana2.servicios.ServicioFormularios;
 import com.utec.grupalsemana2.servicios.ServicioInternet;
+import com.utec.grupalsemana2.servicios.ServicioLocalidades;
+import com.utec.grupalsemana2.servicios.ServicioRegiones;
 import com.utec.grupalsemana2.sesion.Sesion;
 
 import java.util.List;
@@ -53,11 +57,15 @@ public class login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_login);
-            txtNombreUsuario = (EditText) findViewById(R.id.txtNombreUsuario);
-            txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
-            startService(new Intent(getBaseContext(), ServicioInternet.class));
+        setContentView(R.layout.activity_login);
+        txtNombreUsuario = (EditText) findViewById(R.id.txtNombreUsuario);
+        txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
+        startService(new Intent(getBaseContext(), ServicioInternet.class));
         startService(new Intent(getBaseContext(), ServicioActividadesDeCampo.class));
+        startService(new Intent(getBaseContext(), ServicioRegiones.class));
+        startService(new Intent(getBaseContext(), ServicioDepartamentos.class));
+        startService(new Intent(getBaseContext(), ServicioLocalidades.class));
+        startService(new Intent(getBaseContext(), ServicioFormularios.class));
         usuarioViewModel = new UsuarioViewModel(getApplication());
     }
 

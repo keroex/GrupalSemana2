@@ -8,6 +8,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.utec.grupalsemana2.dao.ActividadDeCampoDao;
+import com.utec.grupalsemana2.dao.DepartamentoDao;
+import com.utec.grupalsemana2.dao.FormularioDao;
+import com.utec.grupalsemana2.dao.LocalidadDao;
+import com.utec.grupalsemana2.dao.RegionDao;
 import com.utec.grupalsemana2.dao.UsuarioDao;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.logica.DepartamentoDTO;
@@ -24,6 +28,14 @@ public abstract class AppDataBase extends RoomDatabase {
     public abstract ActividadDeCampoDao actividadDeCampoDao();
 
     public abstract UsuarioDao usuarioDao();
+
+    public abstract RegionDao regionDao();
+
+    public abstract DepartamentoDao departamentoDao();
+
+    public abstract LocalidadDao localidadDao();
+
+    public abstract FormularioDao formularioDao();
 
     private static volatile AppDataBase instance;
 

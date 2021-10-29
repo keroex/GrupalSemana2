@@ -8,10 +8,14 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface LocalidadApi {
 
     @POST("PFGrupo05/rest/Localidades/obtenerTodosXDepartamento")
     Call<List<LocalidadDTO>> getLocalidades(@Body DepartamentoDTO departamentoDTO);
+
+    @GET("PFGrupo05/rest/Localidades/obtenerTodos")
+    Call<List<LocalidadDTO>> getLocalidadesTodos();
 }
