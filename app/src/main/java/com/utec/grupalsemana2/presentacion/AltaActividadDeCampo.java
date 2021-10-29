@@ -43,6 +43,7 @@ import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.sesion.Sesion;
+import com.utec.grupalsemana2.utilidades.FormatoFecha;
 
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -68,7 +69,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private MutableLiveData<List<DepartamentoDTO>> departamentos = new MutableLiveData<>();
     private MutableLiveData<List<LocalidadDTO>> localidades = new MutableLiveData<>();
 
-    public static final long PERIODO = 3000; // 3 segundos (3 * 1000 millisegundos)
+    public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;
@@ -138,7 +139,20 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
                 //mes = mes +1;
-                String timeMostrar = hora + ":" + minuto;
+                String horaString = "";
+                String minutoString = "";
+                if(hora<10) {
+                    horaString = "0"+hora;
+                } else {
+                    horaString = String.valueOf(hora);
+                }
+                if(minuto<10) {
+                    minutoString = "0"+minuto;
+                } else {
+                    minutoString = String.valueOf(minuto);
+                }
+
+                String timeMostrar = horaString + ":" + minutoString;
                 mDisplayTime.setText(timeMostrar);
             }
         };
@@ -216,7 +230,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         LocalidadDTO localidadDTO = (LocalidadDTO) ( (Spinner) findViewById(R.id.spLocalidad) ).getSelectedItem();
 
 
-        act.setFecha(StrToDate(mDisplayDate.getText().toString(),mDisplayTime.getText().toString()));
+        act.setFecha(FormatoFecha.StrToDate(mDisplayDate.getText().toString(),mDisplayTime.getText().toString()));
         act.setResumen(this.txtResumen.getText().toString());
         act.setEquipamiento(this.txtEquipamiento.getText().toString());
         act.setEstacionDeMuestreo(this.txtEstacion.getText().toString());
@@ -279,20 +293,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             retorno = false;
         }
         return retorno;
-    }
-
-    public static Date StrToDate(String fecha, String hora) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        String fechastr = fecha + " " + hora + ":00";
-        System.out.println("FechaSTR= " + fechastr);
-        Date date = null;
-        try {
-            date = format.parse(fechastr);
-            System.out.println(date.toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
 
     private void getFormularios() {
@@ -470,6 +470,25 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
+        if(id==R.id.conexion) {
+            String mensaje = "";
+            if(Sesion.isHayInternet() && Sesion.isHayRest()) {
+                mensaje = "Está conectado a Internet";
+            } else {
+                mensaje = "No está conectado a Internet";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(mensaje);
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
         return true;
     }
 

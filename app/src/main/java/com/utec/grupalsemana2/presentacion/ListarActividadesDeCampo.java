@@ -48,7 +48,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     private MutableLiveData<List<ActividadDeCampo>> actividadesDeCampo = new MutableLiveData<>();
     private TextView txtNoHay;
     private ImageView iconoNoHay;
-    public static final long PERIODO = 3000; // 3 segundos (3 * 1000 millisegundos)
+    public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;
@@ -201,6 +201,25 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
                 }
             });
             builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
+        if(id==R.id.conexion) {
+            String mensaje = "";
+            if(Sesion.isHayInternet() && Sesion.isHayRest()) {
+                mensaje = "Está conectado a Internet";
+            } else {
+                mensaje = "No está conectado a Internet";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(mensaje);
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.cancel();

@@ -18,7 +18,7 @@ import java.util.List;
 public class ActividadDeCampoViewModel extends AndroidViewModel {
 
     private ActividadDeCampoRepository actividadDeCampoRepository;
-    private final LiveData<List<ActividadDeCampo>> actividadDeCampos;
+    private final List<ActividadDeCampo> actividadDeCampos;
 
     public ActividadDeCampoViewModel(Application application){
         super(application);
@@ -28,7 +28,7 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
 
     //public LiveData<List<ActividadDeCampo>> getActividadDeCampos() {        return actividadDeCampos;    }
 
-    public LiveData<List<ActividadDeCampo>> getActividadDeCampos() {
+    public List<ActividadDeCampo> getActividadDeCampos() {
         return actividadDeCampos;
     }
 
@@ -50,5 +50,7 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
     }
 
     public int count() { return actividadDeCampoRepository.count();    }
+
+    public ActividadDeCampo actividadDeCampoVieja() { return actividadDeCampoRepository.actividadDeCampoVieja();}
 }
 

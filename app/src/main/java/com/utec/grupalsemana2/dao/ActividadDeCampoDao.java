@@ -15,8 +15,7 @@ import java.util.List;
 public interface ActividadDeCampoDao {
 
         @Query("Select * from ActividadDeCampo")
-            //LiveData<List<ActividadDeCampo>> findAll();
-        LiveData<List<ActividadDeCampo>> findAll();
+        List<ActividadDeCampo> findAll();
 
         @Insert
         void insert(ActividadDeCampo actividadDeCampo);
@@ -32,6 +31,9 @@ public interface ActividadDeCampoDao {
 
         @Query("Select count(*) from ActividadDeCampo")
         int count();
+
+        @Query("Select * from ActividadDeCampo WHERE id = (select min(id) from ActividadDeCampo)")
+        ActividadDeCampo actividadDeCampoVieja();
 
 }
 

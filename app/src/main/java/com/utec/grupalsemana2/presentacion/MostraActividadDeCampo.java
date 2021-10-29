@@ -3,10 +3,13 @@ package com.utec.grupalsemana2.presentacion;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -29,6 +32,10 @@ public class MostraActividadDeCampo extends AppCompatActivity {
     TextView txtDepartamento;
     TextView txtLocalidad;
     TextView txtFormulario;
+    public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
+    private Handler handler;
+    private Runnable runnable;
+    private ActionMenuItemView conexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +114,57 @@ public class MostraActividadDeCampo extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
+        if(id==R.id.conexion) {
+            String mensaje = "";
+            if(Sesion.isHayInternet() && Sesion.isHayRest()) {
+                mensaje = "Está conectado a Internet";
+            } else {
+                mensaje = "No está conectado a Internet";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(mensaje);
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void run() {
+                Sesion s = Sesion.getInstancia();
+                if (s.isHayInternet() && s.isHayRest()) {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
+                }
+                else {
+                    conexion= findViewById(R.id.conexion);
+                    conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
+                }
+
+                handler.postDelayed(this, PERIODO);
+            }
+        };
+        handler.postDelayed(runnable, PERIODO);
+    }
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
     }
 
 }

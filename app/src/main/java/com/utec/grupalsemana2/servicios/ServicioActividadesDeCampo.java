@@ -67,7 +67,7 @@ public class ServicioActividadesDeCampo extends Service {
                     actualizarActividades();
                 }
 
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             } catch (Exception e) {
                 Log.i("SERVICIO", "sincronizarAsyncTask ERRROR");
                 e.printStackTrace();
@@ -77,13 +77,37 @@ public class ServicioActividadesDeCampo extends Service {
     }
 
     private void actualizarActividades() {
-        actividadesActualizar = actividadDeCampoViewModel.getActividadDeCampos().getValue();
-        int contador = 0;
+        actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
+        ActividadDeCampo actividadDeCampoVieja = actividadDeCampoViewModel.actividadDeCampoVieja();
+        if(actividadDeCampoVieja!=null) {
+            actividadDeCampoViewModel.insertRest(actividadDeCampoVieja);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Se agrego la actividad " + actividadDeCampoVieja.getResumen() + " a la BD del rest");
+            if(Sesion.getInstancia().isActualizaActividadesOk()) {
+                actividadDeCampoViewModel.delete(actividadDeCampoVieja);
+                Sesion.getInstancia().setActualizaActividadesOk(false);
+            }
+        }
+        //actividadesActualizar = actividadDeCampoViewModel.getActividadDeCampos();
+        /*int contador = 0;
         for (ActividadDeCampo a:actividadesActualizar) {
             actividadDeCampoViewModel.insertRest(a);
-            contador++;
-        }
-        System.out.println("Se agregaron " + contador + "actividades de campo a la BD del rest");
+            if(Sesion.getInstancia().isActualizaActividadesOk()){
+                actividadDeCampoViewModel.delete(a);
+                Sesion.getInstancia().setActualizaActividadesOk(false);
+                contador++;
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }*/
+        System.out.println("La cantidad de actividades de campo en l BD local es = " + actividadDeCampoViewModel.count());
     }
 
 }

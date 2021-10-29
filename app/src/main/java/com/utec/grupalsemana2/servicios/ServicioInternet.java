@@ -49,7 +49,7 @@ public class ServicioInternet extends Service {
                 sincronizarAsyncTask sincronizarAsyncTask = new sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
 
-                handler.postDelayed(this, 1000 * 10);
+                handler.postDelayed(this, 500 * 10);
             }
         };
         handler.postDelayed(runnable, 0);

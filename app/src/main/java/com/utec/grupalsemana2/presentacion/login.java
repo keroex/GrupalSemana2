@@ -1,16 +1,20 @@
 package com.utec.grupalsemana2.presentacion;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,7 +45,7 @@ public class login extends AppCompatActivity {
     private EditText txtNombreUsuario;
     private EditText txtContrasenia;
     private UsuarioViewModel usuarioViewModel;
-    public static final long PERIODO = 3000; // 3 segundos (3 * 1000 millisegundos)
+    public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;
@@ -200,6 +204,31 @@ public class login extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menulogin,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.conexion) {
+            String mensaje = "";
+            if(Sesion.isHayInternet() && Sesion.isHayRest()) {
+                mensaje = "Está conectado a Internet";
+            } else {
+                mensaje = "No está conectado a Internet";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(mensaje);
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
         return true;
     }
 

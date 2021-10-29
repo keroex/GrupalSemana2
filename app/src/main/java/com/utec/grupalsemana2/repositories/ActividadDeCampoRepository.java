@@ -18,6 +18,7 @@ import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.presentacion.AltaActividadDeCampo;
 import com.utec.grupalsemana2.presentacion.ListarActividadesDeCampo;
 import com.utec.grupalsemana2.servicios.RestAppClient;
+import com.utec.grupalsemana2.sesion.Sesion;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class ActividadDeCampoRepository {
 
     private ActividadDeCampoAPI actividadDeCampoAPI = RestAppClient.getClient().create(ActividadDeCampoAPI.class);
     private ActividadDeCampoDao actividadDeCampoDao;
-    private LiveData<List<ActividadDeCampo>> actividadDeCampos;
+    private List<ActividadDeCampo> actividadDeCampos;
 
     public ActividadDeCampoRepository(Application application) {
         AppDataBase db = AppDataBase.getInstance((application));
@@ -42,7 +43,7 @@ public class ActividadDeCampoRepository {
         actividadDeCampos = actividadDeCampoDao.findAll();
     }
 
-    public LiveData<List<ActividadDeCampo>> getActividadDeCampos() { return actividadDeCampos;    }
+    public List<ActividadDeCampo> getActividadDeCampos() { return actividadDeCampos;    }
 
 
     public void insertRest (ActividadDeCampo actividadDeCampo) {
@@ -52,14 +53,17 @@ public class ActividadDeCampoRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     System.out.println("SE AGREGO LA ACTIVIDAD DE CAMPO A LA BD");
+                    Sesion.getInstancia().setActualizaActividadesOk(true);
                 } else {
                     System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
+                    Sesion.getInstancia().setActualizaActividadesOk(false);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("NO SE AGREGO" + t.fillInStackTrace().toString());
+                Sesion.getInstancia().setActualizaActividadesOk(false);
             }
         });
     }
@@ -81,9 +85,12 @@ public class ActividadDeCampoRepository {
 
     public void delete(ActividadDeCampo actividadDeCampo) {
         actividadDeCampoDao.delete(actividadDeCampo);
+        System.out.println("ELIMINO LA ACT");
     }
 
     public int count() { return actividadDeCampoDao.count();    }
+
+    public ActividadDeCampo actividadDeCampoVieja() { return actividadDeCampoDao.actividadDeCampoVieja();}
 
 
 }

@@ -9,6 +9,15 @@ public class Sesion {
     private static boolean hayInternet=true;
     private static boolean hayRest=true;
     private static boolean huboPerdidaDeConexion = false;
+    private static boolean actualizaActividadesOk = false;
+
+    public static boolean isActualizaActividadesOk() {
+        return actualizaActividadesOk;
+    }
+
+    public static void setActualizaActividadesOk(boolean actualizaActividadesOk) {
+        Sesion.actualizaActividadesOk = actualizaActividadesOk;
+    }
 
     public static Sesion getInstancia() {
         if(instancia==null) {
