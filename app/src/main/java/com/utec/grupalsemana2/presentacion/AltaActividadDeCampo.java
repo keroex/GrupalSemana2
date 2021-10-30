@@ -232,33 +232,16 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         txtUbicacion = (EditText) findViewById(R.id.txtUbicacion);
         txtZona = (EditText) findViewById(R.id.txtZona);
         txtTipoDeMuestreo = (EditText) findViewById(R.id.txtTipoDeMuestreo);
-        spRegion = (Spinner) findViewById(R.id.spRegion);
+        //spRegion = (Spinner) findViewById(R.id.spRegion);
+        //spFormulario = (Spinner) findViewById(R.id.spFormulario);
         spDepartamento = (Spinner) findViewById(R.id.spDepartamento);
         spLocalidad = (Spinner) findViewById(R.id.spLocalidad);
-        spFormulario = (Spinner) findViewById(R.id.spFormulario);
-        getFormularios();
-        getRegiones();
-        deshabilitarSpinners();
 
-        //SPINNER REGION EVENTO
-        spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (spRegion.getSelectedItemPosition() > 0) {
-                    RegionDTO regionDTO = (RegionDTO) ((Spinner) findViewById(R.id.spRegion)).getSelectedItem();
-                    spDepartamento.setEnabled(true);
-                    getDepartamentos(regionDTO);
-                } else {
-                    deshabilitarSpinners();
-                }
-            }
+        //getFormularios();
+        //getRegiones();
+        //deshabilitarSpinners();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
 
-        });
         //SPINNER DEPARTAMENTO EVENTO
         spDepartamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -362,6 +345,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Debe seleccionar un formulario", Toast.LENGTH_LONG).show();
             retorno = false;
         }
+
+        if (spRegion.getSelectedItemPosition() < 1) {             retorno = false;         }
+        if (spDepartamento.getSelectedItemPosition() < 1) {             retorno = false;         }
+        if (spLocalidad.getSelectedItemPosition() < 1) {             retorno = false;         }
+
         return retorno;
     }
 
@@ -539,15 +527,17 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     private void deshabilitarSpinners() {
-        if (spRegion.getSelectedItemPosition() < 1) {
-            spDepartamento.setEnabled(false);
-            spLocalidad.setEnabled(false);
-            spDepartamento.setAdapter(null);
-            spLocalidad.setAdapter(null);
-        }
-        if (spDepartamento.getSelectedItemPosition() < 1) {
-            spLocalidad.setEnabled(false);
-            spLocalidad.setAdapter(null);
+        if (spRegion!=null && spDepartamento!=null && spLocalidad!=null) {
+            if (spRegion.getSelectedItemPosition() < 1) {
+                spDepartamento.setEnabled(false);
+                spLocalidad.setEnabled(false);
+                spDepartamento.setAdapter(null);
+                spLocalidad.setAdapter(null);
+            }
+            if (spDepartamento.getSelectedItemPosition() < 1) {
+                spLocalidad.setEnabled(false);
+                spLocalidad.setAdapter(null);
+            }
         }
     }
 
@@ -613,6 +603,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
+
                 Sesion s = Sesion.getInstancia();
                 if (s.isHayInternet() && s.isHayRest()) {
                     conexion = findViewById(R.id.conexion);
@@ -622,14 +613,43 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
                 }
 
-
-
                 if (ubicacion!=null && txtUbicacion.getText().length()<1) {
                     latitud = Double.toString(ubicacion.getLatitude());
                     longitud = Double.toString(ubicacion.getLongitude());
                     txtUbicacion.setText(latitud + ", " + longitud);
                 }
 
+                if (spFormulario==null && spRegion== null) {
+                    spRegion = (Spinner) findViewById(R.id.spRegion);
+                    spFormulario = (Spinner) findViewById(R.id.spFormulario);
+                }
+                if (spFormulario.getAdapter() == null) {
+                   getFormularios();
+                }
+                if (spRegion.getAdapter() == null) {
+                    //SPINNER REGION EVENTO
+                    spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            if (spRegion.getSelectedItemPosition() > 0) {
+                                RegionDTO regionDTO = (RegionDTO) ((Spinner) findViewById(R.id.spRegion)).getSelectedItem();
+                                spDepartamento.setEnabled(true);
+                                getDepartamentos(regionDTO);
+                            } else {
+                                deshabilitarSpinners();
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parentView) {
+                            // your code here
+                        }
+
+                    });
+                    getRegiones();
+                    deshabilitarSpinners();
+
+                }
 
 
 
