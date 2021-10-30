@@ -120,7 +120,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 int dia = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(
-                        AltaActividadDeCampo.this,mDateSetListener,anio,mes,dia);
+                        AltaActividadDeCampo.this, mDateSetListener, anio, mes, dia);
                 dialog.show();
             }
         });
@@ -133,7 +133,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 int hora = cal.get(Calendar.HOUR);
                 int minuto = cal.get(Calendar.MINUTE);
                 TimePickerDialog dialog = new TimePickerDialog(
-                        AltaActividadDeCampo.this,mTimeSetListener,hora,minuto, DateFormat.is24HourFormat(getApplicationContext()));
+                        AltaActividadDeCampo.this, mTimeSetListener, hora, minuto, DateFormat.is24HourFormat(getApplicationContext()));
                 dialog.show();
             }
         });
@@ -141,7 +141,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int anio, int mes, int dia) {
-                mes = mes +1;
+                mes = mes + 1;
                 String dateMostrar = dia + "/" + mes + "/" + anio;
                 mDisplayDate.setText(dateMostrar);
             }
@@ -153,13 +153,13 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 //mes = mes +1;
                 String horaString = "";
                 String minutoString = "";
-                if(hora<10) {
-                    horaString = "0"+hora;
+                if (hora < 10) {
+                    horaString = "0" + hora;
                 } else {
                     horaString = String.valueOf(hora);
                 }
-                if(minuto<10) {
-                    minutoString = "0"+minuto;
+                if (minuto < 10) {
+                    minutoString = "0" + minuto;
                 } else {
                     minutoString = String.valueOf(minuto);
                 }
@@ -179,8 +179,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         txtTipoDeMuestreo = (EditText) findViewById(R.id.txtTipoDeMuestreo);
         spRegion = (Spinner) findViewById(R.id.spRegion);
         spDepartamento = (Spinner) findViewById(R.id.spDepartamento);
-        spLocalidad= (Spinner) findViewById(R.id.spLocalidad);
-        spFormulario= (Spinner) findViewById(R.id.spFormulario);
+        spLocalidad = (Spinner) findViewById(R.id.spLocalidad);
+        spFormulario = (Spinner) findViewById(R.id.spFormulario);
         getFormularios();
         getRegiones();
         deshabilitarSpinners();
@@ -188,8 +188,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(spRegion.getSelectedItemPosition()>0) {
-                    RegionDTO regionDTO = (RegionDTO) ( (Spinner) findViewById(R.id.spRegion) ).getSelectedItem();
+                if (spRegion.getSelectedItemPosition() > 0) {
+                    RegionDTO regionDTO = (RegionDTO) ((Spinner) findViewById(R.id.spRegion)).getSelectedItem();
                     spDepartamento.setEnabled(true);
                     getDepartamentos(regionDTO);
                 } else {
@@ -207,8 +207,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         spDepartamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(spDepartamento.getSelectedItemPosition()>0) {
-                    DepartamentoDTO departamentoDTO = (DepartamentoDTO) ( (Spinner) findViewById(R.id.spDepartamento) ).getSelectedItem();
+                if (spDepartamento.getSelectedItemPosition() > 0) {
+                    DepartamentoDTO departamentoDTO = (DepartamentoDTO) ((Spinner) findViewById(R.id.spDepartamento)).getSelectedItem();
                     spLocalidad.setEnabled(true);
                     getLocalidades(departamentoDTO);
                 } else {
@@ -233,36 +233,39 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     public void CargarActividadDeCampo(View view) {
-
-        ActividadDeCampo act = new ActividadDeCampo();
-
-        DepartamentoDTO departamentoDTO = (DepartamentoDTO) ( (Spinner) findViewById(R.id.spDepartamento) ).getSelectedItem();
-        RegionDTO regionDTO = (RegionDTO) ( (Spinner) findViewById(R.id.spRegion) ).getSelectedItem();
-        FormularioDTO formularioDTO = (FormularioDTO) ( (Spinner) findViewById(R.id.spFormulario) ).getSelectedItem();
-        LocalidadDTO localidadDTO = (LocalidadDTO) ( (Spinner) findViewById(R.id.spLocalidad) ).getSelectedItem();
-
-
-        act.setFecha(FormatoFecha.StrToDate(mDisplayDate.getText().toString(),mDisplayTime.getText().toString()));
-        act.setResumen(this.txtResumen.getText().toString());
-        act.setEquipamiento(this.txtEquipamiento.getText().toString());
-        act.setEstacionDeMuestreo(this.txtEstacion.getText().toString());
-        act.setMetodoDeMuestreo(this.txtMetodo.getText().toString());
-        act.setGeopunto(this.txtUbicacion.getText().toString());
-        act.setZona(this.txtZona.getText().toString());
-        act.setRegion(regionDTO.getNombre());
-        act.setDepartamento(departamentoDTO.getNombre());
-        act.setLocalidad(localidadDTO.getNombre());
-        act.setFormulario(formularioDTO.getNombre());
-        act.setIdformulario(formularioDTO.getIdformulario());
-        act.setIddepartamento(departamentoDTO.getIddepartamento());
-        act.setIdlocalidad(localidadDTO.getIdlocalidad());
-        act.setIdusuario(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario());
-        act.setUsuario(Sesion.getInstancia().getUsuarioLogueado().getNombreUsuario());
-        act.setTipoDeMuestreo(this.txtTipoDeMuestreo.getText().toString());
-
-
         try {
-            if(validarCampos(act)) {
+            ActividadDeCampo act = new ActividadDeCampo();
+
+            DepartamentoDTO departamentoDTO = (DepartamentoDTO) ((Spinner) findViewById(R.id.spDepartamento)).getSelectedItem();
+            RegionDTO regionDTO = (RegionDTO) ((Spinner) findViewById(R.id.spRegion)).getSelectedItem();
+            FormularioDTO formularioDTO = (FormularioDTO) ((Spinner) findViewById(R.id.spFormulario)).getSelectedItem();
+            LocalidadDTO localidadDTO = (LocalidadDTO) ((Spinner) findViewById(R.id.spLocalidad)).getSelectedItem();
+
+
+            act.setFecha(FormatoFecha.StrToDate(mDisplayDate.getText().toString(), mDisplayTime.getText().toString()));
+            act.setResumen(this.txtResumen.getText().toString());
+            act.setEquipamiento(this.txtEquipamiento.getText().toString());
+            act.setEstacionDeMuestreo(this.txtEstacion.getText().toString());
+            act.setMetodoDeMuestreo(this.txtMetodo.getText().toString());
+            act.setGeopunto(this.txtUbicacion.getText().toString());
+            act.setZona(this.txtZona.getText().toString());
+            act.setRegion(regionDTO.getNombre());
+            if (departamentoDTO!=null) {
+                act.setDepartamento(departamentoDTO.getNombre());
+                act.setIddepartamento(departamentoDTO.getIddepartamento());
+            }
+            if (localidadDTO!=null) {
+                act.setLocalidad(localidadDTO.getNombre());
+                act.setIdlocalidad(localidadDTO.getIdlocalidad());
+            }
+            act.setFormulario(formularioDTO.getNombre());
+            act.setIdformulario(formularioDTO.getIdformulario());
+            act.setIdusuario(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario());
+            act.setUsuario(Sesion.getInstancia().getUsuarioLogueado().getNombreUsuario());
+            act.setTipoDeMuestreo(this.txtTipoDeMuestreo.getText().toString());
+
+
+            if (validarCampos(act)) {
                 actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
                 //actividadDeCampoViewModel.insert(act, this);
                 actividadDeCampoViewModel.insertDao(act, this);
@@ -270,11 +273,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
                 //Cambiar por insertDao y probar
 
+            } else {
+                Toast.makeText(getApplicationContext(), "Complete los datos obligatorios", Toast.LENGTH_LONG).show();
             }
-            else {
-                Toast.makeText(getApplicationContext(),"Complete los datos obligatorios",Toast.LENGTH_LONG).show();
-            }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -283,11 +285,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
         boolean retorno = true;
 
-        if (actividadDeCampo.getFecha()==null) {
+        if (actividadDeCampo.getFecha() == null) {
             this.mDisplayDate.setError("No puede quedar vacío");
             this.mDisplayTime.setError("No puede quedar vacío");
             retorno = false;
-        }   else {
+        } else {
             this.mDisplayDate.setError(null);
             this.mDisplayTime.setError(null);
         }
@@ -296,12 +298,12 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             this.txtUbicacion.setError("No puede quedar vacío");
             retorno = false;
 
-        }   else {
+        } else {
             this.txtUbicacion.setError(null);
         }
 
-        if (spFormulario.getSelectedItemPosition()<1) {
-            Toast.makeText(getApplicationContext(),"Debe seleccionar un formulario",Toast.LENGTH_LONG).show();
+        if (spFormulario.getSelectedItemPosition() < 1) {
+            Toast.makeText(getApplicationContext(), "Debe seleccionar un formulario", Toast.LENGTH_LONG).show();
             retorno = false;
         }
         return retorno;
@@ -338,12 +340,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             try {
                 formularios = formularioViewModel.getFormularios();
                 cargarSpinnerFormularios(formularios);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -371,8 +372,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         try {
             regiones = regionViewModel.getRegions();
             cargarSpinnerRegiones(regiones);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -401,8 +401,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         try {
             departamentos = departamentoViewModel.getDepartamentosXRegion(r.getIdregion());
             cargarSpinnerDepartamentos(departamentos);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -430,8 +429,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         try {
             localidades = localidadViewModel.getLocalidadesXDepartamento(d.getIddepartamento());
             cargarSpinnerLocalidades(localidades);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -442,7 +440,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         fDefault.setNombre("Seleccione formulario...  *");
         fDefault.setIdformulario(0);
         //formularios.getValue().add(0,fDefault);
-        formularios.add(0,fDefault);
+        formularios.add(0, fDefault);
         //ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios.getValue());
         ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios);
         spFormulario.setAdapter(adaptador);
@@ -455,7 +453,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         rDefault.setIdregion(0);
         //regiones.getValue().add(0,rDefault);
         //ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones.getValue());
-        regiones.add(0,rDefault);
+        regiones.add(0, rDefault);
         ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones);
         spRegion.setAdapter(adaptador);
     }
@@ -467,7 +465,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         dDefault.setIddepartamento(0);
         //departamentos.getValue().add(0,dDefault);
         //ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos.getValue());
-        departamentos.add(0,dDefault);
+        departamentos.add(0, dDefault);
         ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos);
         spDepartamento.setAdapter(adaptador);
     }
@@ -478,20 +476,20 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         lDefault.setNombre("Seleccione localidad...");
         lDefault.setIdlocalidad(0);
         //localidades.getValue().add(0,lDefault);
-        localidades.add(0,lDefault);
+        localidades.add(0, lDefault);
         //ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades.getValue());
         ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades);
         spLocalidad.setAdapter(adaptador);
     }
 
     private void deshabilitarSpinners() {
-        if(spRegion.getSelectedItemPosition()<1) {
+        if (spRegion.getSelectedItemPosition() < 1) {
             spDepartamento.setEnabled(false);
             spLocalidad.setEnabled(false);
             spDepartamento.setAdapter(null);
             spLocalidad.setAdapter(null);
         }
-        if(spDepartamento.getSelectedItemPosition()<1) {
+        if (spDepartamento.getSelectedItemPosition() < 1) {
             spLocalidad.setEnabled(false);
             spLocalidad.setAdapter(null);
         }
@@ -499,14 +497,14 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id==R.id.logout) {
+        if (id == R.id.logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("¿Desea cerrar sesión?");
             builder.setCancelable(true);
@@ -515,7 +513,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Sesion.getInstancia().setUsuarioLogueado(new UsuarioDTO());
                     finish();
-                    Intent intentLogin = new Intent(getApplicationContext(),login.class);
+                    Intent intentLogin = new Intent(getApplicationContext(), login.class);
                     startActivity(intentLogin);
                 }
             });
@@ -528,9 +526,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
-        if(id==R.id.conexion) {
+        if (id == R.id.conexion) {
             String mensaje = "";
-            if(Sesion.isHayInternet() && Sesion.isHayRest()) {
+            if (Sesion.isHayInternet() && Sesion.isHayRest()) {
                 mensaje = "Está conectado a Internet";
             } else {
                 mensaje = "No está conectado a Internet";
@@ -561,11 +559,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             public void run() {
                 Sesion s = Sesion.getInstancia();
                 if (s.isHayInternet() && s.isHayRest()) {
-                    conexion= findViewById(R.id.conexion);
+                    conexion = findViewById(R.id.conexion);
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
-                }
-                else {
-                    conexion= findViewById(R.id.conexion);
+                } else {
+                    conexion = findViewById(R.id.conexion);
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
                 }
 
