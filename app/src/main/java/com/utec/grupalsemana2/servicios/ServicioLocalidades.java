@@ -48,7 +48,7 @@ public class ServicioLocalidades extends Service {
                     contador++;
                 }
                 if (contador == 2) {
-                    tiempo=60000;
+                    tiempo=600000;
                 }
                 if (Sesion.isVolvioLaConexionLoc()) {
                     contador=0;

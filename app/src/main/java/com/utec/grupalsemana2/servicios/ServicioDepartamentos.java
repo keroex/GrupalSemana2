@@ -50,7 +50,7 @@ public class ServicioDepartamentos extends Service {
                     contador++;
                 }
                 if (contador == 2) {
-                    tiempo=60000;
+                    tiempo=600000;
                 }
                 if (Sesion.isVolvioLaConexionDep()) {
                     contador=0;

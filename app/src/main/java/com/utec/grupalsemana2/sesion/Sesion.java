@@ -14,6 +14,7 @@ public class Sesion {
     private static boolean volvioLaConexionReg = false;
     private static boolean volvioLaConexionLoc = false;
     private static boolean actualizaActividadesOk = false;
+    private static boolean hayQueRecargar = false;
 
 
     public static boolean isActualizaActividadesOk() {
@@ -24,6 +25,13 @@ public class Sesion {
         Sesion.actualizaActividadesOk = actualizaActividadesOk;
     }
 
+    public static boolean isHayQueRecargar() {
+        return hayQueRecargar;
+    }
+
+    public static void setHayQueRecargar(boolean hayQueRecargar) {
+        Sesion.hayQueRecargar = hayQueRecargar;
+    }
 
     public static Sesion getInstancia() {
         if(instancia==null) {

@@ -66,6 +66,12 @@ public class ServicioActividadesDeCampo extends Service {
                 if (Sesion.isHayInternet() && Sesion.isHayRest()) {
                     actualizarActividades();
                 }
+                if (actividadDeCampoViewModel.count()==0) {
+                    Sesion.setHayQueRecargar(false);
+                }
+                if (Sesion.isHayInternet() && Sesion.isHayRest() && actividadDeCampoViewModel.count()>0) {
+                    Sesion.setHayQueRecargar(true);
+                }
 
                 Thread.sleep(10000);
             } catch (Exception e) {
@@ -91,6 +97,9 @@ public class ServicioActividadesDeCampo extends Service {
                 actividadDeCampoViewModel.delete(actividadDeCampoVieja);
                 Sesion.getInstancia().setActualizaActividadesOk(false);
             }
+
+
+
         }
 
         System.out.println("La cantidad de actividades de campo en l BD local es = " + actividadDeCampoViewModel.count());

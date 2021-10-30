@@ -59,7 +59,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_actividades_de_campo);
 
-
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         try {
             if(Sesion.isHayInternet() && Sesion.isHayRest()) {
                 getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
@@ -166,14 +166,23 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
+                if (!Sesion.isHayQueRecargar()) {
+                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                }
                 Sesion s = Sesion.getInstancia();
                 if (s.isHayInternet() && s.isHayRest()) {
                     conexion= findViewById(R.id.conexion);
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_done_24));
-                    if (Sesion.isHuboPerdidaDeConexion()) {
+                    if (Sesion.isHuboPerdidaDeConexion() || Sesion.isHayQueRecargar()) {
+                        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                         getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
-                        Sesion.setHuboPerdidaDeConexion(false);
+                        if (Sesion.isHuboPerdidaDeConexion()) {
+                            Sesion.setHuboPerdidaDeConexion(false);
+                        }
                     }
+
+
+
                 }
                 else {
                     conexion= findViewById(R.id.conexion);
