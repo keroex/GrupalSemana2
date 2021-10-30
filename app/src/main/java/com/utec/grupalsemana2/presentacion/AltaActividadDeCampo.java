@@ -4,15 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Region;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateFormat;
@@ -28,6 +32,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.interfaces.DepartamentoApi;
@@ -85,7 +93,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;
-
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location ubicacion;
+    private String longitud;
+    private String latitud;
     private TextView mDisplayDate;
     private TextView mDisplayTime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -110,6 +121,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         setContentView(R.layout.activity_alta_actividad_de_campo);
         mDisplayDate = (TextView) findViewById(R.id.txtViewFecha);
         mDisplayTime = (TextView) findViewById(R.id.textViewHora);
+
+
         //DATEPICKER EVENTO
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +137,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaComoCadena = sdf.format(new Date());
+        mDisplayDate.setText(fechaComoCadena);
 
         //HOURPICKER EVENTO
         mDisplayTime.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +164,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             }
         };
 
+        SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm");
+        String horaComoCadena = sdfh.format(new Date());
+        mDisplayTime.setText(horaComoCadena);
+
         mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
@@ -168,6 +189,40 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 mDisplayTime.setText(timeMostrar);
             }
         };
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},PackageManager.PERMISSION_GRANTED);
+
+            return;
+        }
+
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    ubicacion = location;
+                    System.out.println("Entre a aca");
+                }
+            }
+        });
+
+
+        fusedLocationClient.getLastLocation().addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                latitud = "00 ";
+                longitud = "00 ";
+            }
+        });
 
 
         txtResumen = (EditText) findViewById(R.id.txtResumen);
@@ -184,6 +239,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         getFormularios();
         getRegiones();
         deshabilitarSpinners();
+
         //SPINNER REGION EVENTO
         spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -250,11 +306,11 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             act.setGeopunto(this.txtUbicacion.getText().toString());
             act.setZona(this.txtZona.getText().toString());
             act.setRegion(regionDTO.getNombre());
-            if (departamentoDTO!=null) {
+            if (departamentoDTO != null) {
                 act.setDepartamento(departamentoDTO.getNombre());
                 act.setIddepartamento(departamentoDTO.getIddepartamento());
             }
-            if (localidadDTO!=null) {
+            if (localidadDTO != null) {
                 act.setLocalidad(localidadDTO.getNombre());
                 act.setIdlocalidad(localidadDTO.getIdlocalidad());
             }
@@ -565,6 +621,17 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                     conexion = findViewById(R.id.conexion);
                     conexion.setIcon(getResources().getDrawable(R.drawable.ic_baseline_cloud_off_24));
                 }
+
+
+
+                if (ubicacion!=null && txtUbicacion.getText().length()<1) {
+                    latitud = Double.toString(ubicacion.getLatitude());
+                    longitud = Double.toString(ubicacion.getLongitude());
+                    txtUbicacion.setText(latitud + ", " + longitud);
+                }
+
+
+
 
                 handler.postDelayed(this, PERIODO);
             }
