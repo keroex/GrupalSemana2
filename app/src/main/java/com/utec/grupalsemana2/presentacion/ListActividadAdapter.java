@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
+import com.utec.grupalsemana2.utilidades.FormatoFecha;
 
 public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdapter.ViewHolder> {
     private List<ActividadDeCampo> actividades;
@@ -67,7 +68,8 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
 
         void bindData(final ActividadDeCampo actividad) {
             this.usuario.setText(actividad.getResumen());
-            this.fecha.setText(actividad.getFecha().toString());
+            //this.fecha.setText(actividad.getFecha().toString());
+            this.fecha.setText(FormatoFecha.DateToString(actividad.getFecha()));
             this.departamento.setText("Departamento: " + actividad.getDepartamento());
         }
 

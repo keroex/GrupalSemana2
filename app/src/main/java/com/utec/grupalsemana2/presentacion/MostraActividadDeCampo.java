@@ -18,6 +18,7 @@ import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.sesion.Sesion;
+import com.utec.grupalsemana2.utilidades.FormatoFecha;
 
 public class MostraActividadDeCampo extends AppCompatActivity {
 
@@ -64,7 +65,7 @@ public class MostraActividadDeCampo extends AppCompatActivity {
 
     public void cargarActDeCampo(ActividadDeCampo act) {
 
-        txtFecha.setText(act.getFecha().toString());
+        txtFecha.setText(FormatoFecha.DateToString(act.getFecha()));
         txtResumen.setText(act.getResumen());
         txtEquipamiento.setText(act.getEquipamiento());
         txtEstacion.setText(act.getEstacionDeMuestreo());

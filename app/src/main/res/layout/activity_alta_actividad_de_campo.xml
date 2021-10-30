@@ -57,7 +57,7 @@
         android:layout_width="368dp"
         android:layout_height="53dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spDepartamento" />
 
@@ -99,8 +99,8 @@
 
     <Spinner
         android:id="@+id/spDepartamento"
-        android:layout_width="181dp"
-        android:layout_height="49dp"
+        android:layout_width="180dp"
+        android:layout_height="56dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -161,8 +161,8 @@
 
     <Spinner
         android:id="@+id/spLocalidad"
-        android:layout_width="176dp"
-        android:layout_height="49dp"
+        android:layout_width="178dp"
+        android:layout_height="55dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toEndOf="@+id/spDepartamento"

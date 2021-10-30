@@ -20,4 +20,10 @@ public class FormatoFecha {
         return date;
     }
 
+    public static String DateToString(Date fecha) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String fechaString = format.format(fecha);
+        return fechaString;
+    }
+
 }
