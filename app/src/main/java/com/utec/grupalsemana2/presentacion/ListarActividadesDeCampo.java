@@ -176,6 +176,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
                     if (Sesion.isHuboPerdidaDeConexion() || Sesion.isHayQueRecargar()) {
                         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                         getActividadesDeCampo(Sesion.getInstancia().getUsuarioLogueado());
+                        Sesion.setHayQueRecargar(false);
                         if (Sesion.isHuboPerdidaDeConexion()) {
                             Sesion.setHuboPerdidaDeConexion(false);
                         }

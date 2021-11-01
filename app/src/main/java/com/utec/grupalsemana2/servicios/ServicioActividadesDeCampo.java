@@ -65,9 +65,10 @@ public class ServicioActividadesDeCampo extends Service {
 
                 if (Sesion.isHayInternet() && Sesion.isHayRest()) {
                     actualizarActividades();
+                    Sesion.setHayQueRecargar(true);
                 }
                 if (actividadDeCampoViewModel.count()==0) {
-                    Sesion.setHayQueRecargar(false);
+                    //Sesion.setHayQueRecargar(false);
                 }
                 if (Sesion.isHayInternet() && Sesion.isHayRest() && actividadDeCampoViewModel.count()>0) {
                     Sesion.setHayQueRecargar(true);

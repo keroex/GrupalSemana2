@@ -192,13 +192,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},PackageManager.PERMISSION_GRANTED);
 
             return;
@@ -394,25 +387,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     private void getRegiones() {
-        /*regiones.setValue(new ArrayList<>());
-        Call<List<RegionDTO>> call = regionApi.getRegiones();
-        call.enqueue(new Callback<List<RegionDTO>>() {
-            @Override
-            public void onResponse(Call<List<RegionDTO>> call, Response<List<RegionDTO>> response) {
-                if(response.isSuccessful()) {
-                    List<RegionDTO> misRegiones = response.body();
-                    if(misRegiones!=null) {
-                        regiones.setValue(misRegiones);
-                    }
-                    cargarSpinnerRegiones(regiones);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<RegionDTO>> call, Throwable t) {
-
-            }
-        });*/
-        regionViewModel = new RegionViewModel(getApplication());
+       regionViewModel = new RegionViewModel(getApplication());
         try {
             regiones = regionViewModel.getRegions();
             cargarSpinnerRegiones(regiones);
@@ -423,24 +398,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     private void getDepartamentos(RegionDTO r) {
-        /*departamentos.setValue(new ArrayList<>());
-        Call<List<DepartamentoDTO>> call = departamentoApi.getDepartamentos(r);
-        call.enqueue(new Callback<List<DepartamentoDTO>>() {
-            @Override
-            public void onResponse(Call<List<DepartamentoDTO>> call, Response<List<DepartamentoDTO>> response) {
-                if(response.isSuccessful()) {
-                    List<DepartamentoDTO> misDepartamentos = response.body();
-                    if(misDepartamentos!=null) {
-                        departamentos.setValue(misDepartamentos);
-                    }
-                    cargarSpinnerDepartamentos(departamentos);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<DepartamentoDTO>> call, Throwable t) {
-
-            }
-        });*/
         departamentoViewModel = new DepartamentoViewModel(getApplication());
         try {
             departamentos = departamentoViewModel.getDepartamentosXRegion(r.getIdregion());
@@ -451,24 +408,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     private void getLocalidades(DepartamentoDTO d) {
-        /*localidades.setValue(new ArrayList<>());
-        Call<List<LocalidadDTO>> call = localidadApi.getLocalidades(d);
-        call.enqueue(new Callback<List<LocalidadDTO>>() {
-            @Override
-            public void onResponse(Call<List<LocalidadDTO>> call, Response<List<LocalidadDTO>> response) {
-                if(response.isSuccessful()) {
-                    List<LocalidadDTO> misLocalidades = response.body();
-                    if(misLocalidades!=null) {
-                        localidades.setValue(misLocalidades);
-                    }
-                    cargarSpinnerLocalidades(localidades);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<LocalidadDTO>> call, Throwable t) {
-
-            }
-        });*/
         localidadViewModel = new LocalidadViewModel(getApplication());
         try {
             localidades = localidadViewModel.getLocalidadesXDepartamento(d.getIddepartamento());
