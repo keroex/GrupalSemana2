@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import android.Manifest;
@@ -15,10 +16,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.Region;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -88,6 +92,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     DepartamentoViewModel departamentoViewModel;
     LocalidadViewModel localidadViewModel;
     FormularioViewModel formularioViewModel;
+    private static int REQUEST_IMAGE_CAPTURE = 1;
 
     public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
@@ -603,6 +608,32 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     protected void onPause() {
         handler.removeCallbacks(runnable);
         super.onPause();
+    }
+
+    private void permisosDeCamara() {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA},PackageManager.PERMISSION_GRANTED);
+
+            return;
+        } else {
+            abrirCamara();
+        }
+    }
+
+    private void abrirCamara() {
+        Intent camara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (camara.resolveActivity(getPackageManager())!=null) {
+            startActivityForResult(camara,REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+        }
     }
 
 }
