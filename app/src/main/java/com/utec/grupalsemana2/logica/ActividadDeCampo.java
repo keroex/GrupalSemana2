@@ -50,6 +50,8 @@ public class ActividadDeCampo implements Parcelable {
     private long idformulario;
     @ColumnInfo(name = "tipoDeMuestreo")
     private String tipoDeMuestreo;
+    //@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    //private Byte [] imagen;
 
     //Constructores
     public ActividadDeCampo() {
@@ -248,6 +250,14 @@ public class ActividadDeCampo implements Parcelable {
         this.tipoDeMuestreo = tipoDeMuestreo;
     }
 
+    /*public Byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Byte[] imagen) {
+        this.imagen = imagen;
+    }
+*/
     @Override
     public String toString() {
         return "ActividadDeCampo{" +

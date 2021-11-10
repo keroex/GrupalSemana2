@@ -172,13 +172,13 @@
         android:id="@+id/btnCargar"
         android:layout_width="368dp"
         android:layout_height="62dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="56dp"
         android:backgroundTint="#4CAF50"
         android:onClick="CargarActividadDeCampo"
         android:text="Agregar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spFormulario" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCargarImagen" />
 
     <EditText
         android:id="@+id/txtUbicacion"
@@ -200,8 +200,37 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Seleccionar hora...        *"
+        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/txtViewFecha"
-        app:layout_constraintStart_toEndOf="@+id/txtViewFecha" /><![CDATA[
+        app:layout_constraintStart_toEndOf="@+id/txtViewFecha" />
+
+    <TextView
+        android:id="@+id/txtCargarImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="52dp"
+        android:text="Cargar imagen..."
+        android:textColor="#4CAF50"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/btnCamara"
+        app:layout_constraintTop_toBottomOf="@+id/spFormulario" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCamara"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="#4CAF50"
+        android:clickable="true"
+        android:onClick="cargarImagen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spFormulario"
+        app:rippleColor="@color/white"
+        app:srcCompat="@drawable/ic_baseline_camera_alt_24" /><![CDATA[
+
+
 
 
 
@@ -214,6 +243,7 @@
 
 
     />
+
 
 
 

@@ -1,24 +1,24 @@
 package com.utec.grupalsemana2.presentacion;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.MutableLiveData;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
-import android.graphics.Region;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,7 +41,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.utec.grupalsemana2.R;
-import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.interfaces.DepartamentoApi;
 import com.utec.grupalsemana2.interfaces.FormularioApi;
 import com.utec.grupalsemana2.interfaces.LocalidadApi;
@@ -61,17 +60,11 @@ import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.sesion.Sesion;
 import com.utec.grupalsemana2.utilidades.FormatoFecha;
 
-import java.text.Normalizer;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AltaActividadDeCampo extends AppCompatActivity {
 
@@ -117,8 +110,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private Spinner spDepartamento;
     private Spinner spLocalidad;
     private Spinner spFormulario;
+    private TextView txtCargarImagen;
 
-    ActividadDeCampoViewModel actividadDeCampoViewModel;
+    private ActividadDeCampoViewModel actividadDeCampoViewModel;
+    private ActivityResultLauncher<Intent> someActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,6 +229,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         //spFormulario = (Spinner) findViewById(R.id.spFormulario);
         spDepartamento = (Spinner) findViewById(R.id.spDepartamento);
         spLocalidad = (Spinner) findViewById(R.id.spLocalidad);
+        txtCargarImagen = findViewById(R.id.txtCargarImagen);
 
         //getFormularios();
         //getRegiones();
@@ -267,6 +263,26 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             }
         };
         timer.scheduleAtFixedRate(timerTask, 0, 5000);*/
+        someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            Bundle extras = data.getExtras();
+                            Bitmap imageBitmap = (Bitmap) extras.get("data");
+                            if(imageBitmap!=null) {
+                                //poner la img en el imgview (setimagebitmap)
+                                System.out.println("TENGO IMAGEN");
+                                txtCargarImagen.setText("Imagen cargada!");
+                            }
+                        } else {
+                            txtCargarImagen.setText("Cargar imagen...");
+                        }
+                    }
+                });
     }
 
     public void CargarActividadDeCampo(View view) {
@@ -610,30 +626,29 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         super.onPause();
     }
 
+    public void cargarImagen(View view) {
+        System.out.println("PUTO");
+        permisosDeCamara();
+
+    }
+
     private void permisosDeCamara() {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA},PackageManager.PERMISSION_GRANTED);
-
-            return;
         } else {
-            abrirCamara();
+            try {
+                abrirCamara();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void abrirCamara() {
+        System.out.println("hola");
         Intent camara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (camara.resolveActivity(getPackageManager())!=null) {
-            startActivityForResult(camara,REQUEST_IMAGE_CAPTURE);
-        }
+        someActivityResultLauncher.launch(camara);
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-        }
-    }
-
 }
+
+
