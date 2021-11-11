@@ -6,18 +6,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.sesion.Sesion;
+import com.utec.grupalsemana2.utilidades.Converters;
 import com.utec.grupalsemana2.utilidades.FormatoFecha;
 
 public class MostraActividadDeCampo extends AppCompatActivity {
@@ -33,16 +40,18 @@ public class MostraActividadDeCampo extends AppCompatActivity {
     TextView txtDepartamento;
     TextView txtLocalidad;
     TextView txtFormulario;
+    TextView txtVerImagen;
     public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;
+    private Bitmap imagenCargada;
+    private Dialog imgDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostra_actividad_de_campo);
-
         txtFecha = (TextView) findViewById(R.id.txtFecha);
         txtResumen = (TextView) findViewById(R.id.txtResumen);
         txtEquipamiento = (TextView) findViewById(R.id.txtEquipamiento);
@@ -54,6 +63,8 @@ public class MostraActividadDeCampo extends AppCompatActivity {
         txtDepartamento = (TextView) findViewById(R.id.txtDepartamento);
         txtLocalidad = (TextView) findViewById(R.id.txtLocalidad);
         txtFormulario = (TextView) findViewById(R.id.txtFormulario);
+        txtVerImagen = (TextView) findViewById(R.id.txtVerImagen);
+        imgDialog = new Dialog(this);
 
         Intent intent = getIntent();
 
@@ -61,6 +72,18 @@ public class MostraActividadDeCampo extends AppCompatActivity {
             ActividadDeCampo actividadDeCampo = intent.getParcelableExtra("actividad-seleccionada");
             cargarActDeCampo(actividadDeCampo);
         }
+
+        txtVerImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(imagenCargada != null) {
+                    mostrarImagen();
+                } else {
+                    System.out.println("F");
+                }
+            }
+        });
+
     }
 
     public void cargarActDeCampo(ActividadDeCampo act) {
@@ -76,6 +99,13 @@ public class MostraActividadDeCampo extends AppCompatActivity {
         txtDepartamento.setText(act.getDepartamento());
         txtLocalidad.setText(act.getLocalidad());
         txtFormulario.setText(act.getFormulario());
+
+        if(act.getImagen().length>0) {
+            imagenCargada = Converters.convertirByteArrayAImagen(act.getImagen());
+        } else {
+            txtVerImagen.setText("No hay imagen");
+            txtVerImagen.setTextColor(Color.GRAY);
+        }
 
     }
 
@@ -166,6 +196,28 @@ public class MostraActividadDeCampo extends AppCompatActivity {
     protected void onPause() {
         handler.removeCallbacks(runnable);
         super.onPause();
+    }
+
+    private void mostrarImagen() {
+
+        imgDialog.setContentView(R.layout.activity_imagen_pop_up);
+        imgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        ImageView imgCerrar = imgDialog.findViewById(R.id.imgCerrar);
+        ImageView imgActividad = imgDialog.findViewById(R.id.imgActividad);
+
+        imgActividad.setImageBitmap(imagenCargada);
+
+        imgDialog.show();
+
+        imgCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgDialog.cancel();
+            }
+        });
+
     }
 
 }

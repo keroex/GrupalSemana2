@@ -22,7 +22,7 @@ public class RestAppClient {
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                     .create();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.5:8080/")
+                    .baseUrl("https://www.iagro.edu.uy/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();

@@ -14,11 +14,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -60,6 +64,8 @@ import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.sesion.Sesion;
 import com.utec.grupalsemana2.utilidades.Converters;
 import com.utec.grupalsemana2.utilidades.FormatoFecha;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,6 +122,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     private ActividadDeCampoViewModel actividadDeCampoViewModel;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
+    private Dialog imgdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +130,17 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         setContentView(R.layout.activity_alta_actividad_de_campo);
         mDisplayDate = (TextView) findViewById(R.id.txtViewFecha);
         mDisplayTime = (TextView) findViewById(R.id.textViewHora);
+        txtCargarImagen = findViewById(R.id.txtCargarImagen);
+        txtResumen = (EditText) findViewById(R.id.txtResumen);
+        txtEquipamiento = (EditText) findViewById(R.id.txtEquipamiento);
+        txtEstacion = (EditText) findViewById(R.id.txtEstacion);
+        txtMetodo = (EditText) findViewById(R.id.txtMetodo);
+        txtUbicacion = (EditText) findViewById(R.id.txtUbicacion);
+        txtZona = (EditText) findViewById(R.id.txtZona);
+        txtTipoDeMuestreo = (EditText) findViewById(R.id.txtTipoDeMuestreo);
+        spDepartamento = (Spinner) findViewById(R.id.spDepartamento);
+        spLocalidad = (Spinner) findViewById(R.id.spLocalidad);
+        imgdialog = new Dialog(this);
 
 
         //DATEPICKER EVENTO
@@ -220,18 +238,8 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         });
 
 
-        txtResumen = (EditText) findViewById(R.id.txtResumen);
-        txtEquipamiento = (EditText) findViewById(R.id.txtEquipamiento);
-        txtEstacion = (EditText) findViewById(R.id.txtEstacion);
-        txtMetodo = (EditText) findViewById(R.id.txtMetodo);
-        txtUbicacion = (EditText) findViewById(R.id.txtUbicacion);
-        txtZona = (EditText) findViewById(R.id.txtZona);
-        txtTipoDeMuestreo = (EditText) findViewById(R.id.txtTipoDeMuestreo);
-        //spRegion = (Spinner) findViewById(R.id.spRegion);
-        //spFormulario = (Spinner) findViewById(R.id.spFormulario);
-        spDepartamento = (Spinner) findViewById(R.id.spDepartamento);
-        spLocalidad = (Spinner) findViewById(R.id.spLocalidad);
-        txtCargarImagen = findViewById(R.id.txtCargarImagen);
+
+
 
         //getFormularios();
         //getRegiones();
@@ -279,13 +287,25 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                                 //poner la img en el imgview (setimagebitmap)
                                 imagenCargada = imagen;
                                 System.out.println("TENGO IMAGEN");
-                                txtCargarImagen.setText("Imagen cargada!");
+                                txtCargarImagen.setText("Ver imagen cargada");
                             }
                         } else {
                             txtCargarImagen.setText("Cargar imagen...");
                         }
                     }
                 });
+
+        txtCargarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(imagenCargada != null) {
+                    mostrarImagen();
+                } else {
+                    System.out.println("F");
+                }
+            }
+        });
+
     }
 
     public void CargarActividadDeCampo(View view) {
@@ -655,6 +675,29 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         Intent camara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         someActivityResultLauncher.launch(camara);
     }
+
+    private void mostrarImagen() {
+
+        imgdialog.setContentView(R.layout.activity_imagen_pop_up);
+        imgdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        ImageView imgCerrar = imgdialog.findViewById(R.id.imgCerrar);
+        ImageView imgActividad = imgdialog.findViewById(R.id.imgActividad);
+
+        imgActividad.setImageBitmap(imagenCargada);
+
+        imgdialog.show();
+
+        imgCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgdialog.cancel();
+            }
+        });
+
+    }
+
 }
 
 

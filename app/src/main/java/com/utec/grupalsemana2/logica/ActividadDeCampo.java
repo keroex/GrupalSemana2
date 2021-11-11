@@ -92,6 +92,8 @@ public class ActividadDeCampo implements Parcelable {
         usuario = in.readString();
         departamento = in.readString();
         formulario = in.readString();
+        imagen = new byte[in.readInt()];
+        in.readByteArray(imagen);
     }
 
     public static final Creator<ActividadDeCampo> CREATOR = new Creator<ActividadDeCampo>() {
@@ -297,6 +299,9 @@ public class ActividadDeCampo implements Parcelable {
         parcel.writeString(usuario);
         parcel.writeString(departamento);
         parcel.writeString(formulario);
-        parcel.writeByteArray(imagen);
+        if(imagen!=null) {
+            parcel.writeInt(imagen.length);
+            parcel.writeByteArray(imagen);
+        }
     }
 }
