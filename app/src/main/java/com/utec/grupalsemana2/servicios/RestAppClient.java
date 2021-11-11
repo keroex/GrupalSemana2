@@ -11,10 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestAppClient {
 
-    private static OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(100, TimeUnit.SECONDS)
-            .readTimeout(100,TimeUnit.SECONDS)
-            .build();
+    //private static OkHttpClient client = new OkHttpClient.Builder()
+    private static OkHttpClient client = UnsafeOkHttpClient.getUnsafeOkHttpClient();
 
     private static Retrofit retrofit;
 
@@ -24,7 +22,8 @@ public class RestAppClient {
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                     .create();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.10.2:8080/")
+                    .baseUrl("https://www.iagro.edu.uy/")
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
