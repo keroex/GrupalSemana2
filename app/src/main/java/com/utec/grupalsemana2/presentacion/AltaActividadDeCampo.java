@@ -58,6 +58,7 @@ import com.utec.grupalsemana2.models.LocalidadViewModel;
 import com.utec.grupalsemana2.models.RegionViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.sesion.Sesion;
+import com.utec.grupalsemana2.utilidades.Converters;
 import com.utec.grupalsemana2.utilidades.FormatoFecha;
 
 import java.text.SimpleDateFormat;
@@ -86,6 +87,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     LocalidadViewModel localidadViewModel;
     FormularioViewModel formularioViewModel;
     private static int REQUEST_IMAGE_CAPTURE = 1;
+    private Bitmap imagenCargada;
 
     public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
     private Handler handler;
@@ -272,9 +274,10 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                             // There are no request codes
                             Intent data = result.getData();
                             Bundle extras = data.getExtras();
-                            Bitmap imageBitmap = (Bitmap) extras.get("data");
-                            if(imageBitmap!=null) {
+                            Bitmap imagen = (Bitmap) extras.get("data");
+                            if(imagen!=null) {
                                 //poner la img en el imgview (setimagebitmap)
+                                imagenCargada = imagen;
                                 System.out.println("TENGO IMAGEN");
                                 txtCargarImagen.setText("Imagen cargada!");
                             }
@@ -316,6 +319,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             act.setIdusuario(Sesion.getInstancia().getUsuarioLogueado().getIdUsuario());
             act.setUsuario(Sesion.getInstancia().getUsuarioLogueado().getNombreUsuario());
             act.setTipoDeMuestreo(this.txtTipoDeMuestreo.getText().toString());
+            if(imagenCargada != null) {
+                act.setImagen(Converters.convertirImagenAByteArray(imagenCargada));
+            }
 
 
             if (validarCampos(act)) {

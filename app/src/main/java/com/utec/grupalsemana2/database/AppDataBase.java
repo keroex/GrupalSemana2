@@ -19,7 +19,7 @@ import com.utec.grupalsemana2.logica.FormularioDTO;
 import com.utec.grupalsemana2.logica.LocalidadDTO;
 import com.utec.grupalsemana2.logica.RegionDTO;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
-import com.utec.grupalsemana2.servicios.Converters;
+import com.utec.grupalsemana2.utilidades.Converters;
 
 @Database(entities = {ActividadDeCampo.class, UsuarioDTO.class, DepartamentoDTO.class, FormularioDTO.class, LocalidadDTO.class, RegionDTO.class}, version = 1)
 @TypeConverters({Converters.class})
