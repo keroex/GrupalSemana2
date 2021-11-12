@@ -11,7 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestAppClient {
 
-    //private static OkHttpClient client = new OkHttpClient.Builder()
     private static OkHttpClient client = UnsafeOkHttpClient.getUnsafeOkHttpClient();
 
     private static Retrofit retrofit;

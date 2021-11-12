@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -42,7 +43,6 @@ public class ServicioFormularios extends Service {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_FORMULARIOS", "run" );
                 if (contador < 3) {
                     contador++;
                 }
@@ -64,7 +64,6 @@ public class ServicioFormularios extends Service {
             }
         };
         handler.postDelayed(runnable, tiempo);
-        Log.i("SERVICIO_FORMULARIOS", "Servicio iniciado " );
 
         return START_STICKY;
     }
@@ -72,7 +71,6 @@ public class ServicioFormularios extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_FORMULARIOS", "Servicio destruido " );
     }
 
 
@@ -80,7 +78,6 @@ public class ServicioFormularios extends Service {
         formularioViewModel = new FormularioViewModel(getApplication());
         List<FormularioDTO> formulariosBD = formularioViewModel.getFormularios();
         getFormulariosRest();
-        System.out.println("Cantidad de formularios en BD = " + formulariosBD.size());
 
         if (formulariosRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -93,14 +90,10 @@ public class ServicioFormularios extends Service {
                 }
                 if (existe) {
                     formularioViewModel.update(r);
-                    System.out.println("Actualice la formulario con id = " + r.getIdformulario());
                 } else {
                     formularioViewModel.insert(r);
-                    System.out.println("Agregue la formulario con id = " + r.getIdformulario());
                 }
             }
-            System.out.println("Cantidad de formularios en Rest = " + formulariosRest.getValue().size());
-            System.out.println("Cantidad de formularios en BD = " + formulariosBD.size());
 
             //Si esta en la bd y no en el rest borro
             for (FormularioDTO rdto : formulariosBD) {
@@ -112,7 +105,6 @@ public class ServicioFormularios extends Service {
                 }
                 if (!encontre) {
                     formularioViewModel.delete(rdto);
-                    System.out.println("Borre la formulario con id = " + rdto.getIdformulario());
                 }
 
             }
@@ -136,7 +128,7 @@ public class ServicioFormularios extends Service {
             }
             @Override
             public void onFailure(Call<List<FormularioDTO>> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "Hubo un problema al actualizar los formularios\n Si el problema persiste contactese con el administrador.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -27,7 +27,6 @@ public class RegionRepository {
 
     public void delete(RegionDTO regionDTO) {
         regionDao.delete(regionDTO);
-        System.out.println("ELIMINO LA REGIOB");
     }
 
     public int count() { return regionDao.count();    }

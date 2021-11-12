@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -43,9 +44,6 @@ public class ServicioDepartamentos extends Service {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_DEPARTAMENTOS", "run" );
-                ServicioDepartamentos.sincronizarAsyncTask sincronizarAsyncTask = new ServicioDepartamentos.sincronizarAsyncTask();
-                //sincronizarAsyncTask.execute();
                 if (contador < 3) {
                     contador++;
                 }
@@ -60,19 +58,12 @@ public class ServicioDepartamentos extends Service {
 
                 if (Sesion.isHayInternet() && Sesion.isHayRest()) {
                     actualizarDepartamentos();
-
                 }
 
-                /*try {
-                    Thread.sleep(tiempo);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
                 handler.postDelayed(this, tiempo);
             }
         };
         handler.postDelayed(runnable, tiempo);
-        Log.i("SERVICIO_DEPARTAMENTOS", "Servicio iniciado " );
 
         return START_STICKY;
     }
@@ -80,40 +71,13 @@ public class ServicioDepartamentos extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_DEPARTAMENTOS", "Servicio destruido " );
-    }
-
-    private class sincronizarAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            /*
-            try {
-
-                if (Sesion.isHayInternet() && Sesion.isHayRest()) {
-                    actualizarDepartamentos();
-                    if (contador < 3) {
-                        contador++;
-                    }
-                    if (contador == 2) {
-                        tiempo=60000;
-                    }
-                }
-
-                Thread.sleep(tiempo);
-            } catch (Exception e) {
-                Log.i("SERVICIO_DEPARTAMENTOS", "sincronizarAsyncTask ERRROR");
-                e.printStackTrace();
-            }*/
-            return null;
-        }
     }
 
     private void actualizarDepartamentos() {
         departamentoViewModel = new DepartamentoViewModel(getApplication());
         List<DepartamentoDTO> departamentoesBD = departamentoViewModel.getDepartamentos();
         getDepartamentoesRest();
-        System.out.println("Cantidad de departamentoes en BD = " + departamentoesBD.size());
+
 
         if (departamentoesRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -126,14 +90,12 @@ public class ServicioDepartamentos extends Service {
                 }
                 if (existe) {
                     departamentoViewModel.update(r);
-                    System.out.println("Actualice la departamento con id = " + r.getIddepartamento());
+
                 } else {
                     departamentoViewModel.insert(r);
-                    System.out.println("Agregue la departamento con id = " + r.getIddepartamento());
+
                 }
             }
-            System.out.println("Cantidad de departamentoes en Rest = " + departamentoesRest.getValue().size());
-            System.out.println("Cantidad de departamentoes en BD = " + departamentoesBD.size());
 
             //Si esta en la bd y no en el rest borro
             for (DepartamentoDTO rdto : departamentoesBD) {
@@ -145,7 +107,7 @@ public class ServicioDepartamentos extends Service {
                 }
                 if (!encontre) {
                     departamentoViewModel.delete(rdto);
-                    System.out.println("Borre la departamento con id = " + rdto.getIddepartamento());
+
                 }
 
             }
@@ -169,7 +131,7 @@ public class ServicioDepartamentos extends Service {
             }
             @Override
             public void onFailure(Call<List<DepartamentoDTO>> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "Hubo un problema al actualizar los departamentos\n Si el problema persiste contactese con el administrador.", Toast.LENGTH_SHORT).show();
             }
         });
     }

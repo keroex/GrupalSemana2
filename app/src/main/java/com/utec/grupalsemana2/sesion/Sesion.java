@@ -6,8 +6,8 @@ public class Sesion {
 
     private static Sesion instancia;
     private static UsuarioDTO usuarioLogueado;
-    private static boolean hayInternet=true;
-    private static boolean hayRest=true;
+    private static boolean hayInternet=false;
+    private static boolean hayRest=false;
     private static boolean huboPerdidaDeConexion = false;
     private static boolean volvioLaConexionDep = false;
     private static boolean volvioLaConexionform = false;

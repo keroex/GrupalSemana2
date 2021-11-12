@@ -80,13 +80,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private LocalidadApi localidadApi = RestAppClient.getClient().create(LocalidadApi.class);
     private RegionApi regionApi = RestAppClient.getClient().create(RegionApi.class);
     private FormularioApi formularioApi = RestAppClient.getClient().create(FormularioApi.class);
-    //private MutableLiveData<List<FormularioDTO>> formularios = new MutableLiveData<>();
     private List<FormularioDTO> formularios = new ArrayList<>();
-    //private MutableLiveData<List<RegionDTO>> regiones = new MutableLiveData<>();
     private List<RegionDTO> regiones = new ArrayList<>();
-    //private MutableLiveData<List<DepartamentoDTO>> departamentos = new MutableLiveData<>();
     private List<DepartamentoDTO> departamentos = new ArrayList<>();
-    //private MutableLiveData<List<LocalidadDTO>> localidades = new MutableLiveData<>();
     private List<LocalidadDTO> localidades = new ArrayList<>();
     RegionViewModel regionViewModel;
     DepartamentoViewModel departamentoViewModel;
@@ -191,7 +187,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
-                //mes = mes +1;
+
                 String horaString = "";
                 String minutoString = "";
                 if (hora < 10) {
@@ -223,7 +219,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             public void onSuccess(Location location) {
                 if (location != null) {
                     ubicacion = location;
-                    System.out.println("Entre a aca");
                 }
             }
         });
@@ -237,16 +232,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             }
         });
 
-
-
-
-
-        //getFormularios();
-        //getRegiones();
-        //deshabilitarSpinners();
-
-
-        //SPINNER DEPARTAMENTO EVENTO
         spDepartamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -261,32 +246,23 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
+
             }
 
         });
-        /*Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                startService(new Intent(getBaseContext(), ServicioMostrarLog.class));
-            }
-        };
-        timer.scheduleAtFixedRate(timerTask, 0, 5000);*/
+
         someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
                             Intent data = result.getData();
                             Bundle extras = data.getExtras();
                             Bitmap imagen = (Bitmap) extras.get("data");
                             if(imagen!=null) {
                                 //poner la img en el imgview (setimagebitmap)
                                 imagenCargada = imagen;
-                                System.out.println("TENGO IMAGEN");
                                 txtCargarImagen.setText("Ver imagen cargada");
                             }
                         } else {
@@ -300,8 +276,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             public void onClick(View view) {
                 if(imagenCargada != null) {
                     mostrarImagen();
-                } else {
-                    System.out.println("F");
                 }
             }
         });
@@ -346,17 +320,13 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
             if (validarCampos(act)) {
                 actividadDeCampoViewModel = new ActividadDeCampoViewModel(getApplication());
-                //actividadDeCampoViewModel.insert(act, this);
                 actividadDeCampoViewModel.insertDao(act, this);
-                System.out.println("La cantidad de actividades de campo en l BD local es = " + actividadDeCampoViewModel.count());
-
-                //Cambiar por insertDao y probar
 
             } else {
                 Toast.makeText(getApplicationContext(), "Complete los datos obligatorios", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -395,31 +365,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     private void getFormularios() {
         try {
-            /*formularios.setValue(new ArrayList<>());
-            Call<List<FormularioDTO>> call = formularioApi.getFormularios();
-            call.enqueue(new Callback<List<FormularioDTO>>() {
-                @Override
-                public void onResponse(Call<List<FormularioDTO>> call, Response<List<FormularioDTO>> response) {
-                    if(response.isSuccessful()) {
-                        List<FormularioDTO> misFormularios = response.body();
-                        if(misFormularios!=null) {
-                            formularios.setValue(misFormularios);
-                        }
-                        System.out.println("*********************************************");
-                        for (FormularioDTO formularioDTO: formularios.getValue()) {
-                            System.out.println(formularioDTO.toString());
-                        }
-                        cargarSpinnerFormularios(formularios);
-                    } else {
-                        System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<FormularioDTO>> call, Throwable t) {
-                    System.out.println("NO anda");
-                }
-            });*/
             formularioViewModel = new FormularioViewModel(getApplication());
             try {
                 formularios = formularioViewModel.getFormularios();
@@ -464,50 +409,38 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         }
     }
 
-    //private void cargarSpinnerFormularios(MutableLiveData<List<FormularioDTO>> formularios) {
     private void cargarSpinnerFormularios(List<FormularioDTO> formularios) {
         FormularioDTO fDefault = new FormularioDTO();
         fDefault.setNombre("Seleccione formulario...  *");
         fDefault.setIdformulario(0);
-        //formularios.getValue().add(0,fDefault);
         formularios.add(0, fDefault);
-        //ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios.getValue());
         ArrayAdapter<FormularioDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, formularios);
         spFormulario.setAdapter(adaptador);
     }
 
-    //private void cargarSpinnerRegiones(MutableLiveData<List<RegionDTO>> regiones) {
     private void cargarSpinnerRegiones(List<RegionDTO> regiones) {
         RegionDTO rDefault = new RegionDTO();
         rDefault.setNombre("Seleccione region...");
         rDefault.setIdregion(0);
-        //regiones.getValue().add(0,rDefault);
-        //ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones.getValue());
         regiones.add(0, rDefault);
         ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones);
         spRegion.setAdapter(adaptador);
     }
 
-    //private void cargarSpinnerDepartamentos(MutableLiveData<List<DepartamentoDTO>> departamentos) {
     private void cargarSpinnerDepartamentos(List<DepartamentoDTO> departamentos) {
         DepartamentoDTO dDefault = new DepartamentoDTO();
         dDefault.setNombre("Seleccione departamento...");
         dDefault.setIddepartamento(0);
-        //departamentos.getValue().add(0,dDefault);
-        //ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos.getValue());
         departamentos.add(0, dDefault);
         ArrayAdapter<DepartamentoDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, departamentos);
         spDepartamento.setAdapter(adaptador);
     }
 
-    //private void cargarSpinnerLocalidades(MutableLiveData<List<LocalidadDTO>> localidades) {
     private void cargarSpinnerLocalidades(List<LocalidadDTO> localidades) {
         LocalidadDTO lDefault = new LocalidadDTO();
         lDefault.setNombre("Seleccione localidad...");
         lDefault.setIdlocalidad(0);
-        //localidades.getValue().add(0,lDefault);
         localidades.add(0, lDefault);
-        //ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades.getValue());
         ArrayAdapter<LocalidadDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, localidades);
         spLocalidad.setAdapter(adaptador);
     }
@@ -628,7 +561,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parentView) {
-                            // your code here
                         }
 
                     });
@@ -653,7 +585,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     public void cargarImagen(View view) {
-        System.out.println("PUTO");
         permisosDeCamara();
 
     }
@@ -671,7 +602,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     }
 
     private void abrirCamara() {
-        System.out.println("hola");
         Intent camara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         someActivityResultLauncher.launch(camara);
     }

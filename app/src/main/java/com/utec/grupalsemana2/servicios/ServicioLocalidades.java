@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -42,7 +43,6 @@ public class ServicioLocalidades extends Service {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_LOCALIDADES", "run" );
 
                 if (contador < 3) {
                     contador++;
@@ -66,7 +66,6 @@ public class ServicioLocalidades extends Service {
             }
         };
         handler.postDelayed(runnable, tiempo);
-        Log.i("SERVICIO_LOCALIDADES", "Servicio iniciado " );
 
         return START_STICKY;
     }
@@ -74,7 +73,6 @@ public class ServicioLocalidades extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_LOCALIDADES", "Servicio destruido " );
     }
 
 
@@ -82,7 +80,6 @@ public class ServicioLocalidades extends Service {
         localidadViewModel = new LocalidadViewModel(getApplication());
         List<LocalidadDTO> localidadesBD = localidadViewModel.getLocalidades();
         getLocalidadesRest();
-        System.out.println("Cantidad de localidades en BD = " + localidadesBD.size());
 
         if (localidadesRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -95,14 +92,10 @@ public class ServicioLocalidades extends Service {
                 }
                 if (existe) {
                     localidadViewModel.update(r);
-                    System.out.println("Actualice la localidad con id = " + r.getIdlocalidad());
                 } else {
                     localidadViewModel.insert(r);
-                    System.out.println("Agregue la localidad con id = " + r.getIdlocalidad());
                 }
             }
-            System.out.println("Cantidad de localidades en Rest = " + localidadesRest.getValue().size());
-            System.out.println("Cantidad de localidades en BD = " + localidadesBD.size());
 
             //Si esta en la bd y no en el rest borro
             for (LocalidadDTO rdto : localidadesBD) {
@@ -114,7 +107,6 @@ public class ServicioLocalidades extends Service {
                 }
                 if (!encontre) {
                     localidadViewModel.delete(rdto);
-                    System.out.println("Borre la localidad con id = " + rdto.getIdlocalidad());
                 }
 
             }
@@ -138,7 +130,7 @@ public class ServicioLocalidades extends Service {
             }
             @Override
             public void onFailure(Call<List<LocalidadDTO>> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "Hubo un problema al actualizar las localidades\n Si el problema persiste contactese con el administrador.", Toast.LENGTH_SHORT).show();
             }
         });
     }

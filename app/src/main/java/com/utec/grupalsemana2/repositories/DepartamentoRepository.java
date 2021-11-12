@@ -26,7 +26,6 @@ public class DepartamentoRepository {
 
     public void delete(DepartamentoDTO departamentoDTO) {
         departamentoDao.delete(departamentoDTO);
-        System.out.println("ELIMINO LA REGIOB");
     }
 
     public int count() { return departamentoDao.count();    }

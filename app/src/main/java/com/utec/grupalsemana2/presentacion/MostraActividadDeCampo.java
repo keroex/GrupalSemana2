@@ -41,7 +41,7 @@ public class MostraActividadDeCampo extends AppCompatActivity {
     TextView txtLocalidad;
     TextView txtFormulario;
     TextView txtVerImagen;
-    public static final long PERIODO = 1000; // 1 segundos (1 * 1000 millisegundos)
+    public static final long PERIODO = 1000;
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;

@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.utec.grupalsemana2.logica.ActividadDeCampo;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.repositories.UsuarioRepository;
 

@@ -22,15 +22,17 @@
 
             <ImageView
                 android:id="@+id/iconImageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="108dp"
+                android:layout_height="176dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 app:srcCompat="@drawable/ic_grass_black_24dp" />
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
@@ -58,12 +60,42 @@
                     android:layout_height="wrap_content"
                     android:text="16/9/2021"
                     android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/regionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtViewRegion"
+                    android:textSize="16sp"/>
+
                 <TextView
                     android:id="@+id/departamentoTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Departamento: Salto"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/localidadTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Localidad"
                     android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/ubicacionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicacion"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/equipamientoTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Equipamiento"
+                    android:textSize="16sp"    />
+
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

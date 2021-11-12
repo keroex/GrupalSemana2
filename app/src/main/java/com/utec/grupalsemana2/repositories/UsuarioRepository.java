@@ -31,7 +31,5 @@ public class UsuarioRepository {
     }
 
 }
-// si el usuario esta en la base de datos local, lo tomo de ahi, sino sigo con el paso 2
 
-// 2 si el usuario existe en la base de datos del servidor, lo creo en la local.
 

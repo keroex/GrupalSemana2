@@ -10,14 +10,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.OnlineApi;
-import com.utec.grupalsemana2.interfaces.UsuarioApi;
-import com.utec.grupalsemana2.logica.UsuarioDTO;
 import com.utec.grupalsemana2.sesion.Sesion;
 
 import retrofit2.Call;
@@ -31,6 +24,8 @@ public class ServicioInternet extends Service {
     private Handler handler = new Handler();
     private Boolean onlineREST;
     private OnlineApi onlineApi = RestAppClient.getClient().create(OnlineApi.class);
+    private Boolean yaPaso = false;
+    int tiempo = 1000;
 
     public ServicioInternet() {
     }
@@ -42,15 +37,17 @@ public class ServicioInternet extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("SERVICIO_INTERNET", "Servicio iniciado " );
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_INTERNET", "run" );
                 sincronizarAsyncTask sincronizarAsyncTask = new sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
+                if (yaPaso) {
+                    tiempo=5000;
+                }
+                yaPaso=true;
+                handler.postDelayed(this, tiempo);
 
-                handler.postDelayed(this, 500 * 10);
             }
         };
         handler.postDelayed(runnable, 0);
@@ -64,7 +61,6 @@ public class ServicioInternet extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_INTERNET", "Servicio destruido " );
     }
 
     private class sincronizarAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -80,7 +76,6 @@ public class ServicioInternet extends Service {
                 boolean conexionAhora = Sesion.isHayInternet() && Sesion.isHayRest();
                 if ((conexionAntes == true && conexionAhora == false) || (conexionAntes == false && conexionAhora == false)) {
                     Sesion.setHuboPerdidaDeConexion(true);
-                    Log.i("SERVICIO_INTERNET", "Hubo perdida de conexion" );
                 }
 
                 if (Sesion.isHuboPerdidaDeConexion() && conexionAhora == true) {
@@ -95,7 +90,7 @@ public class ServicioInternet extends Service {
 
                 Thread.sleep(1000);
             } catch (Exception e) {
-                Log.i("SERVICIO_INTERNET", "sincronizarAsyncTask ERRROR");
+                Log.e("SERVICIO_INTERNET", "sincronizarAsyncTask ERRROR");
             }
             return null;
         }
@@ -108,21 +103,14 @@ public class ServicioInternet extends Service {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
                     onlineREST = response.body();
-                    Log.i("SERVICIO_INTERNET", "El rest responde" );
-
-
 
                 } else {
                     onlineREST = false;
-                    Log.i("SERVICIO_INTERNET", "El rest no responde" );
-
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.i("SERVICIO_INTERNET", "El rest no responde" );
-
                 onlineREST =false;
             }
         });
@@ -139,11 +127,9 @@ public class ServicioInternet extends Service {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if (isConnected) {
-            Log.i("SERVICIO_INTERNET", "Conectado a Internet" );
             Sesion s = Sesion.getInstancia();
             s.setHayInternet(true);
         } else {
-            Log.i("SERVICIO_INTERNET", "Sin conexion a Internet" );
             Sesion s = Sesion.getInstancia();
             s.setHayInternet(false);
         }

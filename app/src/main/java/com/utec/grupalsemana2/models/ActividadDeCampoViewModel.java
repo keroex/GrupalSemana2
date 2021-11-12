@@ -26,14 +26,12 @@ public class ActividadDeCampoViewModel extends AndroidViewModel {
         actividadDeCampos = actividadDeCampoRepository.getActividadDeCampos();
     }
 
-    //public LiveData<List<ActividadDeCampo>> getActividadDeCampos() {        return actividadDeCampos;    }
-
     public List<ActividadDeCampo> getActividadDeCampos() {
         return actividadDeCampos;
     }
 
     public void insertRest(ActividadDeCampo actividadDeCampo){
-        actividadDeCampoRepository.insertRest(actividadDeCampo);
+        actividadDeCampoRepository.insertRest(actividadDeCampo, getApplication());
     }
 
     public void insertDao(ActividadDeCampo actividadDeCampo, Context context){

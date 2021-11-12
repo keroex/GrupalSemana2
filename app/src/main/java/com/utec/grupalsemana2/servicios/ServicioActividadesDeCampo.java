@@ -35,7 +35,6 @@ public class ServicioActividadesDeCampo extends Service {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_ACTIVIDADES", "run" );
                 ServicioActividadesDeCampo.sincronizarAsyncTask sincronizarAsyncTask = new ServicioActividadesDeCampo.sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
 
@@ -43,7 +42,6 @@ public class ServicioActividadesDeCampo extends Service {
             }
         };
         handler.postDelayed(runnable, 0);
-        Log.i("SERVICIO_ACTIVIDADES", "Servicio iniciado " );
 
         return START_STICKY;
     }
@@ -53,7 +51,6 @@ public class ServicioActividadesDeCampo extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_ACTIVIDADES", "Servicio destruido " );
     }
 
     private class sincronizarAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -67,17 +64,13 @@ public class ServicioActividadesDeCampo extends Service {
                     actualizarActividades();
                     Sesion.setHayQueRecargar(true);
                 }
-                if (actividadDeCampoViewModel.count()==0) {
-                    //Sesion.setHayQueRecargar(false);
-                }
                 if (Sesion.isHayInternet() && Sesion.isHayRest() && actividadDeCampoViewModel.count()>0) {
                     Sesion.setHayQueRecargar(true);
                 }
 
                 Thread.sleep(10000);
             } catch (Exception e) {
-                Log.i("SERVICIO_ACTIVIDADES", "sincronizarAsyncTask ERRROR");
-                e.printStackTrace();
+                Log.e("SERVICIO_ACTIVIDADES", "Error en el servicio de Actividades de Campo");
             }
             return null;
         }
@@ -93,7 +86,6 @@ public class ServicioActividadesDeCampo extends Service {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("Se agrego la actividad " + actividadDeCampoVieja.getResumen() + " a la BD del rest");
             if(Sesion.getInstancia().isActualizaActividadesOk()) {
                 actividadDeCampoViewModel.delete(actividadDeCampoVieja);
                 Sesion.getInstancia().setActualizaActividadesOk(false);
@@ -102,8 +94,6 @@ public class ServicioActividadesDeCampo extends Service {
 
 
         }
-
-        System.out.println("La cantidad de actividades de campo en l BD local es = " + actividadDeCampoViewModel.count());
     }
 
 }

@@ -57,6 +57,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_listar_actividades_de_campo);
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -77,7 +78,7 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
 
     private void getActividadesDeCampo(UsuarioDTO usuarioLogueado) {
 
-        actividadesDeCampo.setValue(new ArrayList<>());
+        MutableLiveData<List<ActividadDeCampo>> ac = new MutableLiveData<List<ActividadDeCampo>>();
         Call<List<ActividadDeCampo>> call = actividadDeCampoAPI.getActividadesDeCampoXUsuario(usuarioLogueado.getIdUsuario());
 
         call.enqueue(new Callback<List<ActividadDeCampo>>() {
@@ -87,9 +88,15 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
                 if (response.isSuccessful()) {
                     List<ActividadDeCampo> actividades = response.body();
                     if (actividades != null) {
-                        actividadesDeCampo.setValue(actividades);
+                        ac.setValue(actividades);
                     }
-                    listarActividadesDeCampo(actividadesDeCampo.getValue());
+                    if (actividadesDeCampo.getValue() == null) {
+                        actividadesDeCampo.setValue(ac.getValue());
+                        listarActividadesDeCampo(actividadesDeCampo.getValue());
+                    }else if (ac.getValue().size()!=actividadesDeCampo.getValue().size()) {
+                        actividadesDeCampo.setValue(ac.getValue());
+                        listarActividadesDeCampo(actividadesDeCampo.getValue());
+                    }
                 }
 
             }
@@ -107,24 +114,19 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
         txtNoHay.setVisibility(View.GONE);
         iconoNoHay = findViewById(R.id.imgNoHay);
         iconoNoHay.setVisibility(View.GONE);
-
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLista);
         if (actividadesDeCampo.size() == 0) {
             txtNoHay.setVisibility(View.VISIBLE);
             iconoNoHay.setVisibility(View.VISIBLE);
+            recyclerView.setAdapter(null);
         } else {
             ListActividadAdapter listActividadAdapter = new ListActividadAdapter(actividadesDeCampo, this, this);
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLista);
+
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(listActividadAdapter);
         }
 
-
-
-        //if (actividadesDeCampo.getValue().size() == 0) {
-        //    txtNoHay.setVisibility(View.VISIBLE);
-        //    iconoNoHay.setVisibility(View.VISIBLE);
-        //}
     }
 
     @Override

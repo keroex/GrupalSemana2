@@ -27,7 +27,6 @@ public class FormularioRepository {
 
     public void delete(FormularioDTO formularioDTO) {
         formularioDao.delete(formularioDTO);
-        System.out.println("ELIMINO LA REGIOB");
     }
 
     public int count() { return formularioDao.count();    }

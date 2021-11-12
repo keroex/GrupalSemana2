@@ -46,23 +46,21 @@ public class ActividadDeCampoRepository {
     public List<ActividadDeCampo> getActividadDeCampos() { return actividadDeCampos;    }
 
 
-    public void insertRest (ActividadDeCampo actividadDeCampo) {
+    public void insertRest (ActividadDeCampo actividadDeCampo, Context context) {
 
         actividadDeCampoAPI.agregarActividadDeCampo(actividadDeCampo).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
-                    System.out.println("SE AGREGO LA ACTIVIDAD DE CAMPO A LA BD");
                     Sesion.getInstancia().setActualizaActividadesOk(true);
                 } else {
-                    System.out.println("RESPONSE NOT SUCCESSFUL" + response.message());
                     Sesion.getInstancia().setActualizaActividadesOk(false);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                System.out.println("NO SE AGREGO" + t.fillInStackTrace().toString());
+                Toast.makeText(context, "Hubo un problema al actualizar la actividad de campo\n El problema persiste contactese con el administrador.", Toast.LENGTH_SHORT).show();
                 Sesion.getInstancia().setActualizaActividadesOk(false);
             }
         });
@@ -85,7 +83,6 @@ public class ActividadDeCampoRepository {
 
     public void delete(ActividadDeCampo actividadDeCampo) {
         actividadDeCampoDao.delete(actividadDeCampo);
-        System.out.println("ELIMINO LA ACT");
     }
 
     public int count() { return actividadDeCampoDao.count();    }

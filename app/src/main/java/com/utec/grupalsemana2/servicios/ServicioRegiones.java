@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -45,9 +46,6 @@ public class ServicioRegiones extends Service {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_REGIONES", "run" );
-                //ServicioRegiones.sincronizarAsyncTask sincronizarAsyncTask = new ServicioRegiones.sincronizarAsyncTask();
-                //sincronizarAsyncTask.execute();
                 if (contador < 3) {
                     contador++;
                 }
@@ -69,7 +67,6 @@ public class ServicioRegiones extends Service {
             }
         };
         handler.postDelayed(runnable, tiempo);
-        Log.i("SERVICIO_REGIONES", "Servicio iniciado " );
 
         return START_STICKY;
     }
@@ -77,40 +74,12 @@ public class ServicioRegiones extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_REGIONES", "Servicio destruido " );
-    }
-
-    private class sincronizarAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            /*try {
-
-                if (Sesion.isHayInternet() && Sesion.isHayRest()) {
-                    actualizarRegiones();
-                    if (contador < 3) {
-                        contador++;
-                    }
-                    if (contador == 2) {
-                        tiempo=60000;
-                    }
-                }
-
-                Thread.sleep(tiempo);
-            } catch (Exception e) {
-                Log.i("SERVICIO_REGIONES", "sincronizarAsyncTask ERRROR");
-                e.printStackTrace();
-            }*/
-            return null;
-        }
     }
 
     private void actualizarRegiones() {
         regionViewModel = new RegionViewModel(getApplication());
         List<RegionDTO> regionesBD = regionViewModel.getRegions();
         getRegionesRest();
-        System.out.println("Cantidad de regiones en BD = " + regionesBD.size());
 
         if (regionesRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -123,14 +92,10 @@ public class ServicioRegiones extends Service {
                 }
                 if (existe) {
                     regionViewModel.update(r);
-                    System.out.println("Actualice la region con id = " + r.getIdregion());
                 } else {
                     regionViewModel.insert(r);
-                    System.out.println("Agregue la region con id = " + r.getIdregion());
                 }
             }
-            System.out.println("Cantidad de regiones en Rest = " + regionesRest.getValue().size());
-            System.out.println("Cantidad de regiones en BD = " + regionesBD.size());
 
             //Si esta en la bd y no en el rest borro
             for (RegionDTO rdto : regionesBD) {
@@ -142,7 +107,6 @@ public class ServicioRegiones extends Service {
                 }
                 if (!encontre) {
                     regionViewModel.delete(rdto);
-                    System.out.println("Borre la region con id = " + rdto.getIdregion());
                 }
 
             }
@@ -151,9 +115,6 @@ public class ServicioRegiones extends Service {
     }
 
     private void getRegionesRest() {
-        //liveData.postValue(value)
-        //regionesRest.setValue(new ArrayList<>());
-        //regionesRest.postValue(new ArrayList<>());
         Call<List<RegionDTO>> call = regionApi.getRegiones();
         call.enqueue(new Callback<List<RegionDTO>>() {
             @Override
@@ -168,7 +129,7 @@ public class ServicioRegiones extends Service {
             }
             @Override
             public void onFailure(Call<List<RegionDTO>> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "Hubo un problema al actualizar las regiones\n Si el problema persiste contactese con el administrador.", Toast.LENGTH_SHORT).show();
             }
         });
     }
