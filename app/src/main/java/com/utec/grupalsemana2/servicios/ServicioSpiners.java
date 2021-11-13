@@ -63,18 +63,8 @@ public class ServicioSpiners extends Service {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("SERVICIO_REGIONES", "run");
-                //ServicioSpiners.sincronizarAsyncTask sincronizarAsyncTask = new ServicioSpiners.sincronizarAsyncTask();
-                //sincronizarAsyncTask.execute();
-                /*if (Sesion.isHayInternet() && Sesion.isHayRest()) {
-                    actualizarRegiones();
-                    if (contador < 3) {
-                        contador++;
-                    }
-                    if (contador == 2) {
-                        tiempo=60000;
-                    }
-                }*/
+                //Log.i("SERVICIO_REGIONES", "run");
+
                 regionViewModel = new RegionViewModel(getApplication());
                 departamentoViewModel = new DepartamentoViewModel(getApplication());
                 localidadViewModel = new LocalidadViewModel(getApplication());
@@ -110,7 +100,7 @@ public class ServicioSpiners extends Service {
             }
         };
         handler.postDelayed(runnable, 0);
-        Log.i("SERVICIO_REGIONES", "Servicio iniciado " );
+
 
         return START_STICKY;
     }
@@ -118,7 +108,7 @@ public class ServicioSpiners extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("SERVICIO_REGIONES", "Servicio destruido " );
+
     }
 
     private class sincronizarAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -131,10 +121,10 @@ public class ServicioSpiners extends Service {
     }
 
     private void actualizarRegiones() {
-        //regionViewModel = new RegionViewModel(getApplication());
+
         List<RegionDTO> regionesBD = regionViewModel.getRegions();
         getRegionesRest();
-        System.out.println("Cantidad de regiones en BD = " + regionesBD.size());
+
 
         if (regionesRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -147,14 +137,12 @@ public class ServicioSpiners extends Service {
                 }
                 if (existe) {
                     regionViewModel.update(r);
-                    System.out.println("Actualice la region con id = " + r.getIdregion());
+
                 } else {
                     regionViewModel.insert(r);
-                    System.out.println("Agregue la region con id = " + r.getIdregion());
+
                 }
             }
-            System.out.println("Cantidad de regiones en Rest = " + regionesRest.getValue().size());
-            System.out.println("Cantidad de regiones en BD = " + regionesBD.size());
 
             //Si esta en la bd y no en el rest borro
             for (RegionDTO rdto : regionesBD) {
@@ -166,7 +154,7 @@ public class ServicioSpiners extends Service {
                 }
                 if (!encontre) {
                     regionViewModel.delete(rdto);
-                    System.out.println("Borre la region con id = " + rdto.getIdregion());
+
                 }
 
             }
@@ -196,10 +184,10 @@ public class ServicioSpiners extends Service {
     }
 
     private void actualizarDepartamentos() {
-        //departamentoViewModel = new DepartamentoViewModel(getApplication());
+
         List<DepartamentoDTO> departamentoesBD = departamentoViewModel.getDepartamentos();
         getDepartamentoesRest();
-        System.out.println("Cantidad de departamentoes en BD = " + departamentoesBD.size());
+
 
         if (departamentoesRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -212,14 +200,13 @@ public class ServicioSpiners extends Service {
                 }
                 if (existe) {
                     departamentoViewModel.update(r);
-                    System.out.println("Actualice la departamento con id = " + r.getIddepartamento());
+
                 } else {
                     departamentoViewModel.insert(r);
-                    System.out.println("Agregue la departamento con id = " + r.getIddepartamento());
+
                 }
             }
-            System.out.println("Cantidad de departamentoes en Rest = " + departamentoesRest.getValue().size());
-            System.out.println("Cantidad de departamentoes en BD = " + departamentoesBD.size());
+
 
             //Si esta en la bd y no en el rest borro
             for (DepartamentoDTO rdto : departamentoesBD) {
@@ -231,7 +218,7 @@ public class ServicioSpiners extends Service {
                 }
                 if (!encontre) {
                     departamentoViewModel.delete(rdto);
-                    System.out.println("Borre la departamento con id = " + rdto.getIddepartamento());
+
                 }
 
             }
@@ -261,10 +248,10 @@ public class ServicioSpiners extends Service {
     }
 
     private void actualizarLocalidades() {
-        //localidadViewModel = new LocalidadViewModel(getApplication());
+
         List<LocalidadDTO> localidadesBD = localidadViewModel.getLocalidades();
         getLocalidadesRest();
-        System.out.println("Cantidad de localidades en BD = " + localidadesBD.size());
+
 
         if (localidadesRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -277,14 +264,13 @@ public class ServicioSpiners extends Service {
                 }
                 if (existe) {
                     localidadViewModel.update(r);
-                    System.out.println("Actualice la localidad con id = " + r.getIdlocalidad());
+
                 } else {
                     localidadViewModel.insert(r);
-                    System.out.println("Agregue la localidad con id = " + r.getIdlocalidad());
+
                 }
             }
-            System.out.println("Cantidad de localidades en Rest = " + localidadesRest.getValue().size());
-            System.out.println("Cantidad de localidades en BD = " + localidadesBD.size());
+
 
             //Si esta en la bd y no en el rest borro
             for (LocalidadDTO rdto : localidadesBD) {
@@ -296,7 +282,7 @@ public class ServicioSpiners extends Service {
                 }
                 if (!encontre) {
                     localidadViewModel.delete(rdto);
-                    System.out.println("Borre la localidad con id = " + rdto.getIdlocalidad());
+
                 }
 
             }
@@ -329,7 +315,7 @@ public class ServicioSpiners extends Service {
         formularioViewModel = new FormularioViewModel(getApplication());
         List<FormularioDTO> formulariosBD = formularioViewModel.getFormularios();
         getFormulariosRest();
-        System.out.println("Cantidad de formularios en BD = " + formulariosBD.size());
+
 
         if (formulariosRest.getValue()!=null) {
             //Si existe actualizo y sino agrego
@@ -342,14 +328,13 @@ public class ServicioSpiners extends Service {
                 }
                 if (existe) {
                     formularioViewModel.update(r);
-                    System.out.println("Actualice la formulario con id = " + r.getIdformulario());
+
                 } else {
                     formularioViewModel.insert(r);
-                    System.out.println("Agregue la formulario con id = " + r.getIdformulario());
+
                 }
             }
-            System.out.println("Cantidad de formularios en Rest = " + formulariosRest.getValue().size());
-            System.out.println("Cantidad de formularios en BD = " + formulariosBD.size());
+
 
             //Si esta en la bd y no en el rest borro
             for (FormularioDTO rdto : formulariosBD) {
@@ -361,7 +346,7 @@ public class ServicioSpiners extends Service {
                 }
                 if (!encontre) {
                     formularioViewModel.delete(rdto);
-                    System.out.println("Borre la formulario con id = " + rdto.getIdformulario());
+
                 }
 
             }
