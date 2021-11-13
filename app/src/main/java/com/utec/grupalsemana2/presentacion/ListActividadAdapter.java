@@ -1,13 +1,20 @@
 package com.utec.grupalsemana2.presentacion;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -73,6 +80,7 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
             itemView.setOnClickListener(this);
         }
 
+
         void bindData(final ActividadDeCampo actividad) {
             this.usuario.setText(actividad.getResumen());
             this.fecha.setText(FormatoFecha.DateToString(actividad.getFecha()));
@@ -84,6 +92,9 @@ public class ListActividadAdapter extends RecyclerView.Adapter<ListActividadAdap
 
             if(actividad.getImagen()!=null && actividad.getImagen().length>0) {
                 iconImage.setImageBitmap(Converters.convertirByteArrayAImagen(actividad.getImagen()));
+            } else {
+                iconImage.setImageBitmap(Converters.getBitmapFromDrawable(contexto,R.drawable.ic_grass_black_24dp));
+
             }
 
         }

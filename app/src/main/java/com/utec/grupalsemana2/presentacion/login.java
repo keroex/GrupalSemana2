@@ -4,40 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.util.Timer;
 
 import com.utec.grupalsemana2.R;
-import com.utec.grupalsemana2.interfaces.FormularioApi;
-import com.utec.grupalsemana2.interfaces.OnlineApi;
 import com.utec.grupalsemana2.interfaces.UsuarioApi;
 import com.utec.grupalsemana2.logica.UsuarioDTO;
-import com.utec.grupalsemana2.models.ActividadDeCampoViewModel;
 import com.utec.grupalsemana2.models.UsuarioViewModel;
 import com.utec.grupalsemana2.servicios.RestAppClient;
 import com.utec.grupalsemana2.servicios.ServicioActividadesDeCampo;
-import com.utec.grupalsemana2.servicios.ServicioDepartamentos;
-import com.utec.grupalsemana2.servicios.ServicioFormularios;
 import com.utec.grupalsemana2.servicios.ServicioInternet;
-import com.utec.grupalsemana2.servicios.ServicioLocalidades;
-import com.utec.grupalsemana2.servicios.ServicioRegiones;
+import com.utec.grupalsemana2.servicios.ServicioSpiners;
 import com.utec.grupalsemana2.sesion.Sesion;
-
-import java.util.List;
-import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,10 +49,7 @@ public class login extends AppCompatActivity {
         txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
         startService(new Intent(getBaseContext(), ServicioInternet.class));
         startService(new Intent(getBaseContext(), ServicioActividadesDeCampo.class));
-        startService(new Intent(getBaseContext(), ServicioRegiones.class));
-        startService(new Intent(getBaseContext(), ServicioDepartamentos.class));
-        startService(new Intent(getBaseContext(), ServicioLocalidades.class));
-        startService(new Intent(getBaseContext(), ServicioFormularios.class));
+        startService(new Intent(getBaseContext(), ServicioSpiners.class));
         usuarioViewModel = new UsuarioViewModel(getApplication());
     }
 

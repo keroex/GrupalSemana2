@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.utec.grupalsemana2.R;
 import com.utec.grupalsemana2.interfaces.ActividadDeCampoAPI;
 import com.utec.grupalsemana2.logica.ActividadDeCampo;
@@ -53,10 +54,12 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     private Handler handler;
     private Runnable runnable;
     private ActionMenuItemView conexion;
+    private FloatingActionButton botonAlta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.activity_listar_actividades_de_campo);
 
@@ -168,6 +171,14 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
             @SuppressLint("RestrictedApi")
             @Override
             public void run() {
+                botonAlta =  findViewById(R.id.botonAlta);
+                if (Sesion.isHabilitaAlta()) {
+                    botonAlta.setVisibility(View.VISIBLE);
+                } else {
+                    botonAlta.setVisibility(View.GONE);
+
+                }
+
                 if (!Sesion.isHayQueRecargar()) {
                     findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                 }

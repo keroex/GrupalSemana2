@@ -36,19 +36,7 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".servicios.ServicioRegiones"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".servicios.ServicioDepartamentos"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".servicios.ServicioLocalidades"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".servicios.ServicioFormularios"
+            android:name=".servicios.ServicioSpiners"
             android:enabled="true"
             android:exported="true" />
 

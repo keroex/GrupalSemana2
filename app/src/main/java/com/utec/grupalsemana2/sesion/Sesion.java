@@ -15,7 +15,15 @@ public class Sesion {
     private static boolean volvioLaConexionLoc = false;
     private static boolean actualizaActividadesOk = false;
     private static boolean hayQueRecargar = false;
+    private static  boolean habilitaAlta = false;
 
+    public static boolean isHabilitaAlta() {
+        return habilitaAlta;
+    }
+
+    public static void setHabilitaAlta(boolean habilitaAlta) {
+        Sesion.habilitaAlta = habilitaAlta;
+    }
 
     public static boolean isActualizaActividadesOk() {
         return actualizaActividadesOk;

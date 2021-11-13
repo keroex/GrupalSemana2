@@ -154,6 +154,15 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             }
         });
 
+        if (spFormulario==null && spRegion== null) {
+            spRegion = (Spinner) findViewById(R.id.spRegion);
+            spFormulario = (Spinner) findViewById(R.id.spFormulario);
+        }
+        if (spFormulario.getAdapter() == null) {
+            getFormularios();
+        }
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String fechaComoCadena = sdf.format(new Date());
         mDisplayDate.setText(fechaComoCadena);
@@ -231,6 +240,30 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                 longitud = "00 ";
             }
         });
+
+        if (spRegion.getAdapter() == null) {
+            //SPINNER REGION EVENTO
+            spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    if (spRegion.getSelectedItemPosition() > 0) {
+                        RegionDTO regionDTO = (RegionDTO) ((Spinner) findViewById(R.id.spRegion)).getSelectedItem();
+                        spDepartamento.setEnabled(true);
+                        getDepartamentos(regionDTO);
+                    } else {
+                        deshabilitarSpinners();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                }
+
+            });
+            getRegiones();
+            deshabilitarSpinners();
+
+        }
 
         spDepartamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -538,36 +571,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
                     txtUbicacion.setText(latitud + ", " + longitud);
                 }
 
-                if (spFormulario==null && spRegion== null) {
-                    spRegion = (Spinner) findViewById(R.id.spRegion);
-                    spFormulario = (Spinner) findViewById(R.id.spFormulario);
-                }
-                if (spFormulario.getAdapter() == null) {
-                   getFormularios();
-                }
-                if (spRegion.getAdapter() == null) {
-                    //SPINNER REGION EVENTO
-                    spRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                            if (spRegion.getSelectedItemPosition() > 0) {
-                                RegionDTO regionDTO = (RegionDTO) ((Spinner) findViewById(R.id.spRegion)).getSelectedItem();
-                                spDepartamento.setEnabled(true);
-                                getDepartamentos(regionDTO);
-                            } else {
-                                deshabilitarSpinners();
-                            }
-                        }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parentView) {
-                        }
-
-                    });
-                    getRegiones();
-                    deshabilitarSpinners();
-
-                }
 
 
 
