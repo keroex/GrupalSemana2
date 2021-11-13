@@ -218,8 +218,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},PackageManager.PERMISSION_GRANTED);
-
-            return;
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.getLastLocation();
+            }
         }
 
 
@@ -377,11 +378,81 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         }
 
         if (actividadDeCampo.getGeopunto().isEmpty()) {
-            this.txtUbicacion.setError("No puede quedar vacío");
+            txtUbicacion.setError("No puede quedar vacío");
             retorno = false;
 
         } else {
-            this.txtUbicacion.setError(null);
+            txtUbicacion.setError(null);
+        }
+
+        if(actividadDeCampo.getEquipamiento().isEmpty()) {
+            txtEquipamiento.setError("No puede quedar vacío");
+            retorno = false;
+        } else {
+            txtEquipamiento.setError(null);
+        }
+
+        if(actividadDeCampo.getTipoDeMuestreo().isEmpty()) {
+            txtTipoDeMuestreo.setError("No puede quedar vacío");
+            retorno = false;
+        } else {
+            txtTipoDeMuestreo.setError(null);
+        }
+
+        if(actividadDeCampo.getMetodoDeMuestreo().isEmpty()) {
+            txtMetodo.setError("No puede quedar vacío");
+            retorno = false;
+        } else {
+            txtMetodo.setError(null);
+        }
+
+        if(actividadDeCampo.getGeopunto().length()>50) {
+            txtUbicacion.setError("La ubicación no puede tener más de 50 caracteres");
+            retorno = false;
+        } else {
+            txtUbicacion.setError(null);
+        }
+
+        if(actividadDeCampo.getZona().length()>50) {
+            txtZona.setError("La zona no puede tener más de 50 caracteres");
+            retorno = false;
+        } else {
+            txtZona.setError(null);
+        }
+
+        if(actividadDeCampo.getResumen().length()>200) {
+            txtResumen.setError("El resumen no puede tener más de 200 caracteres");
+            retorno = false;
+        } else {
+            txtResumen.setError(null);
+        }
+
+        if(actividadDeCampo.getEquipamiento().length()>200) {
+            txtEquipamiento.setError("El equipamiento no puede tener más de 200 caracteres");
+            retorno = false;
+        } else {
+            txtEquipamiento.setError(null);
+        }
+
+        if(actividadDeCampo.getMetodoDeMuestreo().length()>200) {
+            txtMetodo.setError("El método no puede tener más de 200 caracteres");
+            retorno = false;
+        } else {
+            txtMetodo.setError(null);
+        }
+
+        if(actividadDeCampo.getEstacionDeMuestreo().length()>50) {
+            txtEstacion.setError("La estación de muestreo no puede tener más de 50 caracteres");
+            retorno = false;
+        } else {
+            txtEstacion.setError(null);
+        }
+
+        if(actividadDeCampo.getTipoDeMuestreo().length()>200) {
+            txtTipoDeMuestreo.setError("El tipo de muestreo no puede tener más de 200 caracteres");
+            retorno = false;
+        } else {
+            txtTipoDeMuestreo.setError(null);
         }
 
         if (spFormulario.getSelectedItemPosition() < 1) {
@@ -453,7 +524,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
 
     private void cargarSpinnerRegiones(List<RegionDTO> regiones) {
         RegionDTO rDefault = new RegionDTO();
-        rDefault.setNombre("Seleccione region...");
+        rDefault.setNombre("Seleccione region...  *");
         rDefault.setIdregion(0);
         regiones.add(0, rDefault);
         ArrayAdapter<RegionDTO> adaptador = new ArrayAdapter<>(this, R.layout.spinner, regiones);
@@ -596,6 +667,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
     private void permisosDeCamara() {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA},PackageManager.PERMISSION_GRANTED);
+            if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                abrirCamara();
+            }
         } else {
             try {
                 abrirCamara();
