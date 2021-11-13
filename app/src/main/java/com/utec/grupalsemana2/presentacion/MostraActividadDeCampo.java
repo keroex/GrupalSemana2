@@ -66,12 +66,11 @@ public class MostraActividadDeCampo extends AppCompatActivity {
         txtVerImagen = (TextView) findViewById(R.id.txtVerImagen);
         imgDialog = new Dialog(this);
 
-        Intent intent = getIntent();
 
-        if(intent.hasExtra("actividad-seleccionada")) {
-            ActividadDeCampo actividadDeCampo = intent.getParcelableExtra("actividad-seleccionada");
-            cargarActDeCampo(actividadDeCampo);
-        }
+        Bundle b = getIntent().getBundleExtra("bundle-actividad-seleccionada");
+
+        ActividadDeCampo actividadDeCampo = b.getParcelable("actividad-seleccionada");
+        cargarActDeCampo(actividadDeCampo);
 
         txtVerImagen.setOnClickListener(new View.OnClickListener() {
             @Override

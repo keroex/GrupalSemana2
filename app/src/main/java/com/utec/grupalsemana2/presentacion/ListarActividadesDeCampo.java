@@ -136,8 +136,10 @@ public class ListarActividadesDeCampo extends AppCompatActivity implements ListA
     public void onActividadClick(int position) {
         try {
             if (Sesion.isHayRest() && Sesion.isHayInternet()) {
+                Bundle b = new Bundle();
+                b.putParcelable("actividad-seleccionada",actividadesDeCampo.getValue().get(position));
                 Intent intent = new Intent(this, MostraActividadDeCampo.class);
-                intent.putExtra("actividad-seleccionada", actividadesDeCampo.getValue().get(position));
+                intent.putExtra("bundle-actividad-seleccionada",b);
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(),"No se puede acceder al detalle sin conexion a internet",Toast.LENGTH_LONG).show();
