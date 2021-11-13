@@ -1,9 +1,13 @@
 package com.utec.grupalsemana2.presentacion;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.RED;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -380,38 +385,51 @@ public class AltaActividadDeCampo extends AppCompatActivity {
         if (actividadDeCampo.getGeopunto().isEmpty()) {
             txtUbicacion.setError("No puede quedar vacío");
             retorno = false;
-
-        } else {
+        } else if  (actividadDeCampo.getGeopunto().length()>50) {
+            txtUbicacion.setError("La ubicación no puede tener más de 50 caracteres");
+            retorno = false;
+        }
+        else {
             txtUbicacion.setError(null);
         }
+
 
         if(actividadDeCampo.getEquipamiento().isEmpty()) {
             txtEquipamiento.setError("No puede quedar vacío");
             retorno = false;
-        } else {
+
+        } else if(actividadDeCampo.getEquipamiento().length()>200) {
+            txtEquipamiento.setError("El equipamiento no puede tener más de 200 caracteres");
+            retorno = false;
+        }
+        else {
             txtEquipamiento.setError(null);
+            txtEquipamiento.setHintTextColor(BLACK);
         }
 
         if(actividadDeCampo.getTipoDeMuestreo().isEmpty()) {
             txtTipoDeMuestreo.setError("No puede quedar vacío");
             retorno = false;
-        } else {
+        } else if(actividadDeCampo.getTipoDeMuestreo().length()>200) {
+            txtTipoDeMuestreo.setError("El tipo de muestreo no puede tener más de 200 caracteres");
+            retorno = false;
+        }
+        else {
             txtTipoDeMuestreo.setError(null);
         }
+
 
         if(actividadDeCampo.getMetodoDeMuestreo().isEmpty()) {
             txtMetodo.setError("No puede quedar vacío");
             retorno = false;
-        } else {
+        } else if(actividadDeCampo.getMetodoDeMuestreo().length()>200) {
+            txtMetodo.setError("El método no puede tener más de 200 caracteres");
+            retorno = false;
+        }
+        else {
             txtMetodo.setError(null);
         }
 
-        if(actividadDeCampo.getGeopunto().length()>50) {
-            txtUbicacion.setError("La ubicación no puede tener más de 50 caracteres");
-            retorno = false;
-        } else {
-            txtUbicacion.setError(null);
-        }
 
         if(actividadDeCampo.getZona().length()>50) {
             txtZona.setError("La zona no puede tener más de 50 caracteres");
@@ -427,19 +445,9 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             txtResumen.setError(null);
         }
 
-        if(actividadDeCampo.getEquipamiento().length()>200) {
-            txtEquipamiento.setError("El equipamiento no puede tener más de 200 caracteres");
-            retorno = false;
-        } else {
-            txtEquipamiento.setError(null);
-        }
 
-        if(actividadDeCampo.getMetodoDeMuestreo().length()>200) {
-            txtMetodo.setError("El método no puede tener más de 200 caracteres");
-            retorno = false;
-        } else {
-            txtMetodo.setError(null);
-        }
+
+
 
         if(actividadDeCampo.getEstacionDeMuestreo().length()>50) {
             txtEstacion.setError("La estación de muestreo no puede tener más de 50 caracteres");
@@ -448,12 +456,7 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             txtEstacion.setError(null);
         }
 
-        if(actividadDeCampo.getTipoDeMuestreo().length()>200) {
-            txtTipoDeMuestreo.setError("El tipo de muestreo no puede tener más de 200 caracteres");
-            retorno = false;
-        } else {
-            txtTipoDeMuestreo.setError(null);
-        }
+
 
         if (spFormulario.getSelectedItemPosition() < 1) {
             Toast.makeText(getApplicationContext(), "Debe seleccionar un formulario", Toast.LENGTH_LONG).show();

@@ -44,7 +44,7 @@
         android:layout_height="52dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-
+        android:selectAllOnFocus="true"
         android:ems="10"
         android:hint="Resumen"
         android:inputType="textPersonName"
@@ -76,26 +76,29 @@
         android:layout_height="49dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
-        android:ems="10"
+        android:selectAllOnFocus="true"
         android:hint="Equipamiento                                                                   *"
-        android:inputType="textPersonName"
         android:textSize="16sp"
+        android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtResumen" />
+        app:layout_constraintTop_toBottomOf="@+id/txtResumen"
+        tools:visibility="visible"/>
 
     <EditText
         android:id="@+id/txtMetodo"
         android:layout_width="173dp"
         android:layout_height="51dp"
-
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:selectAllOnFocus="true"
         android:hint="Metodo de muestreo  *"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/txtEstacion"
         app:layout_constraintTop_toBottomOf="@+id/txtEquipamiento" />
+
+
 
     <Spinner
         android:id="@+id/spDepartamento"
@@ -110,7 +113,7 @@
         android:id="@+id/txtZona"
         android:layout_width="173dp"
         android:layout_height="51dp"
-
+        android:selectAllOnFocus="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:ems="10"
@@ -127,6 +130,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="188dp"
         android:ems="10"
+        android:selectAllOnFocus="true"
         android:hint="Tipo de muestreo                                                           *"
         android:inputType="textPersonName"
         android:textSize="16sp"
@@ -139,6 +143,7 @@
         android:layout_height="22dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
+        android:selectAllOnFocus="true"
         android:text="Seleccionar fecha...        *"
         android:textColor="#4CAF50"
         android:textSize="16sp"
@@ -151,7 +156,7 @@
         android:layout_height="51dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-
+        android:selectAllOnFocus="true"
         android:ems="10"
         android:hint="Estacion de muestreo"
         android:inputType="textPersonName"
@@ -186,7 +191,7 @@
         android:layout_width="180dp"
         android:layout_height="51dp"
         android:layout_marginStart="20dp"
-
+        android:selectAllOnFocus="true"
         android:layout_marginTop="4dp"
         android:ems="10"
         android:hint=" Ubicacion                     *"
@@ -203,6 +208,7 @@
         android:text="Seleccionar hora...        *"
         android:textColor="#4CAF50"
         android:textSize="16sp"
+        android:selectAllOnFocus="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/txtViewFecha"
         app:layout_constraintStart_toEndOf="@+id/txtViewFecha" />
 
@@ -215,6 +221,7 @@
         android:text="Cargar imagen..."
         android:textColor="#4CAF50"
         android:textSize="16sp"
+        android:selectAllOnFocus="true"
         app:layout_constraintStart_toEndOf="@+id/btnCamara"
         app:layout_constraintTop_toBottomOf="@+id/spFormulario" />
 
