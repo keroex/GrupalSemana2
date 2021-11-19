@@ -430,7 +430,6 @@ public class AltaActividadDeCampo extends AppCompatActivity {
             txtMetodo.setError(null);
         }
 
-
         if(actividadDeCampo.getZona().length()>50) {
             txtZona.setError("La zona no puede tener más de 50 caracteres");
             retorno = false;
