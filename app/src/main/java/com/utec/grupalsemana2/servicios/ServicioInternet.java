@@ -43,7 +43,7 @@ public class ServicioInternet extends Service {
                 sincronizarAsyncTask sincronizarAsyncTask = new sincronizarAsyncTask();
                 sincronizarAsyncTask.execute();
                 if (yaPaso) {
-                    tiempo=5000;
+                    tiempo=3000;
                 }
                 yaPaso=true;
                 handler.postDelayed(this, tiempo);

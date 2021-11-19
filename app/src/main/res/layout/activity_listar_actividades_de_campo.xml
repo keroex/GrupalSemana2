@@ -58,8 +58,8 @@
 
     <TextView
         android:id="@+id/txtNoHay"
-        android:layout_width="310dp"
-        android:layout_height="37dp"
+        android:layout_width="312dp"
+        android:layout_height="57dp"
         android:text="No hay actividades de campo registradas"
         android:textColor="#757575"
         android:textSize="16sp"
@@ -74,7 +74,9 @@
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"  >
+        android:gravity="bottom"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ProgressBar
             android:layout_width="wrap_content"
